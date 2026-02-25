@@ -1,4 +1,4 @@
-import admin from '../config/firebase.js';
+import admin, { manualVerifyFirebaseToken } from '../config/firebase.js';
 import jwt from 'jsonwebtoken';
 import pool from '../database/connection.js';
 import nodemailer from 'nodemailer';
@@ -186,13 +186,30 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
       console.log('   Token issued at:', new Date(decodedToken.iat * 1000).toISOString());
       console.log('   Token expires at:', new Date(decodedToken.exp * 1000).toISOString());
     } catch (firebaseError) {
-      console.error('❌ [FIREBASE SIGNIN] Token verification failed!');
-      console.error('   Error code:', firebaseError.code);
-      console.error('   Error message:', firebaseError.message);
-      console.error('   Server FIREBASE_PROJECT_ID env:', process.env.FIREBASE_PROJECT_ID);
-      console.error('   Hint: If error code is auth/argument-error or auth/project-not-found,');
-      console.error('         the FIREBASE_PROJECT_ID in .env does not match the mobile app project.');
-      return { success: false, error: 'Invalid or expired Firebase token', code: firebaseError.code };
+      const isCertFetchError = firebaseError.message?.includes('Error fetching public keys') ||
+                               firebaseError.message?.includes('certificate') ||
+                               firebaseError.message?.includes('403');
+
+      if (isCertFetchError) {
+        // ── Fallback: Server IP is blocked from Google cert endpoint ──────────
+        console.warn('⚠️  [FIREBASE SIGNIN] Admin SDK cert fetch blocked (403). Trying manual JWT verification...');
+        try {
+          decodedToken = await manualVerifyFirebaseToken(cleanToken);
+          console.log('✅ [FIREBASE SIGNIN] Manual verification succeeded! UID:', decodedToken.uid);
+          console.log('   ⚠️  NOTE: Fix the server firewall to unblock www.googleapis.com for long-term reliability.');
+        } catch (manualError) {
+          console.error('❌ [FIREBASE SIGNIN] Manual verification also failed:', manualError.message);
+          console.error('   The server IP is completely blocked from Google APIs.');
+          console.error('   ACTION REQUIRED: Contact hosting provider to allow outbound HTTPS to www.googleapis.com');
+          return { success: false, error: 'Server cannot reach Google to verify token. Contact support.', code: 'server/firewall-blocked' };
+        }
+      } else {
+        console.error('❌ [FIREBASE SIGNIN] Token verification failed!');
+        console.error('   Error code:', firebaseError.code);
+        console.error('   Error message:', firebaseError.message);
+        console.error('   Server FIREBASE_PROJECT_ID env:', process.env.FIREBASE_PROJECT_ID);
+        return { success: false, error: 'Invalid or expired Firebase token', code: firebaseError.code };
+      }
     }
 
     const firebaseUid = decodedToken.uid;

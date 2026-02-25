@@ -1,4 +1,10 @@
+// Force IPv4 DNS resolution — server's IPv6 range is blocked by Google (googleapis.com returns 403 via IPv6)
+// This ensures Firebase Admin SDK can reach Google's public key endpoint for token verification
+import dns from 'dns';
+dns.setDefaultResultOrder('ipv4first');
+
 import express from 'express';
+
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
