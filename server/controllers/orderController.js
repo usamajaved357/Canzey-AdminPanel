@@ -267,7 +267,7 @@ export async function createOrder(req, res) {
     // ── Issue donation ticket (1 bonus ticket for the donated campaign) ──────
     if (parsedDonation > 0 && donation_campaign_id) {
       const [donationCampaigns] = await connection.query(
-        `SELECT id, title FROM campaigns WHERE id = ? AND status = 'active'`,
+        `SELECT id, title FROM campaigns WHERE id = ?`,
         [donation_campaign_id]
       );
 
@@ -275,7 +275,7 @@ export async function createOrder(req, res) {
         await connection.rollback();
         return res.status(400).json({
           success: false,
-          message: `Donation campaign (ID: ${donation_campaign_id}) not found or not active`
+          message: `Donation campaign (ID: ${donation_campaign_id}) not found`
         });
       }
 

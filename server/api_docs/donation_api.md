@@ -125,7 +125,15 @@ Rules:
 
 ## Database Changes
 
-### `orders` table
+Run the migration script — it detects your server state and handles both cases automatically:
+```bash
+cd /var/www/Canzey-AdminPanel/server
+node database/migrations/add_donation_to_orders.js
+```
+
+### What it does:
+
+**`orders` table** — adds `donation_amount` column:
 ```sql
 ALTER TABLE orders
 ADD COLUMN donation_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00
@@ -133,11 +141,20 @@ ADD COLUMN donation_amount DECIMAL(10,2) NOT NULL DEFAULT 0.00
   AFTER total_amount;
 ```
 
-### `campaign_tickets` table
+**`campaign_tickets` table** — adds `source` column if missing, or extends ENUM if it exists:
 ```sql
+-- If source column does NOT exist yet:
+ALTER TABLE campaign_tickets
+ADD COLUMN source ENUM('purchase', 'direct', 'donation') DEFAULT 'direct'
+  AFTER product_id;
+
+-- If source column already exists:
 ALTER TABLE campaign_tickets
 MODIFY COLUMN source ENUM('purchase', 'direct', 'donation') DEFAULT 'direct';
 ```
+
+> The migration script checks automatically — safe to run on any server. ✅
+
 
 ---
 
