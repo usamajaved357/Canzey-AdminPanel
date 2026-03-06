@@ -717,6 +717,8 @@ const Products = () => {
           onAddSize={handleAddSize}
           onRemoveSize={handleRemoveSize}
           campaigns={campaigns}
+          allProducts={products}
+          editingProductId={editingProduct?.id || null}
         />
       </div>
     </Layout>

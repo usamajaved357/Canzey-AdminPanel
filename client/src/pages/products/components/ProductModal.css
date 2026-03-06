@@ -673,6 +673,38 @@
     font-size: 13px;
 }
 
+/* Already-linked prize row */
+.prize-option.taken {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: #fafafa;
+}
+
+.prize-option.taken:hover {
+    background: #fafafa;
+}
+
+.prize-option.taken .prize-option-title {
+    color: var(--text-secondary);
+}
+
+/* "Already Linked" badge */
+.prize-linked-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fca5a5;
+    white-space: nowrap;
+}
+
+
 /* Ticket Configuration Styles */
 .ticket-config-grid {
     display: grid;

@@ -57,12 +57,27 @@ const ProductModal = ({
   onRemoveColor,
   onAddSize,
   onRemoveSize,
-  campaigns = []
+  campaigns = [],
+  allProducts = [],       // ← full products list to detect taken prizes
+  editingProductId = null // ← id of product being edited (null when creating)
 }) => {
   const [newColorName, setNewColorName] = useState('');
   const [newColorCode, setNewColorCode] = useState('#000000');
   const [newSize, setNewSize] = useState('');
   const [showPrizeDropdown, setShowPrizeDropdown] = useState(false);
+
+  // Compute set of campaign IDs already linked to OTHER products
+  // (exclude the product currently being edited so it can keep/change its own prize)
+  const takenCampaignIds = new Set(
+    allProducts
+      .filter(p => p.campaign_id && p.id !== editingProductId)
+      .map(p => p.campaign_id)
+  );
+
+  // Filter campaigns: hide taken ones from the dropdown (unless it's the currently selected one)
+  const availableCampaigns = campaigns.filter(
+    c => c.status === 'active' && !takenCampaignIds.has(c.id)
+  );
 
   // Get selected prize details
   const getSelectedPrize = () => {
@@ -435,30 +450,37 @@ const ProductModal = ({
                     <span>No Prize (Not linked)</span>
                   </div>
 
-                  {/* Active Prizes */}
-                  {campaigns.filter(c => c.status === 'active').map((campaign) => (
-                    <div 
-                      key={campaign.id}
-                      className={`prize-option ${formData.campaign_id == campaign.id ? 'selected' : ''}`}
-                      onClick={() => handlePrizeSelect(campaign.id)}
-                    >
-                      {campaign.image_url ? (
-                        <img 
-                          src={getImageUrl(campaign.image_url)} 
-                          alt={campaign.title}
-                          className="prize-thumb"
-                        />
-                      ) : (
-                        <div className="prize-thumb-placeholder">
-                          <Trophy size={16} />
+              {/* All Active Prizes — taken ones are shown but disabled with a badge */}
+                  {campaigns.filter(c => c.status === 'active').map((campaign) => {
+                    const isTaken = takenCampaignIds.has(campaign.id);
+                    return (
+                      <div
+                        key={campaign.id}
+                        className={`prize-option ${formData.campaign_id == campaign.id ? 'selected' : ''} ${isTaken ? 'taken' : ''}`}
+                        onClick={() => !isTaken && handlePrizeSelect(campaign.id)}
+                        title={isTaken ? 'This prize is already linked to another product' : ''}
+                      >
+                        {campaign.image_url ? (
+                          <img
+                            src={getImageUrl(campaign.image_url)}
+                            alt={campaign.title}
+                            className="prize-thumb"
+                          />
+                        ) : (
+                          <div className="prize-thumb-placeholder">
+                            <Trophy size={16} />
+                          </div>
+                        )}
+                        <div className="prize-option-info">
+                          <span className="prize-option-title">{campaign.title}</span>
+                          {/* <span className="prize-option-price">${campaign.ticket_price} per ticket</span> */}
                         </div>
-                      )}
-                      <div className="prize-option-info">
-                        <span className="prize-option-title">{campaign.title}</span>
-                        <span className="prize-option-price">${campaign.ticket_price} per ticket</span>
+                        {isTaken && (
+                          <span className="prize-linked-badge">Already Linked</span>
+                        )}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
                   {campaigns.filter(c => c.status === 'active').length === 0 && (
                     <div className="prize-no-options">No active prizes available</div>

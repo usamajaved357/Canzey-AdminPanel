@@ -284,6 +284,7 @@ const Notifications = () => {
                     value={formData.topic}
                     onChange={handleInputChange}
                     placeholder="canzey-topic"
+                    readOnly
                   />
                   <small>Default topic for all app users</small>
                 </div>

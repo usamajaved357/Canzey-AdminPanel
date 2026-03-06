@@ -104,6 +104,16 @@
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
+.form-group input[readOnly] {
+  background-color: #f9fafb;
+  cursor: default;
+}
+
+.form-group input[readOnly]:focus {
+  border-color: #d1d5db;
+  box-shadow: none;
+}
+
 .route-select {
   background-color: white;
   cursor: pointer;
@@ -196,6 +206,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -326,6 +337,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
