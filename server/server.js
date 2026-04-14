@@ -28,6 +28,7 @@ import ticketsRoutes from './routes/tickets.js';
 import dashboardRoutes from './routes/dashboard.js';
 import bannersRoutes from './routes/banners.js';
 import productPrizesRoutes from './routes/product_prizes.js';
+import adminShippingRoutes from './routes/admin_shipping.js';
 
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use('/api/admin/product-prizes', adminProductPrizesRoutes);
 app.use('/api/admin/notifications', adminNotificationsRoutes);
 app.use('/api/admin/draws', adminDrawsRoutes);
 app.use('/api/admin/dashboard', dashboardRoutes);
+app.use('/api/admin/shipping', adminShippingRoutes);
 app.use('/api/firebase/customer', firebaseCustomerAuthRoutes);
 app.use('/api/campaigns', campaignsRoutes);
 app.use('/api/draws', drawsRoutes);

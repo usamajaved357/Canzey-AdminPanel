@@ -1,9 +1,11 @@
 import React from 'react';
-import { X, Package, MapPin, CreditCard, Ticket, User, Calendar, DollarSign } from 'lucide-react';
+import { X, Package, MapPin, CreditCard, Ticket, User, Calendar, DollarSign, Truck } from 'lucide-react';
 import { API_BASE_URL } from '../../../config/api';
+import ShippingSection from './ShippingSection';
 import './OrderDetailsModal.css';
+import './ShippingSection.css';
 
-const OrderDetailsModal = ({ show, onClose, order }) => {
+const OrderDetailsModal = ({ show, onClose, order, onUpdate }) => {
   if (!show || !order) return null;
 
   const formatDate = (dateString) => {
@@ -105,6 +107,12 @@ const OrderDetailsModal = ({ show, onClose, order }) => {
             </div>
           </div>
 
+          {/* Shipping Section */}
+          <div className="section">
+            <h3><Truck size={20} /> Shipping Management</h3>
+            <ShippingSection order={order} onUpdate={onUpdate} />
+          </div>
+
           {/* Shipping Address */}
           {order.shipping_address && (
             <div className="section">
@@ -188,7 +196,12 @@ const OrderDetailsModal = ({ show, onClose, order }) => {
             </div>
           )}
 
-          {/* Payment Info */}
+            </div>
+          )}
+          
+          </div>
+
+          {/* Order Items */}
           <div className="section">
             <h3><CreditCard size={20} /> Payment Information</h3>
             <div className="info-grid">

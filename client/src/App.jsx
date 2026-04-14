@@ -6,6 +6,7 @@ import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import Dashboard from './pages/dashboard/Dashboard'
 import Orders from './pages/orders/Orders'
+import OrderView from './pages/orders/OrderView'
 import Users from './pages/users/Users'
 import Customers from './pages/customers/Customers'
 import Campaigns from './pages/campaigns/Campaigns'
@@ -54,6 +55,11 @@ function App() {
             <Route path="/orders" element={
               <ProtectedRoute>
                 <Orders />
+              </ProtectedRoute>
+            } />
+            <Route path="/orders/:id" element={
+              <ProtectedRoute>
+                <OrderView />
               </ProtectedRoute>
             } />
 
