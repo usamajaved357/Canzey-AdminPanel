@@ -13,9 +13,9 @@ const ShippingSection = ({ order, onUpdate }) => {
   const [formData, setFormData] = useState({
     city_id: '',
     region_id: '',
-    package_size: 'Package Size - Average Small Size 0.5kg ~ 1kg (2000 IQD)',
-    replacement: '0',
-    type_name: 'Regular', // or Urgent
+    total_weight: '1',
+    content_type: 'XPS',
+    service_type: 'NCND',
     items_number: '1',
     location: '',
     notes: ''
@@ -31,7 +31,7 @@ const ShippingSection = ({ order, onUpdate }) => {
     fetchCities();
   }, [order]);
 
-  // Smart Matching: Try to match order city with Al-Waseet city list
+  // Smart Matching: Try to match order city with ZMC city list
   useEffect(() => {
     if (cities.length > 0 && order?.shipping_address?.city && !formData.city_id) {
       const orderCity = order.shipping_address.city.toLowerCase().trim();
@@ -125,7 +125,7 @@ const ShippingSection = ({ order, onUpdate }) => {
         <div className="shipping-info-header">
           <div className="company-logo">
             <Truck size={20} />
-            <span>Al-Waseet Shipping</span>
+            <span>ZMC Cargo</span>
           </div>
           <button className="refresh-btn" onClick={fetchTrackingInfo} disabled={loading}>
             <RefreshCw size={14} className={loading ? 'spin' : ''} />
@@ -135,7 +135,7 @@ const ShippingSection = ({ order, onUpdate }) => {
         
         <div className="tracking-main">
           <div className="track-id">
-            <span className="label">Tracking ID</span>
+            <span className="label">ZMC Tracking Ref</span>
             <span className="value">#{order.shipping_track_id}</span>
           </div>
           <div className="track-status">
@@ -144,39 +144,6 @@ const ShippingSection = ({ order, onUpdate }) => {
               {trackingInfo.status_name}
             </span>
           </div>
-        </div>
-
-        {trackingInfo.price && (
-          <div className="track-details-row">
-            <span>Price: {trackingInfo.price} IQD</span>
-            <span>Items: {trackingInfo.items_number}</span>
-          </div>
-        )}
-
-        <div className="track-footer">
-           <div className="footer-links" style={{ display: 'flex', gap: '20px', marginTop: '16px' }}>
-             <a 
-               href={`https://al-waseet.com/track?id=${order.shipping_track_id}`} 
-               target="_blank" rel="noreferrer"
-               className="track-link"
-               style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#6366f1', textDecoration: 'none', fontWeight: '800' }}
-             >
-               <ExternalLink size={14} />
-               Track Package
-             </a>
-             
-             {order.shipping_label_url && (
-               <a 
-                 href={`${API_BASE_URL}${order.shipping_label_url}`} 
-                 target="_blank" rel="noreferrer"
-                 className="print-link"
-                 style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#059669', textDecoration: 'none', fontWeight: '800' }}
-               >
-                 <RefreshCw size={14} />
-                 Print Label (Saved)
-               </a>
-             )}
-           </div>
         </div>
       </div>
     );
@@ -189,13 +156,13 @@ const ShippingSection = ({ order, onUpdate }) => {
           <Truck size={32} />
           <p>This order has not been shipped yet.</p>
           <button className="primary-btn" onClick={() => setShowShipForm(true)}>
-            <Send size={16} /> Process Shipment with Al-Waseet
+            <Send size={16} /> Process Shipment with ZMC Cargo
           </button>
         </div>
       ) : (
         <form className="ship-form" onSubmit={handleCreateShipment}>
           <div className="form-header">
-            <h4>Create Al-Waseet Shipment</h4>
+            <h4>Create ZMC Cargo Shipment</h4>
             <button type="button" className="close-form" onClick={() => setShowShipForm(false)}>×</button>
           </div>
 
@@ -222,11 +189,14 @@ const ShippingSection = ({ order, onUpdate }) => {
             </div>
 
             <div className="form-group">
-              <label>Type</label>
-              <select value={formData.type_name} onChange={(e) => setFormData({...formData, type_name: e.target.value})}>
-                <option value="Regular">Regular</option>
-                <option value="Urgent">Urgent</option>
-              </select>
+              <label>Total Weight (kg)</label>
+              <input 
+                type="number" 
+                value={formData.total_weight} 
+                onChange={(e) => setFormData({...formData, total_weight: e.target.value})}
+                min="0.1"
+                step="0.1"
+              />
             </div>
 
             <div className="form-group">
@@ -238,15 +208,6 @@ const ShippingSection = ({ order, onUpdate }) => {
                 min="1"
               />
             </div>
-          </div>
-
-          <div className="form-group full-width">
-            <label>Package Size</label>
-            <select value={formData.package_size} onChange={(e) => setFormData({...formData, package_size: e.target.value})}>
-              <option value="Package Size - Average Small Size 0.5kg ~ 1kg (2000 IQD)">Small (2,000 IQD)</option>
-              <option value="Package Size - Average Medium Size 1kg ~ 5kg (4000 IQD)">Medium (4,000 IQD)</option>
-              <option value="Package Size - Average Big Size 5kg ~ 15kg (6000 IQD)">Big (6,000 IQD)</option>
-            </select>
           </div>
 
           <div className="form-group full-width">

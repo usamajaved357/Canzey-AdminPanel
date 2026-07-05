@@ -17,6 +17,7 @@ import Tickets from './pages/tickets/Tickets'
 import Banners from './pages/banners/Banners'
 import Notifications from './pages/notifications/Notifications'
 import Draws from './pages/draws/Draws'
+import Settings from './pages/settings/Settings'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -111,6 +112,11 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             } />
           </Routes>

@@ -19,6 +19,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     { icon: Users, label: 'Customers', path: '/customers' },
     { icon: Users, label: 'Admin Users', path: '/users' },
     { icon: User, label: 'Profile', path: '/profile' },
+    { icon: Settings, label: 'Testing', path: '/settings' },
   ];
 
   return (
