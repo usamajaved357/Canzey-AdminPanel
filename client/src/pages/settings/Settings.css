@@ -1,8 +1,8 @@
 /* Settings Page Styles */
 .settings-page {
-  padding: 24px;
-  background-color: #f9fafb;
-  min-height: calc(100vh - 64px);
+  padding: 0;
+  background-color: transparent;
+  min-height: auto;
 }
 
 .settings-container {
@@ -179,4 +179,81 @@
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 600;
+}
+
+.settings-env-row {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-env-row label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #374151;
+}
+
+.settings-env-row select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background-color: white;
+  font-weight: 500;
+  font-size: 14px;
+  min-width: 180px;
+  flex: 1;
+  max-width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .settings-page {
+    padding: 16px 0;
+    min-height: auto;
+  }
+
+  .settings-title {
+    font-size: 24px;
+  }
+
+  .settings-subtitle {
+    font-size: 14px;
+  }
+
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .settings-card {
+    padding: 16px;
+  }
+
+  .form-group-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .settings-env-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-env-row select {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-title {
+    font-size: 20px;
+  }
+
+  .settings-card-title,
+  .settings-card-header h2 {
+    font-size: 16px;
+  }
 }

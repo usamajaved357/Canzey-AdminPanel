@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../header/Header';
 import Sidebar from '../sidebar/Sidebar';
 import { useUser } from '../../context/UserContext';
@@ -6,9 +6,18 @@ import './Layout.css';
 
 const Layout = ({ children }) => {
   const { user, logout } = useUser();
-  // Default to closed on mobile, open on desktop
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth > 1024);
+  const [sidebarOpen, setSidebarOpen] = useState(() => window.innerWidth > 1024);
   const [searchTerm, setSearchTerm] = useState('');
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1024) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="layout">

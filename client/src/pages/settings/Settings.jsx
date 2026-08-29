@@ -5,6 +5,7 @@ import { API_BASE_URL } from '../../config/api';
 import './Settings.css';
 
 const Settings = () => {
+  const [testEnv, setTestEnv] = useState('prod');
   const [testingZmc, setTestingZmc] = useState(false);
   const [zmcStatus, setZmcStatus] = useState(null);
 
@@ -14,13 +15,13 @@ const Settings = () => {
   const [bookingStatus, setBookingStatus] = useState(null);
   const [isBooking, setIsBooking] = useState(false);
   const [formData, setFormData] = useState({
-    client_name: 'Farhan Test',
-    client_mobile: '07701234567',
+    client_name: 'Ahmed Erbil Test',
+    client_mobile: '07501112233',
     city_id: '',
     region_id: '',
-    location: 'Mansour, 14th Ramadan Street, Near Mansour Mall',
-    price: '1000',
-    total_weight: '1'
+    location: 'Erbil, English Village, Villa 100',
+    price: '1500',
+    total_weight: '2'
   });
 
   const token = localStorage.getItem('token');
@@ -33,18 +34,20 @@ const Settings = () => {
   const fetchCities = async () => {
     try {
       const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/cities`, { headers });
-      if (res.data.success) setCities(res.data.data);
+      setCities(Array.isArray(res.data) ? res.data : (res.data.data || []));
     } catch (err) {
       console.error('Error fetching cities:', err);
+      setCities([]);
     }
   };
 
   const fetchRegions = async (cityId) => {
     try {
       const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/regions/${cityId}`, { headers });
-      if (res.data.success) setRegions(res.data.data);
+      setRegions(Array.isArray(res.data) ? res.data : (res.data.data || []));
     } catch (err) {
       console.error('Error fetching regions:', err);
+      setRegions([]);
     }
   };
 
@@ -59,7 +62,7 @@ const Settings = () => {
     try {
       setTestingZmc(true);
       setZmcStatus(null);
-      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/test-connection`, { headers });
+      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/test-connection?env=${testEnv}`, { headers });
       if (res.data.success) {
         setZmcStatus({ success: true, message: res.data.message });
       } else {
@@ -86,6 +89,7 @@ const Settings = () => {
       const payload = {
         shippingData: {
           ...formData,
+          env: testEnv,
           content_type: 'XPS',
           service_type: 'NCND',
           items_number: '1'
@@ -99,6 +103,7 @@ const Settings = () => {
         setBookingStatus({ success: false, message: res.data.message });
       }
     } catch (err) {
+      console.error('Booking Error:', err);
       setBookingStatus({ success: false, message: err.response?.data?.message || err.message });
     } finally {
       setIsBooking(false);
@@ -108,7 +113,7 @@ const Settings = () => {
   const handleDownloadLabel = async () => {
     if (!bookingStatus?.trackId) return;
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/admin/shipping/label/${bookingStatus.trackId}`, { 
+      const response = await axios.get(`${API_BASE_URL}/api/admin/shipping/label/${bookingStatus.trackId}?env=${testEnv}`, { 
         headers,
         responseType: 'blob' 
       });
@@ -132,6 +137,13 @@ const Settings = () => {
           <div className="settings-header">
             <h1 className="settings-title">Testing & Settings</h1>
             <p className="settings-subtitle">Manage application configuration and integrations.</p>
+            <div className="settings-env-row">
+              <label>ZMC Target Environment:</label>
+              <select value={testEnv} onChange={e => setTestEnv(e.target.value)}>
+                <option value="prod">Production (Live)</option>
+                <option value="sandbox">Sandbox (Testing)</option>
+              </select>
+            </div>
           </div>
           
           <div className="settings-grid">

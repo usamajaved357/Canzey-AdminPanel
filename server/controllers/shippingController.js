@@ -1,4 +1,4 @@
-import { zmcCargoService } from '../services/zmcCargoService.js';
+import { zmcCargoService, resolveZmcEnvironment } from '../services/zmcCargoService.js';
 import db from '../database/connection.js';
 
 export const getCities = async (req, res) => {
@@ -24,8 +24,8 @@ export const createShipment = async (req, res) => {
   const { orderId, shippingData } = req.body;
   
   try {
-    // Add reference number from our system
     shippingData.referenceNo = orderId.toString();
+    shippingData.env = resolveZmcEnvironment(shippingData.env);
 
     const result = await zmcCargoService.bookLocalShipment(shippingData);
     
@@ -63,7 +63,8 @@ export const createShipment = async (req, res) => {
 export const getShipmentStatus = async (req, res) => {
   try {
     const { trackId } = req.params;
-    const statusResult = await zmcCargoService.getShipmentStatus(trackId);
+    const env = resolveZmcEnvironment(req.query.env);
+    const statusResult = await zmcCargoService.getShipmentStatus(trackId, env);
     
     if (statusResult && statusResult.status === '200') {
       const currentStatus = statusResult.data.Current_Status || 'Pending';
@@ -84,7 +85,8 @@ export const getShipmentStatus = async (req, res) => {
 
 export const testConnection = async (req, res) => {
   try {
-    const result = await zmcCargoService.testConnection();
+    const { env } = req.query;
+    const result = await zmcCargoService.testConnection(env);
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -95,8 +97,8 @@ export const testBookShipment = async (req, res) => {
   const { shippingData } = req.body;
   
   try {
-    // Generate a dummy reference number for testing
     shippingData.referenceNo = `TEST-${Date.now()}`;
+    shippingData.env = resolveZmcEnvironment(shippingData.env);
 
     const result = await zmcCargoService.bookLocalShipment(shippingData);
     
@@ -126,8 +128,9 @@ export const testBookShipment = async (req, res) => {
 
 export const downloadLabel = async (req, res) => {
   const { trackId } = req.params;
+  const { env } = req.query;
   try {
-    const result = await zmcCargoService.downloadLabel(trackId);
+    const result = await zmcCargoService.downloadLabel(trackId, 5, env);
     if (result.success && result.pdfBuffer) {
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=ZMC-Label-${trackId}.pdf`);

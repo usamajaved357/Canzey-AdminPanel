@@ -2,20 +2,53 @@ import dotenv from 'dotenv';
 import crypto from 'crypto';
 dotenv.config();
 
-const BASE_URL = process.env.ZMC_BASE_URL || 'https://mrsltest.zmc-iraq.com/DomesticCargo';
-const AUTH_USER = process.env.ZMC_AUTH_USER || 'testuser';
-const AUTH_PASS = process.env.ZMC_AUTH_PASS || 'testpass';
-const BASIC_TOKEN = process.env.ZMC_BASIC_TOKEN || '';
+export function resolveZmcEnvironment(envOverride = null) {
+  const env = (envOverride || process.env.ZMC_ENVIRONMENT || 'sandbox').toLowerCase().trim();
+  return env === 'prod' || env === 'production' ? 'prod' : 'sandbox';
+}
 
-function getAuthHeaders() {
+function getCredentials(envOverride = null) {
+  const env = resolveZmcEnvironment(envOverride);
+  if (env === 'prod') {
+    return {
+      baseUrl: process.env.ZMC_PROD_URL,
+      user: process.env.ZMC_PROD_USER,
+      pass: process.env.ZMC_PROD_PASS,
+      token: process.env.ZMC_PROD_TOKEN,
+      companyId: process.env.ZMC_PROD_COMPANY_ID
+    };
+  }
+  return {
+    baseUrl: process.env.ZMC_SANDBOX_URL,
+    user: process.env.ZMC_SANDBOX_USER,
+    pass: process.env.ZMC_SANDBOX_PASS,
+    token: process.env.ZMC_SANDBOX_TOKEN,
+    companyId: process.env.ZMC_SANDBOX_COMPANY_ID
+  };
+}
+
+function getAuthHeaders(creds) {
+  // Official ZMC format: VToken = SHA256( BasicToken + Timestamp ), uppercase hex
+  // Timestamp example: 2019-02-13T03:19:39.196+0000
   const timestamp = new Date().toISOString().replace('Z', '+0000');
-  const vToken = crypto.createHash('sha256').update(BASIC_TOKEN + timestamp).digest('hex').toUpperCase();
+  const vToken = crypto.createHash('sha256').update((creds.token || '') + timestamp).digest('hex').toUpperCase();
 
   return {
-    'Authorization': 'Basic ' + Buffer.from(`${AUTH_USER}:${AUTH_PASS}`).toString('base64'),
-    'Timestamp': timestamp,
-    'VToken': vToken
+    Authorization: 'Basic ' + Buffer.from(`${creds.user}:${creds.pass}`).toString('base64'),
+    Timestamp: timestamp,
+    VToken: vToken
   };
+}
+
+function assertCredentials(creds, env) {
+  const missing = [];
+  if (!creds.baseUrl) missing.push('URL');
+  if (!creds.user) missing.push('USER');
+  if (!creds.pass) missing.push('PASS');
+  if (!creds.token) missing.push('TOKEN (Basic Token for VToken hash — never sent in requests)');
+  if (missing.length) {
+    throw new Error(`ZMC ${env} credentials incomplete. Missing: ${missing.join(', ')}`);
+  }
 }
 
 export const zmcCargoService = {
@@ -39,8 +72,11 @@ export const zmcCargoService = {
   },
 
   async bookLocalShipment(shippingData) {
+    const env = resolveZmcEnvironment(shippingData?.env);
+    const creds = getCredentials(env);
+    assertCredentials(creds, env);
     const payload = {
-      sourceCompanyId: process.env.ZMC_SOURCE_COMPANY_ID || '1',
+      sourceCompanyId: creds.companyId || '1',
       boxes: [],
       bookedShipments: [
         {
@@ -69,21 +105,15 @@ export const zmcCargoService = {
     };
 
     console.log('\n--- ZMC API REQUEST (tryBookLocalShipment) ---');
-    console.log('URL: ', `${BASE_URL}/api/tryBookLocalShipment`);
-    console.log('METHOD: POST');
-    console.log(`AUTH: Basic ${Buffer.from(`${AUTH_USER}:${AUTH_PASS}`).toString('base64')} (Decodes to -> Username: ${AUTH_USER} | Password: ${AUTH_PASS})`);
-    console.log('HEADERS: ', {
-      'Content-Type': 'application/json',
-      ...getAuthHeaders()
-    });
-    console.log('BODY: ', JSON.stringify(payload, null, 2));
-    console.log('------------------------------------------------\n');
+    console.log('ENV:', env);
+    console.log('URL:', `${creds.baseUrl}/api/tryBookLocalShipment`);
+    console.log('-----------------------------------------------\n');
 
-    const response = await fetch(`${BASE_URL}/api/tryBookLocalShipment`, {
+    const response = await fetch(`${creds.baseUrl}/api/tryBookLocalShipment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...getAuthHeaders()
+        ...getAuthHeaders(creds)
       },
       body: JSON.stringify(payload)
     });
@@ -99,14 +129,16 @@ export const zmcCargoService = {
     return data;
   },
 
-  async getShipmentStatus(referenceNo) {
+  async getShipmentStatus(referenceNo, envOverride = null) {
+    const creds = getCredentials(envOverride);
+    assertCredentials(creds, resolveZmcEnvironment(envOverride));
     // The OpenAPI spec for getting status is `/api/getShipmentStatus` with POST and body `{ "referenceId": "123" }`
     const payload = { referenceId: referenceNo };
-    const response = await fetch(`${BASE_URL}/api/getShipmentStatus`, {
+    const response = await fetch(`${creds.baseUrl}/api/getShipmentStatus`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...getAuthHeaders()
+        ...getAuthHeaders(creds)
       },
       body: JSON.stringify(payload)
     });
@@ -115,13 +147,15 @@ export const zmcCargoService = {
     return data;
   },
 
-  async downloadLabel(referenceNo, version = 5) {
-    const url = `${BASE_URL}/api/downloadParcelSticker-V${version}?referenceNo=${referenceNo}`;
+  async downloadLabel(referenceNo, version = 5, envOverride = null) {
+    const creds = getCredentials(envOverride);
+    assertCredentials(creds, resolveZmcEnvironment(envOverride));
+    const url = `${creds.baseUrl}/api/downloadParcelSticker-V${version}?referenceNo=${referenceNo}`;
     console.log('Downloading label from:', url);
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        ...getAuthHeaders()
+        ...getAuthHeaders(creds)
       }
     });
 
@@ -134,15 +168,17 @@ export const zmcCargoService = {
     return { success: true, pdfBuffer: buffer };
   },
 
-  async testConnection() {
+  async testConnection(envOverride = null) {
+    const creds = getCredentials(envOverride);
+    assertCredentials(creds, resolveZmcEnvironment(envOverride));
     try {
       // Hit status with a dummy ID to see if we get a 401 Unauthorized or successful API response structure
       const payload = { referenceId: "test-connection" };
-      const response = await fetch(`${BASE_URL}/api/getShipmentStatus`, {
+      const response = await fetch(`${creds.baseUrl}/api/getShipmentStatus`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...getAuthHeaders()
+          ...getAuthHeaders(creds)
         },
         body: JSON.stringify(payload)
       });
