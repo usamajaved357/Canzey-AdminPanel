@@ -155,7 +155,7 @@ const Tickets = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
           {toast && (
             <Toast 
               message={toast.message} 
@@ -166,7 +166,7 @@ const Tickets = () => {
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
               Campaign Tickets
             </h1>
             <p className="text-gray-600 text-lg">Manage tickets and announce winners</p>

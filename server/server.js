@@ -3,10 +3,10 @@
 import dns from 'dns';
 dns.setDefaultResultOrder('ipv4first');
 
+import './config/loadEnv.js';
 import express from 'express';
 
 import cors from 'cors';
-import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { setupDatabase } from './database/setup.js';
@@ -29,8 +29,6 @@ import dashboardRoutes from './routes/dashboard.js';
 import bannersRoutes from './routes/banners.js';
 import productPrizesRoutes from './routes/product_prizes.js';
 import adminShippingRoutes from './routes/admin_shipping.js';
-
-dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

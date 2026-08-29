@@ -31,3 +31,33 @@
   border-bottom-color: #667eea;
   background: rgba(102, 126, 234, 0.05);
 }
+
+@media (max-width: 768px) {
+  .profile-tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .profile-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .profile-tab {
+    flex-shrink: 0;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-tab span {
+    display: none;
+  }
+
+  .profile-tab {
+    padding: 0.875rem;
+  }
+}

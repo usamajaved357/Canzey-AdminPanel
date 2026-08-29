@@ -427,11 +427,15 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-content {
+    padding: 0;
+  }
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
-    padding: 1.5rem 2rem;
+    padding: 1.5rem;
   }
 
   .header-title {

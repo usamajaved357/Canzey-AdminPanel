@@ -1,6 +1,9 @@
 import dotenv from 'dotenv';
 import crypto from 'crypto';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config({ path: path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
 
 export function resolveZmcEnvironment(envOverride = null) {
   const env = (envOverride || process.env.ZMC_ENVIRONMENT || 'sandbox').toLowerCase().trim();

@@ -1,0 +1,29 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            set -e
+            APP_DIR=/var/www/Canzey-AdminPanel
+            cd "$APP_DIR"
+            git pull origin main
+            cd server
+            npm install --omit=dev
+            if [ -f .env ] && [ ! -f "$APP_DIR/.env" ]; then
+              cp .env "$APP_DIR/.env"
+            fi
+            pm2 restart canzey-backend --update-env || pm2 start server.js --name canzey-backend
+            pm2 save
+            pm2 status

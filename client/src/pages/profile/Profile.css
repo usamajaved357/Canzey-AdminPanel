@@ -8,7 +8,7 @@
 .profile-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
 }
 
 /* Profile Content Layout */
@@ -629,7 +629,7 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .profile-container {
-    padding: 1rem;
+    padding: 0;
   }
   
   .profile-content {

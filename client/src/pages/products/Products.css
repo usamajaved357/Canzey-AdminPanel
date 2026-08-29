@@ -1,5 +1,5 @@
 .products-container {
-  padding: 2rem;
+  padding: 0;
 }
 
 .products-header {
@@ -656,7 +656,7 @@
 /* Responsive */
 @media (max-width: 768px) {
   .products-container {
-    padding: 1rem;
+    padding: 0;
   }
 
   .products-header {

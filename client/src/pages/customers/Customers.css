@@ -1,5 +1,5 @@
 .customers-container {
-  padding: 24px;
+  padding: 0;
 }
 
 .customers-header {
@@ -235,7 +235,7 @@
 /* Mobile Responsive */
 @media (max-width: 1024px) {
   .customers-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 

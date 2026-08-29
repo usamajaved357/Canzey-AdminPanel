@@ -1,0 +1,90 @@
+/* ─── Global Admin Responsive Utilities ─── */
+
+/* Prevent horizontal page scroll from nested containers */
+.layout-content {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Shared page container — reduces double-padding inside Layout */
+.page-container,
+.orders-container,
+.customers-container,
+.users-container,
+.products-container,
+.campaigns-container,
+.banners-container,
+.notifications-container,
+.promos-container,
+.dashboard-content,
+.settings-page {
+  max-width: 100%;
+}
+
+/* Table wrappers — horizontal scroll on small screens */
+.admin-table-scroll,
+.users-table-container,
+.customers-table-container,
+.campaigns-table-container,
+.products-table-container,
+.promos-table-container,
+.users-table-wrapper {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch-friendly tap targets on mobile */
+@media (max-width: 768px) {
+  button,
+  .btn-primary,
+  .action-btn,
+  .sidebar-nav-item {
+    min-height: 44px;
+  }
+
+  /* Stack page headers with action buttons */
+  .page-header-row,
+  .orders-header,
+  .customers-header,
+  .products-header,
+  .campaigns-header,
+  .banners-header,
+  .users-header,
+  .settings-header {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  /* Modals full-width on mobile */
+  .modal-overlay,
+  .profile-modal-overlay,
+  .confirmation-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .ticket-details-modal,
+  .profile-modal,
+  .confirmation-dialog,
+  .customer-modal {
+    max-height: 92vh;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-content {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-top: 4.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  /* Smaller headings on very small screens */
+  h1,
+  .settings-title,
+  .orders-title,
+  .header-title {
+    word-break: break-word;
+  }
+}

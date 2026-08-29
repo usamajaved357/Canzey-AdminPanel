@@ -232,5 +232,33 @@
 }
 
 .avatar-remove-btn:hover {
-    background: #fee2e2;
+  background: #fee2e2;
+}
+
+@media (max-width: 640px) {
+  .customer-profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .avatar-upload-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions .btn-secondary,
+  .form-actions .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
 }

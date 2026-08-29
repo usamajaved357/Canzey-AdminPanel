@@ -1,5 +1,5 @@
 .banners-container {
-  padding: 24px;
+  padding: 0;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -247,7 +247,7 @@
 
 @media (max-width: 1024px) {
   .banners-container {
-    padding: 16px;
+    padding: 0;
   }
 }
 
@@ -281,7 +281,7 @@
     font-size: 24px;
   }
 
-  .banner-content padding {
+  .banner-content {
     padding: 16px;
   }
 }

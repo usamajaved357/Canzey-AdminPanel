@@ -1,5 +1,5 @@
 .promos-container {
-    padding: 2rem;
+    padding: 0;
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -262,7 +262,7 @@
 
 @media (max-width: 768px) {
     .promos-container {
-        padding: 1rem;
+        padding: 0;
     }
 
     .promos-header {

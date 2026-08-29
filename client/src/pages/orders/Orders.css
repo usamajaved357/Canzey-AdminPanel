@@ -7,7 +7,7 @@
 }
 
 .orders-container {
-  padding: 2rem;
+  padding: 0;
   font-family: 'Inter', sans-serif;
   color: #1f2937;
 }
@@ -420,7 +420,7 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .orders-container {
-    padding: 1.5rem;
+    padding: 0;
   }
 
   .orders-title {
@@ -434,7 +434,7 @@
 
 @media (max-width: 768px) {
   .orders-container {
-    padding: 1rem;
+    padding: 0;
   }
 
   .orders-title {
