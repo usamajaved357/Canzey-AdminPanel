@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Package, User, MapPin, CreditCard, 
-  Calendar, Clock, CheckCircle, Truck, DollarSign, Mail, Phone
+  Calendar, Clock, CheckCircle, Truck, DollarSign, Mail, Phone, FlaskConical
 } from 'lucide-react';
 import Layout from '../../components/layout/Layout';
 import Toast from '../../components/ui/Toast';
@@ -89,9 +89,17 @@ const OrderView = () => {
               <h1>Order Details</h1>
               <p className="order-no">#{order.order_number}</p>
             </div>
-            <div className={`status-pill ${getStatusColor(order.order_status)}`}>
-              <Clock size={16} />
-              {order.order_status.toUpperCase()}
+            <div className="header-status-group">
+              <div className={`status-pill ${getStatusColor(order.order_status)}`}>
+                <Clock size={16} />
+                {order.order_status.toUpperCase()}
+              </div>
+              {order.shipping_company?.includes('(Test)') && (
+                <span className="order-test-badge">
+                  <FlaskConical size={12} />
+                  Testing Shipment
+                </span>
+              )}
             </div>
           </div>
         </div>
