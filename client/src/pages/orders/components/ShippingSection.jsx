@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Truck, RefreshCw, Send, Download, FlaskConical, ExternalLink } from 'lucide-react';
+import { Truck, RefreshCw, Send, Download, FlaskConical, ExternalLink, MapPin, Package } from 'lucide-react';
 import { API_BASE_URL } from '../../../config/api';
 import '../../../components/ui/ToggleSwitch.css';
 
@@ -10,12 +10,22 @@ const TEST_MODE_KEY = 'zmcOrderTestMode';
 const isTestShipment = (order) =>
   Boolean(order?.shipping_company?.includes('(Test)'));
 
+const getTotalItemCount = (order) =>
+  (order?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0) || 1;
+
+const buildLocationLine = (addr) => {
+  if (!addr) return '';
+  const parts = [addr.address, addr.city, addr.postal_code, addr.country].filter(Boolean);
+  return parts.join(', ');
+};
+
 const ShippingSection = ({ order, onUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [cities, setCities] = useState([]);
   const [regions, setRegions] = useState([]);
   const [trackingInfo, setTrackingInfo] = useState(null);
   const [showShipForm, setShowShipForm] = useState(false);
+  const [prefilled, setPrefilled] = useState(false);
   const [testMode, setTestMode] = useState(() => {
     try {
       return localStorage.getItem(TEST_MODE_KEY) === 'true';
@@ -40,6 +50,69 @@ const ShippingSection = ({ order, onUpdate }) => {
   const hasShipment = Boolean(order?.shipping_track_id);
   const showTestBadge = testMode || isTestShipment(order);
   const labelEnv = showTestBadge ? 'sandbox' : 'prod';
+  const itemCount = getTotalItemCount(order);
+
+  const fetchCities = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/cities`, { headers });
+      if (res.data.success) setCities(res.data.data || []);
+    } catch (err) {
+      console.error('Error fetching cities:', err);
+    }
+  }, [token]);
+
+  const fetchRegionsForCity = useCallback(async (cityId) => {
+    if (!cityId) return [];
+    try {
+      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/regions/${cityId}`, { headers });
+      if (res.data.success) return res.data.data || [];
+    } catch (err) {
+      console.error('Error fetching regions:', err);
+    }
+    return [];
+  }, [token]);
+
+  const applyOrderPrefill = useCallback(async (cityList) => {
+    const addr = order?.shipping_address;
+    const count = getTotalItemCount(order);
+    const base = {
+      total_weight: String(Math.max(1, count)),
+      items_number: String(count),
+      location: buildLocationLine(addr) || addr?.address || '',
+      notes: order?.customer_notes || order?.notes || '',
+      content_type: 'XPS',
+      service_type: 'NCND',
+    };
+
+    if (!addr?.city || !cityList.length) {
+      setFormData(prev => ({ ...prev, ...base }));
+      setPrefilled(true);
+      return;
+    }
+
+    const orderCity = addr.city.toLowerCase().trim();
+    const matchedCity = cityList.find(c => {
+      const zmcCity = (c.city_name || c.name || '').toLowerCase().trim();
+      return zmcCity === orderCity || zmcCity.includes(orderCity) || orderCity.includes(zmcCity);
+    });
+
+    if (!matchedCity) {
+      setFormData(prev => ({ ...prev, ...base }));
+      setPrefilled(true);
+      return;
+    }
+
+    const cityId = String(matchedCity.id);
+    const regionList = await fetchRegionsForCity(matchedCity.id);
+    setRegions(regionList);
+
+    setFormData({
+      ...base,
+      city_id: cityId,
+      region_id: regionList.length ? String(regionList[0].id) : '',
+    });
+    setPrefilled(true);
+  }, [order, fetchRegionsForCity]);
 
   useEffect(() => {
     if (order?.shipping_track_id) {
@@ -48,6 +121,7 @@ const ShippingSection = ({ order, onUpdate }) => {
       setTrackingInfo(null);
     }
     fetchCities();
+    setPrefilled(false);
   }, [order?.id, order?.shipping_track_id]);
 
   useEffect(() => {
@@ -59,48 +133,10 @@ const ShippingSection = ({ order, onUpdate }) => {
   }, [testMode]);
 
   useEffect(() => {
-    if (cities.length > 0 && order?.shipping_address && !formData.city_id) {
-      const addr = order.shipping_address;
-      const orderCity = (addr.city || '').toLowerCase().trim();
-      const matchedCity = cities.find(c => {
-        const zmcCity = (c.city_name || c.name || '').toLowerCase().trim();
-        return zmcCity === orderCity || zmcCity.includes(orderCity) || orderCity.includes(zmcCity);
-      });
-
-      if (matchedCity) {
-        setFormData(prev => ({
-          ...prev,
-          city_id: matchedCity.id,
-          location: prev.location || addr.address || '',
-        }));
-        fetchRegions(matchedCity.id, true);
-      }
+    if (showShipForm && cities.length > 0 && !prefilled) {
+      applyOrderPrefill(cities);
     }
-  }, [cities, order]);
-
-  const fetchCities = async () => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/cities`, { headers });
-      if (res.data.success) setCities(res.data.data);
-    } catch (err) {
-      console.error('Error fetching cities:', err);
-    }
-  };
-
-  const fetchRegions = async (cityId, autoSelectFirst = false) => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/regions/${cityId}`, { headers });
-      if (res.data.success) {
-        const regionList = res.data.data;
-        setRegions(regionList);
-        if (autoSelectFirst && regionList.length > 0) {
-          setFormData(prev => ({ ...prev, region_id: String(regionList[0].id) }));
-        }
-      }
-    } catch (err) {
-      console.error('Error fetching regions:', err);
-    }
-  };
+  }, [showShipForm, cities, prefilled, applyOrderPrefill]);
 
   const fetchTrackingInfo = async () => {
     if (!order?.shipping_track_id) return;
@@ -133,11 +169,23 @@ const ShippingSection = ({ order, onUpdate }) => {
     window.URL.revokeObjectURL(url);
   };
 
-  const handleCityChange = (e) => {
+  const handleOpenShipForm = () => {
+    setPrefilled(false);
+    setShowShipForm(true);
+  };
+
+  const handleCityChange = async (e) => {
     const cityId = e.target.value;
-    setFormData({ ...formData, city_id: cityId, region_id: '' });
-    if (cityId) fetchRegions(cityId);
-    else setRegions([]);
+    setFormData(prev => ({ ...prev, city_id: cityId, region_id: '' }));
+    if (cityId) {
+      const regionList = await fetchRegionsForCity(cityId);
+      setRegions(regionList);
+      if (regionList.length > 0) {
+        setFormData(prev => ({ ...prev, city_id: cityId, region_id: String(regionList[0].id) }));
+      }
+    } else {
+      setRegions([]);
+    }
   };
 
   const handleCreateShipment = async (e) => {
@@ -155,26 +203,33 @@ const ShippingSection = ({ order, onUpdate }) => {
         shippingData: {
           ...formData,
           env: testMode ? 'sandbox' : 'prod',
-          client_name: `${order.shipping_address?.name || order.first_name + ' ' + order.last_name}`,
-          client_mobile: order.shipping_address?.phone || '0000000000',
+          client_name: order.shipping_address?.name || `${order.first_name} ${order.last_name}`.trim(),
+          client_mobile: order.shipping_address?.phone || order.phone_number || '0000000000',
           price: order.total_amount,
-          location: formData.location || order.shipping_address?.address || '',
-          notes: formData.notes || order.notes || ''
+          location: formData.location || buildLocationLine(order.shipping_address) || '',
+          notes: formData.notes || order.customer_notes || ''
         }
       };
 
       const res = await axios.post(`${API_BASE_URL}/api/admin/shipping/create`, payload, { headers });
       if (res.data.success) {
+        let labelDownloaded = false;
         if (res.data.labelAvailable && res.data.trackId) {
           try {
             await downloadLabel(res.data.trackId, res.data.env || labelEnv);
+            labelDownloaded = true;
           } catch (downloadErr) {
             console.error('Auto label download failed:', downloadErr);
           }
         }
-        alert(res.data.message || 'Shipment created successfully!');
+
+        const statusMsg = labelDownloaded || res.data.orderStatus === 'shipped'
+          ? 'Shipment created — label ready. Order marked as SHIPPED.'
+          : res.data.message || 'Shipment created successfully!';
+
+        alert(statusMsg);
         setShowShipForm(false);
-        if (onUpdate) onUpdate();
+        if (onUpdate) await onUpdate();
       }
     } catch (err) {
       alert('Failed to create shipment: ' + (err.response?.data?.message || err.message));
@@ -189,7 +244,7 @@ const ShippingSection = ({ order, onUpdate }) => {
       setLoading(true);
       await downloadLabel(order.shipping_track_id, labelEnv);
       alert('Label downloaded — order marked as shipped.');
-      if (onUpdate) onUpdate();
+      if (onUpdate) await onUpdate();
     } catch (err) {
       alert('Failed to download label. It might not be available yet.');
     } finally {
@@ -225,9 +280,29 @@ const ShippingSection = ({ order, onUpdate }) => {
     </div>
   );
 
+  const renderPrefillSummary = () => {
+    const addr = order?.shipping_address;
+    if (!addr) return null;
+    return (
+      <div className="ship-prefill-card">
+        <div className="ship-prefill-title">
+          <MapPin size={14} />
+          Order delivery details
+        </div>
+        <div className="ship-prefill-grid">
+          <div><span>Name</span><strong>{addr.name || '—'}</strong></div>
+          <div><span>Phone</span><strong>{addr.phone || '—'}</strong></div>
+          <div><span>City</span><strong>{addr.city || '—'}</strong></div>
+          <div><span>Items</span><strong>{itemCount}</strong></div>
+        </div>
+        <p className="ship-prefill-address">{buildLocationLine(addr)}</p>
+      </div>
+    );
+  };
+
   if (hasShipment) {
     return (
-      <div className="shipping-section-container">
+      <div className="shipping-section-container embedded">
         {renderTestModeRow()}
         <div className="shipping-info-box">
           <div className="shipping-info-header">
@@ -235,7 +310,7 @@ const ShippingSection = ({ order, onUpdate }) => {
               <Truck size={20} />
               <span>{order.shipping_company || 'ZMC Cargo'}</span>
             </div>
-            <button className="refresh-btn" onClick={fetchTrackingInfo} disabled={loading}>
+            <button type="button" className="refresh-btn" onClick={fetchTrackingInfo} disabled={loading}>
               <RefreshCw size={14} className={loading ? 'spin' : ''} />
               Update Status
             </button>
@@ -247,9 +322,9 @@ const ShippingSection = ({ order, onUpdate }) => {
               <span className="value">#{order.shipping_track_id}</span>
             </div>
             <div className="track-status">
-              <span className="label">Current Status</span>
-              <span className={`status-text ${trackingInfo?.status_name?.toLowerCase().includes('deliver') ? 'delivered' : 'pending'}`}>
-                {trackingInfo?.status_name || order.shipping_status || 'Pending'}
+              <span className="label">Order Status</span>
+              <span className={`status-text ${order.order_status === 'shipped' ? 'shipped' : 'pending'}`}>
+                {order.order_status?.toUpperCase() || 'PENDING'}
               </span>
             </div>
           </div>
@@ -259,7 +334,7 @@ const ShippingSection = ({ order, onUpdate }) => {
               <Download size={14} />
               {loading ? 'Downloading...' : 'Download / Print Label'}
             </button>
-            <span className="label-hint">Printing the label marks this order as shipped.</span>
+            <span className="label-hint">Label download marks this order as shipped.</span>
           </div>
         </div>
       </div>
@@ -267,40 +342,50 @@ const ShippingSection = ({ order, onUpdate }) => {
   }
 
   return (
-    <div className="shipping-section-container">
+    <div className="shipping-section-container embedded">
       {renderTestModeRow()}
 
       {!showShipForm ? (
         <div className="no-shipment">
-          <Truck size={32} />
-          <p>This order has not been shipped yet.</p>
-          <button className="primary-btn" onClick={() => setShowShipForm(true)}>
-            <Send size={16} /> Process Shipment with ZMC Cargo
+          <div className="no-shipment-icon">
+            <Truck size={28} />
+          </div>
+          <h4>Ready to ship</h4>
+          <p>This order has not been shipped yet. ZMC fields will auto-fill from the customer address.</p>
+          {order?.shipping_address && (
+            <div className="no-shipment-preview">
+              <Package size={14} />
+              {itemCount} item(s) → {order.shipping_address.city}, {order.shipping_address.country}
+            </div>
+          )}
+          <button type="button" className="primary-btn ship-cta" onClick={handleOpenShipForm}>
+            <Send size={16} /> Create Shipment
           </button>
         </div>
       ) : (
         <form className="ship-form" onSubmit={handleCreateShipment}>
           <div className="form-header">
             <h4>Create ZMC Cargo Shipment</h4>
-            <button type="button" className="close-form" onClick={() => setShowShipForm(false)}>×</button>
+            <button type="button" className="close-form" onClick={() => setShowShipForm(false)} aria-label="Close">×</button>
           </div>
+
+          {renderPrefillSummary()}
 
           {testMode && (
             <div className="ship-form-test-notice">
-              Sandbox booking — reference will be prefixed with <strong>TEST-ORDER</strong>. No live courier pickup.
+              Sandbox booking — reference prefixed with <strong>TEST-ORDER</strong>.
             </div>
           )}
 
-          {order?.shipping_address?.city && formData.city_id && (
+          {prefilled && formData.city_id && (
             <div className="ship-form-autofill-notice">
-              Auto-filled from order: <strong>{order.shipping_address.city}</strong>
-              {order.shipping_address.address ? ` — ${order.shipping_address.address}` : ''}
+              Auto-filled city, region, items ({formData.items_number}), and delivery address.
             </div>
           )}
 
-          {order?.shipping_address?.city && !formData.city_id && cities.length > 0 && (
+          {prefilled && order?.shipping_address?.city && !formData.city_id && (
             <div className="ship-form-autofill-warning">
-              City &quot;{order.shipping_address.city}&quot; did not match ZMC cities. Please select manually.
+              City &quot;{order.shipping_address.city}&quot; did not match ZMC list — select manually.
             </div>
           )}
 
@@ -309,7 +394,9 @@ const ShippingSection = ({ order, onUpdate }) => {
               <label>City</label>
               <select value={formData.city_id} onChange={handleCityChange} required>
                 <option value="">Select City</option>
-                {cities.map(c => <option key={c.id} value={c.id}>{c.city_name || c.name}</option>)}
+                {cities.map(c => (
+                  <option key={c.id} value={String(c.id)}>{c.city_name || c.name}</option>
+                ))}
               </select>
             </div>
 
@@ -322,7 +409,9 @@ const ShippingSection = ({ order, onUpdate }) => {
                 disabled={!formData.city_id}
               >
                 <option value="">Select Region</option>
-                {regions.map(r => <option key={r.id} value={r.id}>{r.region_name || r.name}</option>)}
+                {regions.map(r => (
+                  <option key={r.id} value={String(r.id)}>{r.region_name || r.name}</option>
+                ))}
               </select>
             </div>
 
@@ -349,10 +438,10 @@ const ShippingSection = ({ order, onUpdate }) => {
           </div>
 
           <div className="form-group full-width">
-            <label>Specific Location (Optional)</label>
-            <input
-              type="text"
-              placeholder="Detailed address..."
+            <label>Delivery Location</label>
+            <textarea
+              rows={3}
+              placeholder="Street, city, postal code..."
               value={formData.location}
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
             />
@@ -361,7 +450,7 @@ const ShippingSection = ({ order, onUpdate }) => {
           <div className="form-actions">
             <button type="button" className="secondary-btn" onClick={() => setShowShipForm(false)}>Cancel</button>
             <button type="submit" className="primary-btn" disabled={loading}>
-              {loading ? 'Processing...' : testMode ? 'Create Test Shipment' : 'Create Shipment'}
+              {loading ? 'Processing...' : testMode ? 'Create Test Shipment' : 'Create & Print Label'}
             </button>
           </div>
         </form>

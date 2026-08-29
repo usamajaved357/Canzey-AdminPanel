@@ -1,7 +1,11 @@
 .shipping-section-container {
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 2px solid #f1f5f9;
+    margin-top: 16px;
+}
+
+.shipping-section-container.embedded {
+    margin-top: 12px;
+    padding-top: 0;
+    border-top: none;
 }
 
 .no-shipment {
@@ -9,23 +13,149 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px;
-    background: #f8fafc;
-    border: 2px dashed #e2e8f0;
-    border-radius: 24px;
+    padding: 28px 20px;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
     text-align: center;
 }
 
-.no-shipment svg {
-    color: #94a3b8;
-    margin-bottom: 16px;
+.no-shipment-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #eef2ff;
+    color: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.no-shipment h4 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e1b4b;
 }
 
 .no-shipment p {
     color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    line-height: 1.5;
+    max-width: 280px;
+}
+
+.no-shipment-preview {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0 16px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    font-size: 12px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.ship-cta {
+    width: 100%;
+    justify-content: center;
+}
+
+.ship-prefill-card {
+    margin-bottom: 16px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.ship-prefill-title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.ship-prefill-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 16px;
+    margin-bottom: 10px;
+}
+
+.ship-prefill-grid span {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+}
+
+.ship-prefill-grid strong {
+    display: block;
+    font-size: 13px;
+    color: #1e1b4b;
+    margin-top: 2px;
+}
+
+.ship-prefill-address {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #475569;
+    font-weight: 600;
+}
+
+.form-group textarea {
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #f1f5f9;
     font-size: 14px;
     font-weight: 600;
-    margin-bottom: 20px;
+    color: #1e1b4b;
+    outline: none;
+    resize: vertical;
+    min-height: 84px;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-group textarea:focus {
+    border-color: #6366f1;
+}
+
+.status-text.shipped { background: #ede9fe; color: #5b21b6; }
+
+@media (max-width: 640px) {
+    .ship-prefill-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .primary-btn,
+    .form-actions .secondary-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tracking-main {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Shipping Info Box (Existing Shipment) */

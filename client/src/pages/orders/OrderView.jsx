@@ -73,6 +73,20 @@ const OrderView = () => {
 
   if (!order) return <Layout><div className="p-8 text-center">Order not found</div></Layout>;
 
+  const computedSubtotal = (order.items || []).reduce(
+    (sum, item) => sum + (parseFloat(item.unit_price) || 0) * (Number(item.quantity) || 0),
+    0
+  );
+  const displaySubtotal = computedSubtotal > 0 ? computedSubtotal : parseFloat(order.subtotal) || 0;
+
+  const getPaymentBadge = (status) => {
+    switch (status) {
+      case 'paid': return 'payment-paid';
+      case 'failed': return 'payment-failed';
+      default: return 'payment-pending';
+    }
+  };
+
   return (
     <Layout>
       <div className="order-view-container">
@@ -93,6 +107,10 @@ const OrderView = () => {
               <div className={`status-pill ${getStatusColor(order.order_status)}`}>
                 <Clock size={16} />
                 {order.order_status.toUpperCase()}
+              </div>
+              <div className={`payment-pill ${getPaymentBadge(order.payment_status)}`}>
+                <CreditCard size={14} />
+                {order.payment_status?.toUpperCase() || 'UNPAID'}
               </div>
               {order.shipping_company?.includes('(Test)') && (
                 <span className="order-test-badge">
@@ -179,7 +197,8 @@ const OrderView = () => {
                     </div>
                     <div className="item-price-qty">
                       <p className="qty">x{item.quantity}</p>
-                      <p className="price">${item.unit_price}</p>
+                      <p className="unit">${parseFloat(item.unit_price).toFixed(2)} each</p>
+                      <p className="price">${(parseFloat(item.unit_price) * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
                 ))}
@@ -187,7 +206,7 @@ const OrderView = () => {
               <div className="price-summary">
                 <div className="summary-row">
                   <span>Subtotal</span>
-                  <span>${order.subtotal}</span>
+                  <span>${displaySubtotal.toFixed(2)}</span>
                 </div>
                 {parseFloat(order.tax_amount) > 0 && (
                   <div className="summary-row">
@@ -203,7 +222,7 @@ const OrderView = () => {
                 )}
                 <div className="summary-row total">
                   <span>Total Amount</span>
-                  <span>${order.total_amount}</span>
+                  <span>${parseFloat(order.total_amount).toFixed(2)}</span>
                 </div>
               </div>
             </div>
