@@ -79,7 +79,7 @@ export async function setupDatabase() {
         postal_code VARCHAR(20),
         firebase_uid VARCHAR(255) UNIQUE,
         firebase_email VARCHAR(255),
-        auth_method ENUM('local', 'firebase', 'email', 'phone') DEFAULT 'local',
+        auth_method ENUM('local', 'firebase', 'email', 'phone', 'google', 'apple') DEFAULT 'local',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         INDEX idx_email (email),

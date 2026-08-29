@@ -121,10 +121,15 @@ export async function manualVerifyFirebaseToken(idToken) {
     uid:          payload.sub,
     email:        payload.email        || null,
     phone_number: payload.phone_number || null,
+    name:         payload.name         || null,
+    picture:      payload.picture      || null,
     aud:          payload.aud,
     iss:          payload.iss,
     iat:          payload.iat,
     exp:          payload.exp,
+    firebase: {
+      sign_in_provider: payload.firebase?.sign_in_provider || payload.sign_in_provider || null,
+    },
   };
 }
 

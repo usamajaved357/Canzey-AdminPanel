@@ -2,6 +2,7 @@ import admin, { manualVerifyFirebaseToken } from '../config/firebase.js';
 import jwt from 'jsonwebtoken';
 import pool from '../database/connection.js';
 import nodemailer from 'nodemailer';
+import { resolveAuthMethod, parseDisplayName } from '../utils/authProvider.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'canzey_dashboard_secret_key_2024_change_this_in_production';
 
@@ -215,9 +216,12 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
     const firebaseUid = decodedToken.uid;
     const firebaseEmail = decodedToken.email || null;
     const firebasePhone = decodedToken.phone_number || null;
-    const authMethod = firebaseEmail ? 'email' : 'phone';
+    const authMethod = resolveAuthMethod(decodedToken);
+    const { firstName, lastName } = parseDisplayName(decodedToken);
+    const profileUrl = decodedToken.picture || null;
 
     console.log('📱 [FIREBASE SIGNIN] Auth method:', authMethod);
+    console.log('   Provider:', decodedToken.firebase?.sign_in_provider || 'unknown');
     console.log('   Email:', firebaseEmail || 'N/A');
     console.log('   Phone:', firebasePhone || 'N/A');
 
@@ -232,19 +236,36 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
     if (customers.length === 0) {
       console.log('⚠️  [FIREBASE SIGNIN] Customer not found, creating new customer...');
 
+      // Block duplicate email linked to a different Firebase account
+      if (firebaseEmail) {
+        const [emailConflict] = await connection.execute(
+          'SELECT id FROM customers WHERE email = ? AND firebase_uid IS NOT NULL AND firebase_uid != ?',
+          [firebaseEmail, firebaseUid]
+        );
+        if (emailConflict.length > 0) {
+          connection.release();
+          return {
+            success: false,
+            error: 'An account with this email already exists. Please sign in with your original method.',
+            code: 'auth/email-already-exists',
+          };
+        }
+      }
+
       // Auto-create customer if not exists
-      // Handle both email and phone auth methods
       try {
         const [result] = await connection.execute(
           `INSERT INTO customers 
-           (first_name, last_name, email, phone_number, firebase_uid, auth_method, status) 
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+           (first_name, last_name, email, phone_number, firebase_uid, firebase_email, profile_url, auth_method, status) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
-            decodedToken.name?.split(' ')[0] || 'User',
-            decodedToken.name?.split(' ')[1] || '',
-            firebaseEmail,      // NULL for phone users
-            firebasePhone,      // NULL for email users
+            firstName,
+            lastName,
+            firebaseEmail,
+            firebasePhone,
             firebaseUid,
+            firebaseEmail,
+            profileUrl,
             authMethod,
             'active',
           ]
@@ -285,6 +306,39 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
     if (customer.status !== 'active') {
       connection.release();
       return { success: false, error: 'Account is not active' };
+    }
+
+    // Backfill profile fields from social providers when missing
+    const updates = [];
+    const updateValues = [];
+
+    if ((!customer.first_name || customer.first_name === 'User') && firstName !== 'User') {
+      updates.push('first_name = ?');
+      updateValues.push(firstName);
+    }
+    if (!customer.last_name && lastName) {
+      updates.push('last_name = ?');
+      updateValues.push(lastName);
+    }
+    if (!customer.profile_url && profileUrl) {
+      updates.push('profile_url = ?');
+      updateValues.push(profileUrl);
+    }
+    if (customer.auth_method !== authMethod && ['google', 'apple'].includes(authMethod)) {
+      updates.push('auth_method = ?');
+      updateValues.push(authMethod);
+    }
+    if (firebaseEmail && !customer.firebase_email) {
+      updates.push('firebase_email = ?');
+      updateValues.push(firebaseEmail);
+    }
+
+    if (updates.length > 0) {
+      updateValues.push(customer.id);
+      await connection.execute(
+        `UPDATE customers SET ${updates.join(', ')} WHERE id = ?`,
+        updateValues
+      );
     }
 
     // Update FCM token if provided
