@@ -107,6 +107,7 @@ router.post('/signin', async (req, res) => {
       success: false,
       message: result.error,
       error_code: result.code || 'unknown',
+      existing_auth_method: result.existing_auth_method || null,
     });
   }
 

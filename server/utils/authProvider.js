@@ -37,3 +37,31 @@ export function parseDisplayName(decodedToken) {
     lastName: parts.slice(1).join(' ') || '',
   };
 }
+
+/**
+ * Human-readable label for stored auth_method values.
+ */
+export function formatAuthMethod(authMethod) {
+  switch (authMethod) {
+    case 'google':
+      return 'Google';
+    case 'apple':
+      return 'Apple';
+    case 'email':
+    case 'firebase':
+      return 'Email';
+    case 'phone':
+      return 'Phone';
+    case 'local':
+      return 'Email';
+    default:
+      return 'your original method';
+  }
+}
+
+/**
+ * Suggested login action for duplicate-email errors.
+ */
+export function duplicateEmailMessage(authMethod) {
+  return `An account with this email already exists. Please sign in with ${formatAuthMethod(authMethod)}.`;
+}

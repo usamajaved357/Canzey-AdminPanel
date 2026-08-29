@@ -2,7 +2,7 @@ import admin, { manualVerifyFirebaseToken } from '../config/firebase.js';
 import jwt from 'jsonwebtoken';
 import pool from '../database/connection.js';
 import nodemailer from 'nodemailer';
-import { resolveAuthMethod, parseDisplayName } from '../utils/authProvider.js';
+import { resolveAuthMethod, parseDisplayName, duplicateEmailMessage } from '../utils/authProvider.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'canzey_dashboard_secret_key_2024_change_this_in_production';
 
@@ -234,20 +234,74 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
     );
 
     if (customers.length === 0) {
-      console.log('⚠️  [FIREBASE SIGNIN] Customer not found, creating new customer...');
+      console.log('⚠️  [FIREBASE SIGNIN] Customer not found, creating or linking...');
 
-      // Block duplicate email linked to a different Firebase account
       if (firebaseEmail) {
-        const [emailConflict] = await connection.execute(
-          'SELECT id FROM customers WHERE email = ? AND firebase_uid IS NOT NULL AND firebase_uid != ?',
-          [firebaseEmail, firebaseUid]
+        const [existingByEmail] = await connection.execute(
+          'SELECT * FROM customers WHERE email = ?',
+          [firebaseEmail]
         );
-        if (emailConflict.length > 0) {
+
+        if (existingByEmail.length > 0) {
+          const existing = existingByEmail[0];
+
+          // Same email already linked to a different Firebase account.
+          if (existing.firebase_uid && existing.firebase_uid !== firebaseUid) {
+            connection.release();
+            return {
+              success: false,
+              error: duplicateEmailMessage(existing.auth_method),
+              code: 'auth/email-already-exists',
+              existing_auth_method: existing.auth_method,
+            };
+          }
+
+          // Link social login to an existing Canzey account with the same email.
+          console.log('🔗 [FIREBASE SIGNIN] Linking social login to existing customer:', existing.id);
+          await connection.execute(
+            `UPDATE customers
+             SET firebase_uid = ?, firebase_email = ?, auth_method = ?,
+                 profile_url = COALESCE(?, profile_url),
+                 first_name = CASE WHEN first_name IS NULL OR first_name = 'User' THEN ? ELSE first_name END,
+                 last_name = CASE WHEN last_name IS NULL OR last_name = '' THEN ? ELSE last_name END
+             WHERE id = ?`,
+            [
+              firebaseUid,
+              firebaseEmail,
+              authMethod,
+              profileUrl,
+              firstName,
+              lastName,
+              existing.id,
+            ]
+          );
+
+          if (fcmToken) {
+            await connection.execute(
+              'UPDATE customers SET fcm_token = ? WHERE id = ?',
+              [fcmToken, existing.id]
+            );
+          }
+
+          const [linkedCustomer] = await connection.execute(
+            'SELECT id, first_name, last_name, email, phone_number, profile_url, date_of_birth, gender, status FROM customers WHERE id = ?',
+            [existing.id]
+          );
+
           connection.release();
+
+          const token = jwt.sign(
+            { userId: existing.id, email: firebaseEmail, userType: 'customer' },
+            JWT_SECRET,
+            { expiresIn: '24h' }
+          );
+
+          console.log('✅ [FIREBASE SIGNIN] Existing customer linked and logged in');
+
           return {
-            success: false,
-            error: 'An account with this email already exists. Please sign in with your original method.',
-            code: 'auth/email-already-exists',
+            success: true,
+            token,
+            user: { ...linkedCustomer[0], firebase_uid: firebaseUid },
           };
         }
       }
