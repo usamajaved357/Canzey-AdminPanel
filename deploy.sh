@@ -8,7 +8,8 @@
 #
 # First time only:
 #   chmod +x deploy.sh
-#   ssh-copy-id root@199.231.184.194
+#   ssh root@199.231.184.194          # type root password, then exit
+#   ssh-copy-id root@199.231.184.194  # optional — no password next time
 #
 
 set -euo pipefail
@@ -21,6 +22,7 @@ APP_DIR="${APP_DIR:-/var/www/Canzey-AdminPanel}"
 PM2_NAME="${PM2_NAME:-canzey-backend}"
 BRANCH="${DEPLOY_BRANCH:-main}"
 BUILD_CLIENT=0
+SSH_OPTS=(-o ConnectTimeout=15 -o StrictHostKeyChecking=accept-new -o BatchMode=no)
 
 if [[ "${1:-}" == "--with-ui" ]]; then
   BUILD_CLIENT=1
@@ -64,7 +66,7 @@ echo ""
 echo "→ Deploying on server ($SERVER)..."
 echo ""
 
-ssh -o ConnectTimeout=15 "$SERVER" "APP_DIR='$APP_DIR' PM2_NAME='$PM2_NAME' BUILD_CLIENT='$BUILD_CLIENT' bash -s" <<'REMOTE'
+ssh "${SSH_OPTS[@]}" "$SERVER" "APP_DIR='$APP_DIR' PM2_NAME='$PM2_NAME' BUILD_CLIENT='$BUILD_CLIENT' bash -s" <<'REMOTE'
 set -euo pipefail
 
 APP_DIR="${APP_DIR:-/var/www/Canzey-AdminPanel}"
