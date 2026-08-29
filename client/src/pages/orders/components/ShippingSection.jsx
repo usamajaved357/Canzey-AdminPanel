@@ -59,16 +59,21 @@ const ShippingSection = ({ order, onUpdate }) => {
   }, [testMode]);
 
   useEffect(() => {
-    if (cities.length > 0 && order?.shipping_address?.city && !formData.city_id) {
-      const orderCity = order.shipping_address.city.toLowerCase().trim();
-      const matchedCity = cities.find(c =>
-        (c.city_name || c.name || '').toLowerCase().trim().includes(orderCity) ||
-        orderCity.includes((c.city_name || c.name || '').toLowerCase().trim())
-      );
+    if (cities.length > 0 && order?.shipping_address && !formData.city_id) {
+      const addr = order.shipping_address;
+      const orderCity = (addr.city || '').toLowerCase().trim();
+      const matchedCity = cities.find(c => {
+        const zmcCity = (c.city_name || c.name || '').toLowerCase().trim();
+        return zmcCity === orderCity || zmcCity.includes(orderCity) || orderCity.includes(zmcCity);
+      });
 
       if (matchedCity) {
-        setFormData(prev => ({ ...prev, city_id: matchedCity.id }));
-        fetchRegions(matchedCity.id);
+        setFormData(prev => ({
+          ...prev,
+          city_id: matchedCity.id,
+          location: prev.location || addr.address || '',
+        }));
+        fetchRegions(matchedCity.id, true);
       }
     }
   }, [cities, order]);
@@ -82,10 +87,16 @@ const ShippingSection = ({ order, onUpdate }) => {
     }
   };
 
-  const fetchRegions = async (cityId) => {
+  const fetchRegions = async (cityId, autoSelectFirst = false) => {
     try {
       const res = await axios.get(`${API_BASE_URL}/api/admin/shipping/regions/${cityId}`, { headers });
-      if (res.data.success) setRegions(res.data.data);
+      if (res.data.success) {
+        const regionList = res.data.data;
+        setRegions(regionList);
+        if (autoSelectFirst && regionList.length > 0) {
+          setFormData(prev => ({ ...prev, region_id: String(regionList[0].id) }));
+        }
+      }
     } catch (err) {
       console.error('Error fetching regions:', err);
     }
@@ -277,6 +288,19 @@ const ShippingSection = ({ order, onUpdate }) => {
           {testMode && (
             <div className="ship-form-test-notice">
               Sandbox booking — reference will be prefixed with <strong>TEST-ORDER</strong>. No live courier pickup.
+            </div>
+          )}
+
+          {order?.shipping_address?.city && formData.city_id && (
+            <div className="ship-form-autofill-notice">
+              Auto-filled from order: <strong>{order.shipping_address.city}</strong>
+              {order.shipping_address.address ? ` — ${order.shipping_address.address}` : ''}
+            </div>
+          )}
+
+          {order?.shipping_address?.city && !formData.city_id && cities.length > 0 && (
+            <div className="ship-form-autofill-warning">
+              City &quot;{order.shipping_address.city}&quot; did not match ZMC cities. Please select manually.
             </div>
           )}
 

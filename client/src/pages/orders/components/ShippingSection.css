@@ -336,6 +336,28 @@
     font-weight: 600;
 }
 
+.ship-form-autofill-notice {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ship-form-autofill-warning {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .label-download-btn {
     display: inline-flex;
     align-items: center;
