@@ -1,4 +1,5 @@
 import pool from '../database/connection.js';
+import { evaluatePrizeAvailability } from '../utils/prizeAvailability.js';
 
 /**
  * Attach prize to product with ticket count
@@ -286,10 +287,23 @@ export async function getProductPrizeInfo(productId) {
     const [productPrize] = await connection.execute(`
       SELECT 
         pp.id, pp.tickets_required, pp.tickets_sold, pp.tickets_remaining,
-        pp.countdown_start_tickets, pp.draw_date, pp.is_active,
-        c.title as campaign_title, c.image_url as campaign_image
+        pp.countdown_start_tickets, pp.draw_date, pp.end_date, pp.is_active,
+        p.status AS product_status,
+        c.id AS campaign_id,
+        c.title as campaign_title,
+        c.image_url as campaign_image,
+        c.status AS campaign_status,
+        c.start_at AS campaign_start_at,
+        c.end_at AS campaign_end_at,
+        c.use_end_date AS campaign_use_end_date,
+        CASE WHEN ct_win.id IS NOT NULL THEN 1 ELSE 0 END AS has_winner
       FROM product_prizes pp
+      JOIN products p ON p.id = pp.product_id
       JOIN campaigns c ON pp.campaign_id = c.id
+      LEFT JOIN campaign_tickets ct_win
+        ON ct_win.product_id = pp.product_id
+       AND ct_win.campaign_id = pp.campaign_id
+       AND ct_win.is_winner = 1
       WHERE pp.product_id = ? AND pp.is_active = 1
     `, [productId]);
     
@@ -300,6 +314,19 @@ export async function getProductPrizeInfo(productId) {
     }
     
     const prize = productPrize[0];
+    const availability = evaluatePrizeAvailability({
+      product_status: prize.product_status,
+      campaign_id: prize.campaign_id,
+      campaign_status: prize.campaign_status,
+      campaign_start_at: prize.campaign_start_at,
+      campaign_end_at: prize.campaign_end_at,
+      campaign_use_end_date: prize.campaign_use_end_date,
+      pp_is_active: prize.is_active,
+      tickets_remaining: prize.tickets_remaining,
+      prize_end_date: prize.end_date,
+      draw_date: prize.draw_date,
+      has_winner: prize.has_winner,
+    });
     
     // Determine if countdown should start
     const shouldShowCountdown = prize.tickets_sold >= prize.countdown_start_tickets;
@@ -310,6 +337,8 @@ export async function getProductPrizeInfo(productId) {
       success: true, 
       prize_info: {
         ...prize,
+        is_purchasable: availability.purchasable,
+        unavailability_reasons: availability.reasons,
         should_show_countdown: shouldShowCountdown,
         progress_percentage: Math.round((prize.tickets_sold / prize.tickets_required) * 100)
       }

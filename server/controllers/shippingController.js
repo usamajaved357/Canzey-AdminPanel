@@ -21,36 +21,53 @@ export const getRegions = async (req, res) => {
 };
 
 export const createShipment = async (req, res) => {
-  const { orderId, shippingData } = req.body;
+  const { orderId, shippingData, isTest } = req.body;
   
   try {
-    shippingData.referenceNo = orderId.toString();
-    shippingData.env = resolveZmcEnvironment(shippingData.env);
+    const testMode = Boolean(isTest || shippingData?.isTest);
+    shippingData.env = resolveZmcEnvironment(testMode ? 'sandbox' : shippingData?.env);
+    shippingData.referenceNo = testMode
+      ? `TEST-ORDER-${orderId}-${Date.now()}`
+      : orderId.toString();
 
     const result = await zmcCargoService.bookLocalShipment(shippingData);
     
-    // ZMC returns status "200" string on success
     if (result && result.status === '200') {
       const trackId = result.data.ZMC_ReferenceNo;
-      
-      // Update order in database
+      const companyLabel = testMode ? 'ZMC Cargo (Test)' : 'ZMC Cargo';
+
+      // Try to fetch label — mark shipped only when label is available
+      let labelAvailable = false;
+      try {
+        const labelResult = await zmcCargoService.downloadLabel(trackId, 5, shippingData.env);
+        labelAvailable = Boolean(labelResult.success && labelResult.pdfBuffer);
+      } catch (labelErr) {
+        console.warn('Label download failed after booking:', labelErr.message);
+      }
+
+      const orderStatus = labelAvailable ? 'shipped' : 'processing';
+      const shippingStatus = labelAvailable ? 'Label Printed' : 'Pending';
+
       await db.execute(
         `UPDATE orders SET 
          shipping_track_id = ?, 
-         shipping_company = 'ZMC Cargo', 
-         shipping_status = 'Pending',
-         order_status = 'shipped'
+         shipping_company = ?, 
+         shipping_status = ?,
+         order_status = ?
          WHERE id = ?`,
-        [trackId, orderId]
+        [trackId, companyLabel, shippingStatus, orderStatus, orderId]
       );
-
-      // ZMC does not provide an explicit label URL/download in this spec out-of-the-box,
-      // so we will skip downloading the local PDF for now.
 
       res.json({ 
         success: true, 
-        message: 'Shipment created successfully!', 
-        trackId 
+        message: labelAvailable
+          ? 'Shipment created and label ready — order marked as shipped.'
+          : 'Shipment created. Label not ready yet — order stays processing until label prints.',
+        trackId,
+        labelAvailable,
+        isTest: testMode,
+        orderStatus,
+        env: shippingData.env
       });
     } else {
       res.status(400).json({ success: false, message: result.message || 'Failed to create shipment' });
@@ -128,10 +145,24 @@ export const testBookShipment = async (req, res) => {
 
 export const downloadLabel = async (req, res) => {
   const { trackId } = req.params;
-  const { env } = req.query;
+  const { env, orderId } = req.query;
   try {
-    const result = await zmcCargoService.downloadLabel(trackId, 5, env);
+    const resolvedEnv = resolveZmcEnvironment(env);
+    const result = await zmcCargoService.downloadLabel(trackId, 5, resolvedEnv);
     if (result.success && result.pdfBuffer) {
+      // Mark order shipped when label is successfully retrieved
+      if (orderId) {
+        await db.execute(
+          `UPDATE orders SET order_status = 'shipped', shipping_status = 'Label Printed' WHERE id = ?`,
+          [orderId]
+        );
+      } else {
+        await db.execute(
+          `UPDATE orders SET order_status = 'shipped', shipping_status = 'Label Printed' WHERE shipping_track_id = ?`,
+          [trackId]
+        );
+      }
+
       res.setHeader('Content-Type', 'application/pdf');
       res.setHeader('Content-Disposition', `attachment; filename=ZMC-Label-${trackId}.pdf`);
       return res.send(Buffer.from(result.pdfBuffer));

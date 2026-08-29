@@ -163,67 +163,10 @@ export async function listAllCampaignsAdmin() {
 }
 
 /**
- * Get all campaigns (for Flutter app) - excludes sold-out and expired prizes
+ * Get active campaigns for Flutter app — strict filters aligned with purchase rules
  */
 export async function listAllCampaigns() {
-  try {
-    console.log('📝 [LIST ALL CAMPAIGNS] Request received');
-    
-    const connection = await pool.getConnection();
-    const [campaigns] = await connection.execute(
-      `SELECT c.*, 
-        (SELECT COUNT(*) FROM product_prizes pp 
-         WHERE pp.campaign_id = c.id 
-         AND pp.tickets_remaining > 0 
-         AND pp.is_active = 1
-         AND (pp.end_date IS NULL OR pp.end_date > NOW())) as active_prizes_count
-       FROM campaigns c
-       ORDER BY c.created_at DESC`
-    );
-
-    // Fetch linked products — exclude sold-out AND expired prize end_date
-    const campaignIds = campaigns.map(c => c.id);
-    let productsByCampaign = {};
-    
-    if (campaignIds.length > 0) {
-      const [products] = await connection.execute(
-        `SELECT p.id, p.name, p.main_image_url, p.price, p.campaign_id, pp.tickets_remaining, pp.draw_date, pp.end_date
-         FROM products p
-         INNER JOIN product_prizes pp ON p.id = pp.product_id AND pp.is_active = 1
-         WHERE p.campaign_id IN (${campaignIds.join(',')}) AND p.status = 'active'
-         AND pp.tickets_remaining > 0
-         AND (pp.end_date IS NULL OR pp.end_date > NOW())`
-      );
-      
-      for (const product of products) {
-        if (!productsByCampaign[product.campaign_id]) {
-          productsByCampaign[product.campaign_id] = [];
-        }
-        productsByCampaign[product.campaign_id].push({
-          id: product.id,
-          name: product.name,
-          main_image_url: product.main_image_url,
-          price: product.price,
-          draw_date: product.draw_date
-        });
-      }
-    }
-    connection.release();
-
-    // Only return campaigns that still have available products
-    const campaignsWithProducts = campaigns
-      .map(campaign => ({
-        ...campaign,
-        products: productsByCampaign[campaign.id] || []
-      }))
-      .filter(campaign => campaign.products.length > 0 || campaign.active_prizes_count > 0);
-    
-    console.log(`✅ [LIST ALL CAMPAIGNS] Found ${campaignsWithProducts.length} campaigns with available prizes`);
-    return { success: true, campaigns: campaignsWithProducts };
-  } catch (error) {
-    console.error('❌ [LIST ALL CAMPAIGNS] Error:', error.message);
-    return { success: false, error: 'Server error while fetching campaigns' };
-  }
+  return listActiveCampaigns();
 }
 
 /**
@@ -236,7 +179,22 @@ export async function listActiveCampaigns() {
     const connection = await pool.getConnection();
     const [campaigns] = await connection.execute(
       `SELECT c.*, 
-        (SELECT COUNT(*) FROM product_prizes pp WHERE pp.campaign_id = c.id AND pp.tickets_remaining > 0 AND pp.is_active = 1) as active_prizes_count
+        (SELECT COUNT(*) FROM product_prizes pp 
+         JOIN products p ON p.id = pp.product_id
+         JOIN campaigns c2 ON c2.id = pp.campaign_id
+         WHERE pp.campaign_id = c.id
+         AND pp.is_active = 1 AND pp.tickets_remaining > 0
+         AND (pp.end_date IS NULL OR pp.end_date > NOW())
+         AND (pp.draw_date IS NULL OR pp.draw_date > NOW())
+         AND p.status = 'active'
+         AND NOT EXISTS (
+           SELECT 1 FROM campaign_tickets ct
+           WHERE ct.product_id = p.id AND ct.campaign_id = p.campaign_id AND ct.is_winner = 1
+         )
+         AND c2.status = 'active'
+         AND (c2.start_at IS NULL OR c2.start_at <= NOW())
+         AND (c2.use_end_date = 0 OR c2.end_at IS NULL OR c2.end_at >= NOW())
+        ) as active_prizes_count
        FROM campaigns c
        WHERE c.status = 'active' 
        AND (c.start_at IS NULL OR c.start_at <= NOW()) 
@@ -245,7 +203,6 @@ export async function listActiveCampaigns() {
        ORDER BY c.created_at DESC`
     );
 
-    // Fetch linked products for active campaigns
     const campaignIds = campaigns.map(c => c.id);
     let productsByCampaign = {};
     
@@ -254,9 +211,17 @@ export async function listActiveCampaigns() {
         `SELECT p.id, p.name, p.main_image_url, p.price, p.campaign_id, pp.tickets_remaining, pp.draw_date, pp.end_date
          FROM products p
          INNER JOIN product_prizes pp ON p.id = pp.product_id AND pp.is_active = 1
-         WHERE p.campaign_id IN (${campaignIds.join(',')}) AND p.status = 'active'
+         INNER JOIN campaigns c ON c.id = p.campaign_id
+         WHERE p.campaign_id IN (${campaignIds.join(',')})
+         AND p.status = 'active'
          AND pp.tickets_remaining > 0
-         AND (pp.end_date IS NULL OR pp.end_date > NOW())`
+         AND (pp.end_date IS NULL OR pp.end_date > NOW())
+         AND (pp.draw_date IS NULL OR pp.draw_date > NOW())
+         AND (c.use_end_date = 0 OR c.end_at IS NULL OR c.end_at >= NOW())
+         AND NOT EXISTS (
+           SELECT 1 FROM campaign_tickets ct
+           WHERE ct.product_id = p.id AND ct.campaign_id = p.campaign_id AND ct.is_winner = 1
+         )`
       );
       
       for (const product of products) {
@@ -274,13 +239,14 @@ export async function listActiveCampaigns() {
     }
     connection.release();
 
-    // Attach products to each campaign
-    const campaignsWithProducts = campaigns.map(campaign => ({
-      ...campaign,
-      products: productsByCampaign[campaign.id] || []
-    }));
+    const campaignsWithProducts = campaigns
+      .map(campaign => ({
+        ...campaign,
+        products: productsByCampaign[campaign.id] || []
+      }))
+      .filter(campaign => campaign.products.length > 0);
     
-    console.log('✅ [LIST ACTIVE CAMPAIGNS] Found', campaigns.length, 'active campaigns');
+    console.log('✅ [LIST ACTIVE CAMPAIGNS] Found', campaignsWithProducts.length, 'active campaigns');
     return { success: true, campaigns: campaignsWithProducts };
   } catch (error) {
     console.error('❌ [LIST ACTIVE CAMPAIGNS] Error:', error.message);

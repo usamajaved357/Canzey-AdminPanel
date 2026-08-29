@@ -1,4 +1,5 @@
 import pool from '../database/connection.js';
+import { validateProductPurchase } from '../utils/prizeAvailability.js';
 
 /**
  * Generate unique order number
@@ -128,12 +129,18 @@ export async function createOrder(req, res) {
 
       const product = products[0];
 
-      // Check stock
-      if (product.stock_quantity < item.quantity) {
+      const purchaseCheck = await validateProductPurchase(connection, {
+        productId: product.id,
+        quantity: item.quantity,
+        customerId: customer_id,
+      });
+
+      if (!purchaseCheck.ok) {
         await connection.rollback();
         return res.status(400).json({
           success: false,
-          message: `Insufficient stock for product: ${product.name}`
+          message: purchaseCheck.message,
+          reasons: purchaseCheck.reasons,
         });
       }
 
@@ -211,16 +218,20 @@ export async function createOrder(req, res) {
       // Auto-create campaign tickets if product has campaign
       if (itemData.campaign_id) {
         // 1. Update the product_prizes progress count
-        try {
-          await connection.query(
-            `UPDATE product_prizes 
-             SET tickets_sold = tickets_sold + ? 
-             WHERE product_id = ? AND campaign_id = ? AND is_active = 1`,
-            [itemData.quantity, itemData.product_id, itemData.campaign_id]
-          );
-        } catch (prizeErr) {
-          console.error('⚠️ Could not update product_prizes progress:', prizeErr.message);
-          // We don't fail the whole order if prizes tracking fails, but we log it
+        const [prizeUpdate] = await connection.query(
+          `UPDATE product_prizes
+           SET tickets_sold = tickets_sold + ?
+           WHERE product_id = ? AND campaign_id = ? AND is_active = 1
+           AND tickets_remaining >= ?`,
+          [itemData.quantity, itemData.product_id, itemData.campaign_id, itemData.quantity]
+        );
+
+        if (prizeUpdate.affectedRows === 0) {
+          await connection.rollback();
+          return res.status(400).json({
+            success: false,
+            message: 'Prize tickets are no longer available for this product.',
+          });
         }
 
         // 2. Get campaign details to generate tickets
@@ -296,18 +307,6 @@ export async function createOrder(req, res) {
           parsedDonation
         ]
       );
-
-      // Update product_prizes tickets_sold for donated campaign (find its active prize)
-      try {
-        await connection.query(
-          `UPDATE product_prizes
-           SET tickets_sold = tickets_sold + 1
-           WHERE campaign_id = ? AND is_active = 1`,
-          [donation_campaign_id]
-        );
-      } catch (prizeErr) {
-        console.error('⚠️ Could not update product_prizes for donation:', prizeErr.message);
-      }
 
       campaignEntries.push({
         ticket_number: donationTicketNumber,

@@ -66,6 +66,34 @@ export async function markTicketAsWinner(req, res) {
     const { id } = req.params;
     const { is_winner } = req.body;
 
+    if (is_winner) {
+      const [tickets] = await pool.execute(
+        `SELECT id, product_id, campaign_id FROM campaign_tickets WHERE id = ?`,
+        [id]
+      );
+
+      if (tickets.length === 0) {
+        return res.status(404).json({ success: false, message: 'Ticket not found' });
+      }
+
+      const ticket = tickets[0];
+
+      if (ticket.product_id && ticket.campaign_id) {
+        const [existingWinners] = await pool.execute(
+          `SELECT id FROM campaign_tickets
+           WHERE product_id = ? AND campaign_id = ? AND is_winner = 1 AND id != ?`,
+          [ticket.product_id, ticket.campaign_id, id]
+        );
+
+        if (existingWinners.length > 0) {
+          return res.status(400).json({
+            success: false,
+            message: 'A winner has already been selected for this product prize.',
+          });
+        }
+      }
+    }
+
     const [result] = await pool.execute(
       `UPDATE campaign_tickets 
        SET is_winner = ?, won_at = ? 

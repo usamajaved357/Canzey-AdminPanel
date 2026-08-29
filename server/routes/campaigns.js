@@ -5,7 +5,7 @@ const router = express.Router();
 
 /**
  * GET /api/campaigns
- * Get all campaigns (including closed ones - for Flutter app)
+ * Active campaigns with purchasable linked products (Flutter app)
  */
 router.get('/', async (req, res) => {
   const result = await listAllCampaigns();

@@ -1,4 +1,5 @@
 import pool from '../database/connection.js';
+import { evaluatePrizeAvailability } from '../utils/prizeAvailability.js';
 
 /**
  * List all products with basic info, main image and stock
@@ -14,12 +15,17 @@ export async function listProducts() {
     const [products] = await connection.execute(`
       SELECT 
         p.*,
-        pp.campaign_id,
+        pp.campaign_id AS pp_campaign_id,
+        pp.is_active AS pp_is_active,
         pp.tickets_required,
         pp.tickets_remaining,
         pp.countdown_start_tickets,
         pp.draw_date,
         pp.end_date as prize_end_date,
+        c.status AS campaign_status,
+        c.start_at AS campaign_start_at,
+        c.end_at AS campaign_end_at,
+        c.use_end_date AS campaign_use_end_date,
         CASE WHEN ct_win.id IS NOT NULL THEN 1 ELSE 0 END as has_winner,
         ct_win.ticket_number  as winner_ticket,
         ct_win.won_at         as winner_won_at,
@@ -28,6 +34,7 @@ export async function listProducts() {
       FROM products p
       LEFT JOIN product_prizes pp
         ON p.id = pp.product_id AND pp.is_active = 1
+      LEFT JOIN campaigns c ON c.id = p.campaign_id
       LEFT JOIN campaign_tickets ct_win
         ON ct_win.product_id  = pp.product_id
        AND ct_win.campaign_id = pp.campaign_id
@@ -160,13 +167,32 @@ export async function listProducts() {
     }
 
     // Attach categories, images, colors, sizes
-    const result = products.map((p) => ({
-      ...p,
-      categories: categoriesByProduct[p.id] || [],
-      images: imagesByProduct[p.id] || [],
-      colors: colorsByProduct[p.id] || [],
-      sizes: sizesByProduct[p.id] || [],
-    }));
+    const result = products.map((p) => {
+      const availability = evaluatePrizeAvailability({
+        product_status: p.status,
+        campaign_id: p.campaign_id,
+        campaign_status: p.campaign_status,
+        campaign_start_at: p.campaign_start_at,
+        campaign_end_at: p.campaign_end_at,
+        campaign_use_end_date: p.campaign_use_end_date,
+        pp_is_active: p.pp_is_active,
+        tickets_remaining: p.tickets_remaining,
+        prize_end_date: p.prize_end_date,
+        draw_date: p.draw_date,
+        has_winner: p.has_winner,
+      });
+
+      return {
+        ...p,
+        is_purchasable: availability.purchasable,
+        is_visible: availability.visible,
+        unavailability_reasons: availability.reasons,
+        categories: categoriesByProduct[p.id] || [],
+        images: imagesByProduct[p.id] || [],
+        colors: colorsByProduct[p.id] || [],
+        sizes: sizesByProduct[p.id] || [],
+      };
+    });
 
     console.log('📊 [LIST PRODUCTS] Final result:', result.length, 'products');
     if (result.length > 0) {
