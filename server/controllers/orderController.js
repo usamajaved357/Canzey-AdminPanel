@@ -491,10 +491,44 @@ export async function getCustomerOrders(req, res) {
 
     const [orders] = await pool.execute(query, params);
 
-    // Parse shipping_address JSON
+    const orderIds = orders.map(o => o.id);
+    const itemsByOrder = new Map();
+    const ticketsByOrder = new Map();
+
+    if (orderIds.length > 0) {
+      const [itemRows] = await pool.query(
+        `SELECT * FROM order_items WHERE order_id IN (?) ORDER BY id`,
+        [orderIds]
+      );
+      for (const item of itemRows) {
+        const quantity = Number(item.quantity) || 0;
+        const donated = Math.min(Number(item.donated_quantity) || 0, quantity);
+        const list = itemsByOrder.get(item.order_id) || [];
+        list.push({ ...item, donated_quantity: donated, deliverable_quantity: quantity - donated });
+        itemsByOrder.set(item.order_id, list);
+      }
+
+      const [ticketRows] = await pool.query(
+        `SELECT ct.order_id, ct.ticket_number, ct.campaign_id, ct.status, ct.source,
+                c.title AS campaign_title
+         FROM campaign_tickets ct
+         LEFT JOIN campaigns c ON ct.campaign_id = c.id
+         WHERE ct.order_id IN (?)
+         ORDER BY ct.id`,
+        [orderIds]
+      );
+      for (const ticket of ticketRows) {
+        const list = ticketsByOrder.get(ticket.order_id) || [];
+        list.push(ticket);
+        ticketsByOrder.set(ticket.order_id, list);
+      }
+    }
+
     const ordersWithParsedAddress = orders.map(order => withDonationCounts({
       ...order,
-      shipping_address: parseShippingAddress(order.shipping_address)
+      shipping_address: parseShippingAddress(order.shipping_address),
+      items: itemsByOrder.get(order.id) || [],
+      campaign_entries: ticketsByOrder.get(order.id) || [],
     }));
 
     res.json({
