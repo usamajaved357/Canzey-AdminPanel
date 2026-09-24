@@ -17,13 +17,13 @@
 .settings-title {
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0 0 8px 0;
 }
 
 .settings-subtitle {
   font-size: 16px;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -34,29 +34,29 @@
 }
 
 .settings-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .settings-card-title {
   font-size: 18px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0 0 12px 0;
 }
 
 .settings-card-text {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin: 0 0 16px 0;
 }
 
 .zmc-test-btn {
-  background-color: #4f46e5;
+  background-color: #d87f75;
   color: white;
   border: none;
   border-radius: 6px;
@@ -72,7 +72,7 @@
 }
 
 .zmc-test-btn:disabled {
-  background-color: #9ca3af;
+  background-color: var(--text-muted);
   cursor: not-allowed;
 }
 
@@ -121,7 +121,7 @@
   display: block;
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -135,7 +135,7 @@
 }
 
 .action-btn {
-  background-color: #4f46e5;
+  background-color: #d87f75;
   color: white;
   border: none;
   border-radius: 6px;
@@ -154,7 +154,7 @@
 }
 
 .action-btn:disabled {
-  background-color: #9ca3af;
+  background-color: var(--text-muted);
   cursor: not-allowed;
 }
 
@@ -168,7 +168,7 @@
 .settings-card-header h2 {
   font-size: 18px;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -192,14 +192,14 @@
 .settings-env-row label {
   font-weight: 600;
   font-size: 15px;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .settings-env-row select {
   padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid #d1d5db;
-  background-color: white;
+  background-color: var(--bg-elevated);
   font-weight: 500;
   font-size: 14px;
   min-width: 180px;
@@ -256,4 +256,16 @@
   .settings-card-header h2 {
     font-size: 16px;
   }
+}
+
+.donate-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.donate-toggle-label {
+  font-size: 14px;
+  font-weight: 600;
 }

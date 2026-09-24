@@ -561,6 +561,21 @@ export async function setupDatabase() {
       }
     }
 
+    // Donate-a-T-shirt: how many units of each line were donated (not shipped, no stock deduction)
+    await ensureColumn(connection, 'order_items', 'donated_quantity', 'INT NOT NULL DEFAULT 0');
+
+    await connection.execute(`
+      CREATE TABLE IF NOT EXISTS app_settings (
+        setting_key VARCHAR(100) PRIMARY KEY,
+        setting_value VARCHAR(255) NOT NULL,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+    `);
+    await connection.execute(
+      `INSERT IGNORE INTO app_settings (setting_key, setting_value) VALUES ('donate_enabled', '1')`
+    );
+    console.log('✅ app_settings table ready');
+
     // Seed master admin user
     await seedMasterAdmin(connection);
 
@@ -570,6 +585,27 @@ export async function setupDatabase() {
   } catch (error) {
     console.error('❌ Database setup error:', error.message);
     throw error;
+  }
+}
+
+/**
+ * Add a column only when it is missing. The short lock wait keeps a busy table
+ * from blocking server startup (a stuck ALTER previously deadlocked production).
+ */
+async function ensureColumn(connection, table, column, definition) {
+  try {
+    const [existing] = await connection.execute(
+      `SELECT 1 FROM information_schema.COLUMNS
+       WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = ? AND COLUMN_NAME = ? LIMIT 1`,
+      [table, column]
+    );
+    if (existing.length > 0) return;
+
+    await connection.query('SET SESSION lock_wait_timeout = 15');
+    await connection.query(`ALTER TABLE \`${table}\` ADD COLUMN \`${column}\` ${definition}`);
+    console.log(`✅ Added ${column} column to ${table}`);
+  } catch (err) {
+    console.error(`❌ Could not add ${column} to ${table}:`, err.message);
   }
 }
 

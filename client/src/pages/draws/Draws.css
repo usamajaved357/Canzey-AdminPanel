@@ -11,7 +11,7 @@
 .draws-title {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #EA948A 0%, #EA948A 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -87,8 +87,8 @@
 }
 
 .draw-tab.active {
-    background: white;
-    color: #6366f1;
+    background: var(--bg-elevated);
+    color: #EA948A;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
 }
 
@@ -105,7 +105,7 @@
 }
 
 .draw-card {
-    background: white;
+    background: var(--bg-elevated);
     border-radius: 1.5rem;
     overflow: hidden;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
@@ -148,7 +148,7 @@
 }
 
 .status-winner {
-    color: #6366f1;
+    color: #EA948A;
 }
 
 .draw-card-content {
@@ -158,7 +158,7 @@
 .draw-card-prize {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #6366f1;
+    color: #EA948A;
     text-transform: uppercase;
     margin-bottom: 0.5rem;
 }
@@ -276,7 +276,7 @@
 .winner-avatar {
     width: 2.5rem;
     height: 2.5rem;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #EA948A 0%, #EA948A 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -299,7 +299,7 @@
 .view-pool-btn {
     width: 100%;
     padding: 0.75rem;
-    background: #6366f1;
+    background: #EA948A;
     color: white;
     border: none;
     border-radius: 0.75rem;
@@ -313,7 +313,7 @@
 }
 
 .view-pool-btn:hover {
-    background: #4f46e5;
+    background: #d87f75;
 }
 
 /* Modal Styling */
@@ -330,7 +330,7 @@
 }
 
 .pool-modal-content {
-    background: white;
+    background: var(--bg-elevated);
     width: 100%;
     max-width: 900px;
     max-height: 90vh;
@@ -351,7 +351,7 @@
 
 .pool-modal-header {
     padding: 1.5rem 2rem;
-    background: white;
+    background: var(--bg-elevated);
     border-bottom: 1px solid #f1f5f9;
     display: flex;
     justify-content: space-between;
@@ -431,7 +431,7 @@
 }
 
 .pool-participant-row {
-    background: white;
+    background: var(--bg-elevated);
     padding: 1rem 1.25rem;
     border-radius: 1rem;
     display: grid;
@@ -443,10 +443,10 @@
 }
 
 .pool-participant-row:hover {
-    border-color: #6366f1;
+    border-color: #EA948A;
     background: #f8faff;
     transform: translateX(4px);
-    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 4px 6px -1px rgba(234, 148, 138, 0.1);
 }
 
 .participant-id {
@@ -457,7 +457,7 @@
 
 .ticket-pill {
     background: #eef2ff;
-    color: #4f46e5;
+    color: #d87f75;
     padding: 0.25rem 0.6rem;
     border-radius: 0.5rem;
     font-weight: 700;
@@ -521,7 +521,7 @@
     width: 32px;
     height: 32px;
     border: 3px solid #f1f5f9;
-    border-top: 3px solid #6366f1;
+    border-top: 3px solid #EA948A;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -547,7 +547,7 @@
 
 .cancel-btn {
     padding: 0.7rem 1.5rem;
-    background: white;
+    background: var(--bg-elevated);
     border: 1px solid #e2e8f0;
     border-radius: 0.75rem;
     color: #64748b;
@@ -652,7 +652,7 @@
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    color: #6366f1;
+    color: #EA948A;
 }
 
 .draw-ticket-total {
@@ -669,7 +669,7 @@
 
 .draw-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #6366f1, #a855f7);
+    background: linear-gradient(90deg, #EA948A, #EA948A);
     border-radius: 99px;
     transition: width 0.5s ease;
 }
@@ -677,7 +677,7 @@
 .draw-progress-pct {
     font-size: 0.7rem;
     font-weight: 700;
-    color: #a855f7;
+    color: #EA948A;
 }
 
 /* ── Past winner card ── */
@@ -738,7 +738,7 @@
 .past-winner-avatar {
     width: 3rem;
     height: 3rem;
-    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    background: linear-gradient(135deg, #EA948A 0%, #EA948A 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -747,7 +747,7 @@
     font-weight: 800;
     font-size: 1.25rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 8px rgba(234, 148, 138, 0.3);
 }
 
 .past-winner-details {
@@ -769,7 +769,7 @@
     font-size: 0.75rem;
     font-weight: 700;
     font-family: 'JetBrains Mono', monospace;
-    color: #6366f1;
+    color: #EA948A;
     background: #eef2ff;
     padding: 0.2rem 0.5rem;
     border-radius: 0.4rem;
@@ -800,7 +800,7 @@
     display: inline-block;
     margin: 0.35rem 0 0 0;
     background: #eef2ff;
-    color: #4f46e5;
+    color: #d87f75;
     font-size: 0.75rem;
     font-weight: 700;
     padding: 0.15rem 0.6rem;
@@ -844,7 +844,7 @@
 }
 
 .winner-reveal-card {
-    background: white;
+    background: var(--bg-elevated);
     border-radius: 2rem;
     padding: 2.5rem 2rem 2rem;
     max-width: 420px;
@@ -918,7 +918,7 @@
 .winner-reveal-title {
     font-size: 1.75rem;
     font-weight: 900;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
+    background: linear-gradient(135deg, #EA948A, #EA948A);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -928,7 +928,7 @@
 .winner-reveal-prize {
     font-size: 0.8rem;
     font-weight: 600;
-    color: #6366f1;
+    color: #EA948A;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 0 0 1rem;
@@ -991,7 +991,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    background: white;
+    background: var(--bg-elevated);
     color: #059669;
     font-size: 0.75rem;
     font-weight: 700;
@@ -1011,7 +1011,7 @@
 .winner-reveal-done-btn {
     width: 100%;
     padding: 0.875rem;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
+    background: linear-gradient(135deg, #EA948A, #EA948A);
     color: white;
     border: none;
     border-radius: 0.875rem;
@@ -1023,12 +1023,12 @@
     justify-content: center;
     gap: 0.5rem;
     transition: all 0.2s;
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.35);
+    box-shadow: 0 8px 16px rgba(234, 148, 138, 0.35);
 }
 
 .winner-reveal-done-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 20px rgba(99, 102, 241, 0.45);
+    box-shadow: 0 12px 20px rgba(234, 148, 138, 0.45);
 }
 
 /* ── Loading state ── */
@@ -1046,7 +1046,7 @@
     width: 40px;
     height: 40px;
     border: 3px solid #f1f5f9;
-    border-top: 3px solid #6366f1;
+    border-top: 3px solid #EA948A;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

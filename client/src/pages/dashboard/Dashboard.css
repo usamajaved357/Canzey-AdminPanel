@@ -1,31 +1,27 @@
-:root {
-  --dashboard-bg: #f0f2f5;
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --glass-bg: rgba(255, 255, 255, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.4);
-  --glass-blur: blur(12px);
-  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-  --violet-gradient: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  --blue-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --pink-gradient: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
-  --orange-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-  --border-color: rgba(255, 255, 255, 0.5);
-  --text-main: #1e1b4b;
-  --text-muted: #64748b;
-}
-
 .dashboard-content {
+  --dashboard-bg: transparent;
+  --card-bg: #26201e;
+  --glass-bg: rgba(38, 32, 30, 0.85);
+  --glass-border: rgba(245, 214, 209, 0.12);
+  --glass-blur: blur(12px);
+  --primary-gradient: linear-gradient(135deg, #EA948A 0%, #d87f75 100%);
+  --violet-gradient: linear-gradient(135deg, #EA948A 0%, #F5D6D1 100%);
+  --blue-gradient: linear-gradient(135deg, #EA948A 0%, #d87f75 100%);
+  --pink-gradient: linear-gradient(135deg, #F5D6D1 0%, #EA948A 100%);
+  --orange-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.35), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+  --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.35), 0 8px 10px -6px rgb(0 0 0 / 0.25);
+  --border-color: rgba(245, 214, 209, 0.12);
+  --text-main: #FBF5F3;
+  --text-muted: #a89f9b;
+
   padding: 2rem;
   background:
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
-    var(--dashboard-bg);
+    radial-gradient(at 0% 0%, rgba(234, 148, 138, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 214, 209, 0.05) 0px, transparent 50%),
+    transparent;
   min-height: 100vh;
 }
 
@@ -49,13 +45,11 @@
 }
 
 .header-title {
+  font-family: 'Unbounded', 'Manrope', sans-serif;
   font-size: 2.25rem;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-main);
   margin: 0;
-  background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   letter-spacing: -0.03em;
 }
 
@@ -146,9 +140,9 @@
 
 .stats-card:hover {
   transform: translateY(-8px);
-  border-color: rgba(99, 102, 241, 0.4);
+  border-color: rgba(234, 148, 138, 0.4);
   background: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(234, 148, 138, 0.1);
 }
 
 .stats-icon {
@@ -163,8 +157,8 @@
 }
 
 .bg-purple-100 {
-  background: rgba(139, 92, 246, 0.15);
-  color: #7c3aed;
+  background: rgba(234, 148, 138, 0.15);
+  color: #EA948A;
 }
 
 .bg-blue-100 {
@@ -173,8 +167,8 @@
 }
 
 .bg-pink-100 {
-  background: rgba(236, 72, 153, 0.15);
-  color: #db2777;
+  background: rgba(245, 214, 209, 0.15);
+  color: #EA948A;
 }
 
 .bg-orange-100 {
@@ -262,20 +256,20 @@
 .view-all-btn {
   font-size: 0.85rem;
   font-weight: 800;
-  color: #6366f1;
-  background: rgba(99, 102, 241, 0.1);
+  color: #EA948A;
+  background: rgba(234, 148, 138, 0.1);
   padding: 0.6rem 1.4rem;
   border-radius: 14px;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 1px solid rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(234, 148, 138, 0.1);
   text-decoration: none;
 }
 
 .view-all-btn:hover {
-  background: #6366f1;
+  background: #EA948A;
   color: white;
   transform: scale(1.08);
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 15px rgba(234, 148, 138, 0.3);
 }
 
 .table-container {
@@ -344,9 +338,9 @@
 
 .status-pill.processing,
 .status-pill.shipped {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(234, 148, 138, 0.2);
   color: #4338ca;
-  border: 1px solid rgba(99, 102, 241, 0.3);
+  border: 1px solid rgba(234, 148, 138, 0.3);
 }
 
 /* Activity List */
@@ -369,7 +363,7 @@
 
 .activity-item:hover {
   background: rgba(255, 255, 255, 0.5);
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: rgba(234, 148, 138, 0.3);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   transform: translateX(10px);
 }
@@ -377,8 +371,8 @@
 .activity-icon-box {
   width: 52px;
   height: 52px;
-  background: white;
-  color: #6366f1;
+  background: var(--bg-elevated);
+  color: #EA948A;
   border-radius: 18px;
   display: flex;
   align-items: center;
@@ -395,7 +389,7 @@
 }
 
 .activity-text p strong {
-  color: #6366f1;
+  color: #EA948A;
   font-weight: 800;
 }
 

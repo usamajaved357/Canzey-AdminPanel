@@ -3,6 +3,7 @@ import axios from 'axios';
 import Layout from '../../components/layout/Layout';
 import { API_BASE_URL } from '../../config/api';
 import './Settings.css';
+import '../../components/ui/ToggleSwitch.css';
 
 const Settings = () => {
   const [testEnv, setTestEnv] = useState('prod');
@@ -27,9 +28,58 @@ const Settings = () => {
   const token = localStorage.getItem('token');
   const headers = { Authorization: `Bearer ${token}` };
 
+  const [donateEnabled, setDonateEnabled] = useState(true);
+  const [donateLoading, setDonateLoading] = useState(true);
+  const [donateSaving, setDonateSaving] = useState(false);
+  const [donateStatus, setDonateStatus] = useState(null);
+
   useEffect(() => {
     fetchCities();
+    fetchAppSettings();
   }, []);
+
+  const fetchAppSettings = async () => {
+    try {
+      setDonateLoading(true);
+      const res = await axios.get(`${API_BASE_URL}/api/admin/settings`, { headers });
+      if (res.data?.success) {
+        setDonateEnabled(Boolean(res.data.settings?.donate_enabled));
+      }
+    } catch (err) {
+      console.error('Error fetching app settings:', err);
+      setDonateStatus({ success: false, message: 'Could not load donation setting.' });
+    } finally {
+      setDonateLoading(false);
+    }
+  };
+
+  const handleDonateToggle = async (e) => {
+    const next = e.target.checked;
+    const previous = donateEnabled;
+    setDonateEnabled(next);
+    setDonateSaving(true);
+    setDonateStatus(null);
+    try {
+      const res = await axios.put(
+        `${API_BASE_URL}/api/admin/settings`,
+        { donate_enabled: next },
+        { headers }
+      );
+      if (!res.data?.success) throw new Error(res.data?.message || 'Save failed');
+      setDonateEnabled(Boolean(res.data.settings?.donate_enabled));
+      setDonateStatus({
+        success: true,
+        message: next
+          ? 'Donation is ON — customers can donate T-shirts for 2 tickets each.'
+          : 'Donation is OFF — the donate option is hidden in the app.',
+      });
+    } catch (err) {
+      setDonateEnabled(previous);
+      setDonateStatus({ success: false, message: err.response?.data?.message || err.message });
+    } finally {
+      setDonateSaving(false);
+    }
+  };
 
   const fetchCities = async () => {
     try {
@@ -147,6 +197,38 @@ const Settings = () => {
           </div>
           
           <div className="settings-grid">
+            <div className="settings-card">
+              <div className="settings-card-header">
+                <h2>Donate T-shirt to Charity</h2>
+                <span className={`badge ${donateEnabled ? 'active' : ''}`}>
+                  {donateLoading ? '…' : donateEnabled ? 'ON' : 'OFF'}
+                </span>
+              </div>
+              <p className="settings-card-text">
+                When ON, customers can mark any T-shirt at checkout as donated. Donated T-shirts give
+                2 raffle tickets instead of 1, are not shipped, and do not reduce stock.
+              </p>
+              <div className="donate-toggle-row">
+                <label className="toggle-switch" title="Enable or disable T-shirt donation">
+                  <input
+                    type="checkbox"
+                    checked={donateEnabled}
+                    onChange={handleDonateToggle}
+                    disabled={donateLoading || donateSaving}
+                  />
+                  <span className="slider" />
+                </label>
+                <span className="donate-toggle-label">
+                  {donateSaving ? 'Saving…' : donateEnabled ? 'Donation enabled' : 'Donation disabled'}
+                </span>
+              </div>
+              {donateStatus && (
+                <div className={`zmc-status-message ${donateStatus.success ? 'success' : 'error'}`}>
+                  {donateStatus.message}
+                </div>
+              )}
+            </div>
+
             <div className="settings-card">
               <div className="settings-card-header">
                 <h2>Shipping Integration</h2>

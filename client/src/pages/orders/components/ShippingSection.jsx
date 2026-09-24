@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Truck, RefreshCw, Send, Download, FlaskConical, ExternalLink, MapPin, Package } from 'lucide-react';
+import { Truck, RefreshCw, Send, Download, FlaskConical, ExternalLink, MapPin, Package, Heart } from 'lucide-react';
 import { API_BASE_URL } from '../../../config/api';
 import '../../../components/ui/ToggleSwitch.css';
 
@@ -10,8 +10,17 @@ const TEST_MODE_KEY = 'zmcOrderTestMode';
 const isTestShipment = (order) =>
   Boolean(order?.shipping_company?.includes('(Test)'));
 
-const getTotalItemCount = (order) =>
-  (order?.items || []).reduce((sum, item) => sum + (Number(item.quantity) || 0), 0) || 1;
+const getDonatedCount = (order) =>
+  (order?.items || []).reduce((sum, item) => sum + (Number(item.donated_quantity) || 0), 0);
+
+const getDeliverableCount = (order) =>
+  (order?.items || []).reduce((sum, item) => {
+    const qty = Number(item.quantity) || 0;
+    const donated = Math.min(Number(item.donated_quantity) || 0, qty);
+    return sum + (qty - donated);
+  }, 0);
+
+const getTotalItemCount = (order) => getDeliverableCount(order) || 1;
 
 const buildLocationLine = (addr) => {
   if (!addr) return '';
@@ -51,6 +60,8 @@ const ShippingSection = ({ order, onUpdate }) => {
   const showTestBadge = testMode || isTestShipment(order);
   const labelEnv = showTestBadge ? 'sandbox' : 'prod';
   const itemCount = getTotalItemCount(order);
+  const donatedCount = getDonatedCount(order);
+  const isFullyDonated = (order?.items || []).length > 0 && getDeliverableCount(order) === 0;
 
   const fetchCities = useCallback(async () => {
     try {
@@ -293,7 +304,7 @@ const ShippingSection = ({ order, onUpdate }) => {
           <div><span>Name</span><strong>{addr.name || '—'}</strong></div>
           <div><span>Phone</span><strong>{addr.phone || '—'}</strong></div>
           <div><span>City</span><strong>{addr.city || '—'}</strong></div>
-          <div><span>Items</span><strong>{itemCount}</strong></div>
+          <div><span>Items to ship</span><strong>{itemCount}</strong></div>
         </div>
         <p className="ship-prefill-address">{buildLocationLine(addr)}</p>
       </div>
@@ -341,9 +352,33 @@ const ShippingSection = ({ order, onUpdate }) => {
     );
   }
 
+  if (isFullyDonated) {
+    return (
+      <div className="shipping-section-container embedded">
+        <div className="no-shipment donated-no-shipment">
+          <div className="no-shipment-icon">
+            <Heart size={28} />
+          </div>
+          <h4>Donated to charity — no shipment</h4>
+          <p>
+            The customer donated all {donatedCount} item(s) in this order. Nothing is sent to the
+            delivery company and no stock was deducted.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="shipping-section-container embedded">
       {renderTestModeRow()}
+
+      {donatedCount > 0 && (
+        <div className="ship-donated-notice">
+          <Heart size={14} />
+          Ship only {itemCount} item(s). {donatedCount} item(s) were donated to charity and must not be shipped.
+        </div>
+      )}
 
       {!showShipForm ? (
         <div className="no-shipment">

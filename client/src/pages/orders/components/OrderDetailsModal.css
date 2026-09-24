@@ -14,7 +14,7 @@
 }
 
 .order-details-modal {
-    background: #ffffff;
+    background: var(--bg-elevated);
     border-radius: 32px;
     max-width: 800px;
     width: 95%;
@@ -27,7 +27,7 @@
 }
 
 .modal-header {
-    background: #ffffff;
+    background: var(--bg-elevated);
     padding: 24px 32px;
     display: flex;
     justify-content: space-between;
@@ -40,14 +40,14 @@
     margin: 0;
     font-size: 24px;
     font-weight: 900;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     /* DARK PURPLE */
     letter-spacing: -1px;
 }
 
 .order-number {
     font-size: 13px;
-    color: #6366f1;
+    color: #EA948A;
     font-weight: 700;
     font-family: monospace;
     opacity: 0.8;
@@ -87,7 +87,7 @@
 .info-item,
 .address-box,
 .item-card {
-    background: #ffffff !important;
+    background: var(--bg-elevated) !important;
     border: none !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border-radius: 20px !important;
@@ -122,7 +122,7 @@
 }
 
 .summary-card svg {
-    color: #6366f1;
+    color: #EA948A;
     flex-shrink: 0;
 }
 
@@ -139,7 +139,7 @@
 .summary-card .value {
     font-size: 16px;
     font-weight: 900;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     /* DARK PURPLE */
 }
 
@@ -152,7 +152,7 @@
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     /* FORCED DARK PURPLE */
     margin-top: 6px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -161,7 +161,7 @@
 .status-processing,
 .status-shipped {
     background: #e0e7ff !important;
-    border: 1.5px solid #6366f1 !important;
+    border: 1.5px solid #EA948A !important;
 }
 
 .status-paid,
@@ -184,7 +184,7 @@
 .section h3 {
     font-size: 13px;
     font-weight: 900;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 16px;
@@ -208,7 +208,7 @@
 
 .info-value {
     font-size: 15px;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     font-weight: 800;
 }
 
@@ -226,20 +226,20 @@
 .item-details h4 {
     font-size: 15px;
     font-weight: 900;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
     margin: 0;
 }
 
 .item-meta {
     font-size: 12px;
-    color: #6366f1;
+    color: #EA948A;
     font-weight: 700;
 }
 
 .item-price {
     font-size: 16px;
     font-weight: 900;
-    color: #1e1b4b !important;
+    color: #FBF5F3 !important;
 }
 
 .item-variants {
@@ -261,7 +261,7 @@
 
 .variant-tag strong {
     font-weight: 700;
-    color: #1e1b4b;
+    color: #FBF5F3;
 }
 
 .campaign-badge {
@@ -270,7 +270,7 @@
     gap: 6px;
     font-size: 12px;
     font-weight: 700;
-    color: #1e1b4b;
+    color: #FBF5F3;
     margin-top: 8px;
     background: #e0e7ff;
     padding: 4px 10px;
@@ -279,12 +279,12 @@
 }
 
 .campaign-badge svg {
-    color: #6366f1;
+    color: #EA948A;
 }
 
 /* TICKETS */
 .ticket-card {
-    background: #1e1b4b !important;
+    background: #FBF5F3 !important;
     color: white !important;
     border-radius: 16px !important;
     padding: 16px 20px !important;
@@ -307,7 +307,7 @@
     color: #475569;
     font-weight: 600;
     font-size: 13px;
-    border-left: 6px solid #6366f1;
+    border-left: 6px solid #EA948A;
 }
 
 @media (max-width: 600px) {

@@ -1,5 +1,4 @@
 /* Orders Page Styles */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 .orders-page {
   min-height: 100vh;
@@ -8,8 +7,8 @@
 
 .orders-container {
   padding: 0;
-  font-family: 'Inter', sans-serif;
-  color: #1f2937;
+  font-family: 'Manrope', sans-serif;
+  color: var(--text-primary);
 }
 
 /* Header Styles */
@@ -20,7 +19,7 @@
 .orders-title {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -29,7 +28,7 @@
 
 .orders-subtitle {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Stats Grid */
@@ -41,7 +40,7 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -69,7 +68,7 @@
 }
 
 .stat-icon.from-violet-500 {
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
 }
 
 .stat-icon.from-blue-500 {
@@ -77,7 +76,7 @@
 }
 
 .stat-icon.from-pink-500 {
-  background: linear-gradient(135deg, #ec4899, #db2777);
+  background: linear-gradient(135deg, #F5D6D1, #EA948A);
 }
 
 .stat-icon.from-amber-500 {
@@ -109,18 +108,18 @@
 .stat-label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .stat-value {
   font-size: 2rem;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
 }
 
 /* Controls Card */
 .orders-controls-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -146,14 +145,14 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .orders-search-input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 3rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   font-size: 1rem;
   transition: all 0.3s ease;
@@ -161,12 +160,12 @@
 }
 
 .orders-search-input:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .orders-search-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .orders-filter {
@@ -179,16 +178,16 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .orders-filter-select {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 3rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
-  background: white;
+  background: var(--bg-elevated);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -202,8 +201,8 @@
 }
 
 .orders-filter-select:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .orders-add-btn {
@@ -211,26 +210,26 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border: none;
   border-radius: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px -1px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 6px -1px rgba(234, 148, 138, 0.3);
   white-space: nowrap;
 }
 
 .orders-add-btn:hover {
   background: linear-gradient(135deg, #6d28d9, #9333ea);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 10px 15px -3px rgba(234, 148, 138, 0.4);
 }
 
 /* Table Wrapper */
 .orders-table-wrapper {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -248,7 +247,7 @@
 
 .orders-table thead tr {
   background: linear-gradient(135deg, #f9fafb, #f3f4f6);
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .orders-table th {
@@ -256,7 +255,7 @@
   text-align: left;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
@@ -266,7 +265,7 @@
 }
 
 .orders-table tbody tr:hover {
-  background-color: #f9fafb;
+  background-color: var(--bg-primary);
 }
 
 .orders-table td {
@@ -277,7 +276,7 @@
 .order-id {
   font-family: monospace;
   font-weight: 600;
-  color: #7c3aed;
+  color: #EA948A;
   font-size: 0.95rem;
 }
 
@@ -291,7 +290,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -302,11 +301,11 @@
 
 .customer-name {
   font-weight: 500;
-  color: #111827;
+  color: var(--text-primary);
 }
 
 .product-name {
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .status-badge {
@@ -345,12 +344,12 @@
 }
 
 .order-date {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .order-amount {
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   font-size: 1rem;
 }
 
@@ -379,7 +378,7 @@
 }
 
 .action-btn.edit-btn {
-  color: #7c3aed;
+  color: #EA948A;
 }
 
 .action-btn.edit-btn:hover {
@@ -408,13 +407,13 @@
 .empty-title {
   font-size: 1.125rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
 
 .empty-subtitle {
   font-size: 0.875rem;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* Responsive Design */

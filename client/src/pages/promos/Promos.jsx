@@ -229,8 +229,8 @@ const Promos = () => {
       promo: '#10b981',
       ad: '#3b82f6',
       notification: '#f59e0b',
-      banner: '#8b5cf6',
-      popup: '#ec4899',
+      banner: '#EA948A',
+      popup: '#F5D6D1',
       other: '#6b7280'
     };
     return colors[type] || colors.other;

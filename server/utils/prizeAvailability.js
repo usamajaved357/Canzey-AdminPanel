@@ -99,8 +99,14 @@ export function availabilityMessage(reasons) {
 
 /**
  * Load product + prize + campaign context and validate a purchase.
+ * stockQuantity = units taken from stock (donated units are excluded).
+ * ticketCount   = raffle tickets the purchase will issue.
+ * Both default to quantity.
  */
-export async function validateProductPurchase(connection, { productId, quantity, customerId }) {
+export async function validateProductPurchase(
+  connection,
+  { productId, quantity, stockQuantity = quantity, ticketCount = quantity, customerId }
+) {
   const [rows] = await connection.query(
     `SELECT
        p.id AS product_id,
@@ -141,7 +147,7 @@ export async function validateProductPurchase(connection, { productId, quantity,
     return { ok: false, message: 'Product is not available', reasons: ['product_inactive'] };
   }
 
-  if (row.stock_quantity < quantity) {
+  if (stockQuantity > 0 && row.stock_quantity < stockQuantity) {
     return { ok: false, message: `Insufficient stock for product: ${row.product_name}`, reasons: ['insufficient_stock'] };
   }
 
@@ -158,7 +164,7 @@ export async function validateProductPurchase(connection, { productId, quantity,
     };
   }
 
-  if (row.tickets_remaining != null && Number(row.tickets_remaining) < quantity) {
+  if (row.tickets_remaining != null && Number(row.tickets_remaining) < ticketCount) {
     return {
       ok: false,
       message: `Only ${row.tickets_remaining} ticket(s) remaining for this prize.`,
@@ -174,7 +180,7 @@ export async function validateProductPurchase(connection, { productId, quantity,
       [row.campaign_id, customerId]
     );
     const currentTickets = ticketCounts[0]?.ticket_count || 0;
-    if (currentTickets + quantity > row.max_tickets_per_user) {
+    if (currentTickets + ticketCount > row.max_tickets_per_user) {
       return {
         ok: false,
         message: `Maximum ${row.max_tickets_per_user} tickets allowed per user. You already have ${currentTickets}.`,

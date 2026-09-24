@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { API_ENDPOINTS } from '../../config/api';
 import './Auth.css';
@@ -62,10 +62,13 @@ const Login = () => {
         {/* Logo/Header */}
         <div className="auth-header">
           <div className="auth-logo">
-            <div className="logo-icon">
-              <LogIn size={32} />
-            </div>
-            <h1>Canzey Admin</h1>
+            <img
+              className="auth-wordmark"
+              src="/brand/canzey-wordmark-reversed.png"
+              alt="Canzey"
+              width={200}
+              height={34}
+            />
           </div>
           <p className="auth-subtitle">Sign in to manage your dashboard</p>
         </div>

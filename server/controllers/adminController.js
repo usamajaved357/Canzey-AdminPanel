@@ -8,28 +8,62 @@ const JWT_SECRET = process.env.JWT_SECRET || 'canzey_dashboard_secret_key_2024_c
  * Admin sign in
  */
 export async function adminSignIn(email, password) {
+  let connection;
   try {
-    const connection = await pool.getConnection();
-    const [users] = await connection.execute('SELECT * FROM admin_users WHERE email = ?', [email]);
-    connection.release();
+    connection = await pool.getConnection();
+    const [users] = await connection.execute(
+      'SELECT * FROM admin_users WHERE email = ?',
+      [email],
+    );
 
-    if (users.length === 0) return { success: false, error: 'Invalid email or password' };
+    if (users.length === 0) {
+      return { success: false, error: 'Invalid email or password' };
+    }
     const user = users[0];
-    if (user.status !== 'active') return { success: false, error: 'Account is not active' };
+    if (user.status !== 'active') {
+      return { success: false, error: 'Account is not active' };
+    }
 
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-    if (!isPasswordValid) return { success: false, error: 'Invalid email or password' };
+    if (!isPasswordValid) {
+      return { success: false, error: 'Invalid email or password' };
+    }
 
-    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
+    const token = jwt.sign(
+      { userId: user.id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: '24h' },
+    );
 
-    const updateConnection = await pool.getConnection();
-    await updateConnection.execute('UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE id = ?', [user.id]);
-    updateConnection.release();
+    await connection.execute(
+      'UPDATE admin_users SET last_login = CURRENT_TIMESTAMP WHERE id = ?',
+      [user.id],
+    );
 
-    return { success: true, token, user: { id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email, phone_number: user.phone_number, role: user.role, profile_url: user.profile_url, status: user.status } };
+    return {
+      success: true,
+      token,
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone_number: user.phone_number,
+        role: user.role,
+        profile_url: user.profile_url,
+        status: user.status,
+      },
+    };
   } catch (error) {
     console.error('Sign in error:', error);
-    return { success: false, error: 'Server error during sign in' };
+    return {
+      success: false,
+      error: error.message?.includes('timeout')
+        ? 'Database unavailable. Please try again in a moment.'
+        : 'Server error during sign in',
+    };
+  } finally {
+    if (connection) connection.release();
   }
 }
 

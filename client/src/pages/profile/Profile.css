@@ -1,7 +1,7 @@
 /* Profile Page Styles */
 .profile {
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: var(--bg-primary);
 }
 
 /* Profile Container */
@@ -20,7 +20,7 @@
 
 /* Profile Card */
 .profile-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -38,7 +38,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .profile-tab {
@@ -48,7 +48,7 @@
   padding: 1rem 1.5rem;
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -57,19 +57,19 @@
 }
 
 .profile-tab:hover {
-  color: #374151;
+  color: var(--text-primary);
   background: rgba(0, 0, 0, 0.02);
 }
 
 .profile-tab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
+  color: #EA948A;
+  border-bottom-color: #EA948A;
+  background: rgba(234, 148, 138, 0.05);
 }
 
 /* User Management */
 .user-management-content {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: hidden;
@@ -77,7 +77,7 @@
 
 .user-management-header {
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   color: white;
 }
 
@@ -99,7 +99,7 @@
 .loading-users {
   padding: 3rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -113,12 +113,12 @@
 }
 
 .users-table th {
-  background: #f9fafb;
+  background: var(--bg-primary);
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -126,12 +126,12 @@
 
 .users-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   font-size: 0.9rem;
 }
 
 .user-row:hover {
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .user-info-cell {
@@ -145,7 +145,7 @@
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
 }
 
 .user-avatar-small img {
@@ -157,7 +157,7 @@
 .avatar-placeholder-small {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,11 +168,11 @@
 
 .user-name-cell {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .email-cell {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .role-badge-small {
@@ -223,7 +223,7 @@
 }
 
 .joined-cell {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
@@ -267,8 +267,8 @@
 }
 
 .deactivate-btn {
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
 }
 
 .deactivate-btn:hover {
@@ -283,7 +283,7 @@
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .no-users svg {
@@ -299,7 +299,7 @@
 /* Avatar Section */
 .profile-avatar-section {
   padding: 2rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #EA948A 100%);
   color: white;
 }
 
@@ -328,7 +328,7 @@
 .profile-avatar-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -456,7 +456,7 @@
 }
 
 .profile-btn-primary {
-  background: white;
+  background: var(--bg-elevated);
   color: #3b82f6;
 }
 
@@ -501,10 +501,10 @@
 .profile-form-title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .profile-form-grid {
@@ -525,7 +525,7 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .profile-input,
@@ -536,7 +536,7 @@
   font-size: 0.875rem;
   outline: none;
   transition: all 0.2s ease;
-  background: white;
+  background: var(--bg-elevated);
 }
 
 .profile-input:focus,
@@ -552,11 +552,11 @@
 
 .profile-value {
   padding: 0.75rem 1rem;
-  background: #f9fafb;
+  background: var(--bg-primary);
   border-radius: 8px;
   font-size: 0.875rem;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .profile-bio {
@@ -577,7 +577,7 @@
 
 /* Stats Card */
 .profile-stats-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -587,10 +587,10 @@
 .profile-stats-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .profile-stats-grid {
@@ -602,13 +602,13 @@
 .profile-stat-item {
   text-align: center;
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-primary);
   border-radius: 8px;
   transition: all 0.2s ease;
 }
 
 .profile-stat-item:hover {
-  background: #f3f4f6;
+  background: var(--bg-hover);
   transform: translateY(-2px);
 }
 
@@ -621,7 +621,7 @@
 
 .profile-stat-label {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }

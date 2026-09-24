@@ -1,6 +1,6 @@
 /* Profile Card */
 .profile-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -10,7 +10,7 @@
 /* Avatar Section */
 .profile-avatar-section {
   padding: 1.25rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #EA948A 100%);
   color: white;
 }
 
@@ -39,7 +39,7 @@
 .profile-avatar-placeholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,10 +210,10 @@
 .profile-form-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 1.5rem 0;
   padding-bottom: 0.75rem;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .profile-form-grid {
@@ -232,7 +232,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
 }
@@ -240,7 +240,7 @@
 .profile-input,
 .profile-textarea {
   padding: 0.75rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
   font-size: 0.9rem;
   transition: all 0.2s ease;
@@ -249,8 +249,8 @@
 .profile-input:focus,
 .profile-textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .profile-textarea {
@@ -260,9 +260,9 @@
 
 .profile-value {
   padding: 0.75rem;
-  background: #f9fafb;
+  background: var(--bg-primary);
   border-radius: 8px;
-  color: #374151;
+  color: var(--text-primary);
   font-size: 0.9rem;
 }
 
@@ -272,7 +272,7 @@
 }
 
 .profile-link {
-  color: #667eea;
+  color: #EA948A;
   text-decoration: none;
   font-weight: 600;
 }
@@ -298,8 +298,8 @@
   padding: 0.625rem 1.25rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  background: white;
-  color: #374151;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -307,8 +307,8 @@
 }
 
 .top-action-btn:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
+  background: var(--bg-primary);
+  border-color: var(--text-muted);
 }
 
 .edit-top-btn:hover {
@@ -331,12 +331,12 @@
 .cancel-top-btn {
   background: #6b7280;
   color: white;
-  border-color: #6b7280;
+  border-color: var(--text-secondary);
 }
 
 .cancel-top-btn:hover {
   background: #4b5563;
-  border-color: #4b5563;
+  border-color: var(--text-secondary);
 }
 
 .logout-top-btn:hover {

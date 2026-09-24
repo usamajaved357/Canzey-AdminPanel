@@ -1,6 +1,6 @@
 /* UsersTable Component Styles */
 .users-table-container {
-  background-color: white;
+  background-color: var(--bg-elevated);
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -9,13 +9,13 @@
 .users-table-loading {
   padding: 2rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .users-table-loading-spinner {
   width: 2rem;
   height: 2rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-top: 2px solid #0284c7;
   border-radius: 50%;
   animation: spin 1s linear infinite;
@@ -30,7 +30,7 @@
 .users-table-empty {
   padding: 2rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .users-table-empty-title {
@@ -52,8 +52,8 @@
 }
 
 .users-table thead {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .users-table th {
@@ -61,14 +61,14 @@
   text-align: left;
   font-size: 0.75rem;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .users-table tbody {
-  background-color: white;
-  border-bottom: 1px solid #e5e7eb;
+  background-color: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .users-table tr {
@@ -76,18 +76,18 @@
 }
 
 .users-table tr:hover {
-  background-color: #f9fafb;
+  background-color: var(--bg-primary);
 }
 
 .users-table td {
   padding: 1rem 1.5rem;
   font-size: 0.875rem;
-  color: #1f2937;
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
 .users-table-id {
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .users-table-user-cell {
@@ -124,11 +124,11 @@
 .users-table-user-name {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .users-table-email {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .users-table-role-badge {
@@ -204,11 +204,11 @@
 }
 
 .users-table-more-btn {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .users-table-more-btn:hover {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Responsive */

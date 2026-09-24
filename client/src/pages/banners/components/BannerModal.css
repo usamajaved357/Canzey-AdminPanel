@@ -12,7 +12,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   max-width: 600px;
@@ -33,7 +33,7 @@
   border-bottom: 1px solid #e0e0e0;
   position: sticky;
   top: 0;
-  background: white;
+  background: var(--bg-elevated);
   z-index: 10;
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, Package, User, MapPin, CreditCard, 
-  Calendar, Clock, CheckCircle, Truck, DollarSign, Mail, Phone, FlaskConical
+  Calendar, Clock, CheckCircle, Truck, DollarSign, Mail, Phone, FlaskConical, Heart
 } from 'lucide-react';
 import Layout from '../../components/layout/Layout';
 import Toast from '../../components/ui/Toast';
@@ -48,7 +48,7 @@ const OrderView = () => {
       case 'delivered': return 'bg-green-100 text-green-700';
       case 'pending': return 'bg-amber-100 text-amber-700';
       case 'processing': return 'bg-blue-100 text-blue-700';
-      case 'shipped': return 'bg-purple-100 text-purple-700';
+      case 'shipped': return 'bg-rose-100 text-rose-700';
       case 'cancelled': return 'bg-red-100 text-red-700';
       default: return 'bg-gray-100 text-gray-700';
     }
@@ -65,7 +65,7 @@ const OrderView = () => {
     return (
       <Layout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-600"></div>
         </div>
       </Layout>
     );
@@ -78,6 +78,14 @@ const OrderView = () => {
     0
   );
   const displaySubtotal = computedSubtotal > 0 ? computedSubtotal : parseFloat(order.subtotal) || 0;
+
+  const donatedOf = (item) => Math.min(Number(item.donated_quantity) || 0, Number(item.quantity) || 0);
+  const totalDonated = (order.items || []).reduce((sum, item) => sum + donatedOf(item), 0);
+  const totalDeliverable = (order.items || []).reduce(
+    (sum, item) => sum + (Number(item.quantity) || 0) - donatedOf(item),
+    0
+  );
+  const isFullyDonated = (order.items || []).length > 0 && totalDeliverable === 0;
 
   const getPaymentBadge = (status) => {
     switch (status) {
@@ -112,6 +120,12 @@ const OrderView = () => {
                 <CreditCard size={14} />
                 {order.payment_status?.toUpperCase() || 'UNPAID'}
               </div>
+              {totalDonated > 0 && (
+                <span className="order-donated-badge">
+                  <Heart size={12} />
+                  {isFullyDonated ? 'Donated to charity' : `${totalDonated} donated`}
+                </span>
+              )}
               {order.shipping_company?.includes('(Test)') && (
                 <span className="order-test-badge">
                   <FlaskConical size={12} />
@@ -171,7 +185,11 @@ const OrderView = () => {
                   <p className="country">{order.shipping_address.country}</p>
                 </div>
               ) : (
-                <p className="no-data">No shipping address provided</p>
+                <p className="no-data">
+                  {isFullyDonated
+                    ? 'Not needed — every item in this order was donated to charity.'
+                    : 'No shipping address provided'}
+                </p>
               )}
             </div>
 
@@ -181,9 +199,30 @@ const OrderView = () => {
                 <Package size={20} />
                 <h2>Order Items</h2>
               </div>
+              {totalDonated > 0 && (
+                <div className="items-split-summary">
+                  <div className="split-box deliver">
+                    <Truck size={16} />
+                    <div>
+                      <strong>{totalDeliverable}</strong>
+                      <span>To deliver</span>
+                    </div>
+                  </div>
+                  <div className="split-box donated">
+                    <Heart size={16} />
+                    <div>
+                      <strong>{totalDonated}</strong>
+                      <span>Donated to charity (do not ship)</span>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="items-list">
-                {order.items && order.items.map((item, idx) => (
-                  <div key={idx} className="item-row">
+                {order.items && order.items.map((item, idx) => {
+                  const donated = donatedOf(item);
+                  const deliverable = (Number(item.quantity) || 0) - donated;
+                  return (
+                  <div key={idx} className={`item-row ${donated > 0 ? 'has-donation' : ''}`}>
                     <div className="item-img">
                       {item.product_image ? <img src={item.product_image} alt="" /> : <Package size={24} />}
                     </div>
@@ -194,6 +233,20 @@ const OrderView = () => {
                         {item.color && <span>Color: {item.color}</span>}
                         {item.size && <span>Size: {item.size}</span>}
                       </div>
+                      {donated > 0 && (
+                        <div className="item-donation-tags">
+                          <span className="item-donated-tag">
+                            <Heart size={11} />
+                            Donated to charity ×{donated}
+                          </span>
+                          {deliverable > 0 && (
+                            <span className="item-deliver-tag">
+                              <Truck size={11} />
+                              Deliver ×{deliverable}
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="item-price-qty">
                       <p className="qty">x{item.quantity}</p>
@@ -201,7 +254,8 @@ const OrderView = () => {
                       <p className="price">${(parseFloat(item.unit_price) * item.quantity).toFixed(2)}</p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
               <div className="price-summary">
                 <div className="summary-row">

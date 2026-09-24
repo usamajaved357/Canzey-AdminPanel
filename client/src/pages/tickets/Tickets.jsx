@@ -130,7 +130,7 @@ const Tickets = () => {
       icon: <Ticket size={24} />,
       title: 'Total Tickets',
       value: stats.totalTickets.toString(),
-      color: 'from-violet-500 to-purple-600'
+      color: 'from-rose-500 to-rose-600'
     },
     {
       icon: <Award size={24} />,
@@ -166,7 +166,7 @@ const Tickets = () => {
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-rose-600 to-rose-600 bg-clip-text text-transparent mb-2">
               Campaign Tickets
             </h1>
             <p className="text-gray-600 text-lg">Manage tickets and announce winners</p>
@@ -237,7 +237,7 @@ const Tickets = () => {
                     <tr>
                       <td colSpan="7" className="px-6 py-12 text-center">
                         <div className="flex justify-center items-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600"></div>
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-rose-600"></div>
                           <span className="ml-3 text-gray-600">Loading tickets...</span>
                         </div>
                       </td>
@@ -247,9 +247,9 @@ const Tickets = () => {
                       <tr key={ticket.id} className={`hover:bg-gray-50 transition-colors ${ticket.is_winner ? 'bg-amber-50/30' : ''}`}>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <Ticket size={18} className={ticket.is_winner ? "text-amber-500" : "text-violet-600"} />
+                            <Ticket size={18} className={ticket.is_winner ? "text-amber-500" : "text-rose-600"} />
                             <div className="flex flex-col">
-                              <span className={`font-mono font-bold ${ticket.is_winner ? "text-amber-600" : "text-violet-600"}`}>
+                              <span className={`font-mono font-bold ${ticket.is_winner ? "text-amber-600" : "text-rose-600"}`}>
                                 {ticket.ticket_number}
                               </span>
                               {ticket.is_winner ? (
@@ -264,14 +264,14 @@ const Tickets = () => {
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <Package size={16} className="text-gray-400" />
-                            <span className="font-mono text-sm font-medium text-violet-600 bg-violet-50 px-2 py-1 rounded">
+                            <span className="font-mono text-sm font-medium text-rose-600 bg-rose-50 px-2 py-1 rounded">
                               {ticket.product_id || 'N/A'}
                             </span>
                           </div>
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${ticket.is_winner ? 'from-amber-400 to-orange-500' : 'from-violet-500 to-purple-600'} flex items-center justify-center text-white text-sm font-semibold`}>
+                            <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${ticket.is_winner ? 'from-amber-400 to-orange-500' : 'from-rose-500 to-rose-600'} flex items-center justify-center text-white text-sm font-semibold`}>
                               {ticket.customer_name?.charAt(0) || 'U'}
                             </div>
                             <span className="text-gray-900 font-medium">{ticket.customer_name}</span>
@@ -285,7 +285,7 @@ const Tickets = () => {
                           <div className="flex justify-center">
                             <button 
                               onClick={() => setSelectedTicket(ticket)}
-                              className="flex items-center gap-2 px-4 py-2 bg-violet-50 text-violet-600 rounded-xl font-bold text-sm hover:bg-violet-600 hover:text-white transition-all border border-violet-100"
+                              className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 rounded-xl font-bold text-sm hover:bg-rose-600 hover:text-white transition-all border border-rose-100"
                             >
                               <Eye size={16} /> Details
                             </button>

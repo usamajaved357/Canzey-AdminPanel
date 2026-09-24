@@ -1,15 +1,14 @@
 /* Home Dashboard Styles */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 .home-page {
   min-height: 100vh;
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .home-container {
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
-  color: #1f2937;
+  font-family: 'Manrope', sans-serif;
+  color: var(--text-primary);
 }
 
 /* Header Styles */
@@ -19,9 +18,9 @@
   align-items: center;
   margin-bottom: 2rem;
   padding: 2rem;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   animation: slideDown 0.6s ease-out;
 }
@@ -30,7 +29,7 @@
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #7c3aed, #a855f7, #ec4899);
+  background: linear-gradient(135deg, #EA948A, #EA948A, #F5D6D1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -38,7 +37,7 @@
 
 .home-subtitle {
   font-size: 1.1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 400;
 }
 
@@ -74,9 +73,9 @@
 .home-stat-card {
   position: relative;
   padding: 2rem;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: all 0.3s ease;
@@ -86,7 +85,7 @@
 .home-stat-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  border-color: #7c3aed;
+  border-color: #EA948A;
 }
 
 .stat-card-bg {
@@ -95,7 +94,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(167, 85, 247, 0.05));
+  background: linear-gradient(135deg, rgba(234, 148, 138, 0.1), rgba(234, 148, 138, 0.05));
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -119,7 +118,7 @@
 }
 
 .home-stat-icon.violet {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
 }
 
 .home-stat-icon.blue {
@@ -127,7 +126,7 @@
 }
 
 .home-stat-icon.pink {
-  background: linear-gradient(135deg, #ec4899, #db2777);
+  background: linear-gradient(135deg, #F5D6D1, #EA948A);
 }
 
 .home-stat-icon.orange {
@@ -143,12 +142,12 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .home-stat-label {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 1rem;
   font-weight: 500;
 }
@@ -183,9 +182,9 @@
 
 /* Section Styles */
 .home-section {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   animation: fadeInUp 0.8s ease-out;
@@ -206,19 +205,19 @@
   gap: 0.75rem;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .section-icon {
-  color: #7c3aed;
+  color: #EA948A;
 }
 
 .view-all-btn {
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  color: #7c3aed;
+  color: #EA948A;
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -226,8 +225,8 @@
 }
 
 .view-all-btn:hover {
-  background: #f3f4f6;
-  border-color: #7c3aed;
+  background: var(--bg-hover);
+  border-color: #EA948A;
 }
 
 /* Orders List */
@@ -248,8 +247,8 @@
 }
 
 .order-item:hover {
-  border-color: #7c3aed;
-  background: #f9fafb;
+  border-color: #EA948A;
+  background: var(--bg-primary);
 }
 
 .order-info {
@@ -266,7 +265,7 @@
 .order-id {
   font-family: monospace;
   font-weight: 600;
-  color: #7c3aed;
+  color: #EA948A;
   font-size: 0.95rem;
 }
 
@@ -315,7 +314,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,14 +325,14 @@
 
 .customer-name-small {
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.875rem;
   margin-bottom: 0.125rem;
 }
 
 .product-name-small {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .order-meta {
@@ -342,7 +341,7 @@
 
 .order-amount {
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 1rem;
   display: block;
   margin-bottom: 0.125rem;
@@ -350,23 +349,23 @@
 
 .order-date-small {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .order-action-btn {
   padding: 0.5rem;
   background: transparent;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  color: #7c3aed;
+  color: #EA948A;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-left: 1rem;
 }
 
 .order-action-btn:hover {
-  background: #f3f4f6;
-  border-color: #7c3aed;
+  background: var(--bg-hover);
+  border-color: #EA948A;
 }
 
 /* Activity List */
@@ -387,8 +386,8 @@
 }
 
 .activity-item:hover {
-  border-color: #7c3aed;
-  background: #f9fafb;
+  border-color: #EA948A;
+  background: var(--bg-primary);
 }
 
 .activity-icon {
@@ -411,7 +410,7 @@
 }
 
 .activity-icon.order {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
 }
 
 .activity-icon.review {
@@ -419,7 +418,7 @@
 }
 
 .activity-icon.invoice {
-  background: linear-gradient(135deg, #ec4899, #db2777);
+  background: linear-gradient(135deg, #F5D6D1, #EA948A);
 }
 
 .activity-content {
@@ -428,19 +427,19 @@
 
 .activity-text {
   font-size: 0.95rem;
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 500;
   margin-bottom: 0.25rem;
 }
 
 .activity-time {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .activity-value {
   font-weight: 700;
-  color: #7c3aed;
+  color: #EA948A;
   font-size: 1rem;
 }
 
@@ -468,8 +467,8 @@
 }
 
 .invoice-item:hover {
-  border-color: #7c3aed;
-  background: #f9fafb;
+  border-color: #EA948A;
+  background: var(--bg-primary);
 }
 
 .invoice-info {
@@ -484,18 +483,18 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem;
-  background: #f3f4f6;
+  background: var(--bg-hover);
   border-radius: 0.5rem;
 }
 
 .invoice-icon {
-  color: #7c3aed;
+  color: #EA948A;
 }
 
 .invoice-id {
   font-family: monospace;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.875rem;
 }
 
@@ -507,13 +506,13 @@
 
 .invoice-customer {
   font-weight: 500;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.875rem;
 }
 
 .invoice-date {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .invoice-meta {
@@ -524,7 +523,7 @@
 
 .invoice-amount {
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 1rem;
 }
 
@@ -560,16 +559,16 @@
 .invoice-action-btn {
   padding: 0.5rem;
   background: transparent;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.5rem;
-  color: #7c3aed;
+  color: #EA948A;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .invoice-action-btn:hover {
-  background: #f3f4f6;
-  border-color: #7c3aed;
+  background: var(--bg-hover);
+  border-color: #EA948A;
 }
 
 /* Reviews List */
@@ -587,8 +586,8 @@
 }
 
 .review-item:hover {
-  border-color: #7c3aed;
-  background: #f9fafb;
+  border-color: #EA948A;
+  background: var(--bg-primary);
 }
 
 .review-header {
@@ -608,7 +607,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -619,14 +618,14 @@
 
 .reviewer-name {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.95rem;
   margin-bottom: 0.125rem;
 }
 
 .review-product {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .review-rating {
@@ -645,14 +644,14 @@
 
 .review-comment {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   line-height: 1.5;
   margin-bottom: 0.5rem;
 }
 
 .review-date {
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* Animations */

@@ -19,12 +19,12 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .products-header-left p {
   margin: 0;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -51,23 +51,23 @@
   font-size: 0.85rem;
   font-weight: 600;
   border: 1.5px solid #e2e8f0;
-  background: white;
+  background: var(--bg-elevated);
   color: #64748b;
   cursor: pointer;
   transition: all 0.18s;
 }
 
 .products-draw-tab:hover {
-  border-color: #6366f1;
-  color: #6366f1;
+  border-color: #EA948A;
+  color: #EA948A;
   background: #f5f3ff;
 }
 
 .products-draw-tab.active {
-  background: #6366f1;
+  background: #EA948A;
   color: white;
-  border-color: #6366f1;
-  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+  border-color: #EA948A;
+  box-shadow: 0 4px 10px rgba(234, 148, 138, 0.3);
 }
 
 /* Count pill */
@@ -90,7 +90,7 @@
 /* Per-tab accent when not active */
 .products-draw-tab:not(.active) .tab-count-active {
   background: #ede9fe;
-  color: #6366f1;
+  color: #EA948A;
 }
 
 .products-draw-tab:not(.active) .tab-count-upcoming {
@@ -111,14 +111,14 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 0.75rem 1rem;
 }
 
 .search-box svg {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .search-box input {
@@ -129,7 +129,7 @@
 }
 
 .products-table-container {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -141,8 +141,8 @@
 }
 
 .products-table thead {
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .products-table th {
@@ -150,7 +150,7 @@
   text-align: left;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #374151;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -158,11 +158,11 @@
 .products-table td {
   padding: 1rem;
   border-bottom: 1px solid #f3f4f6;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .products-table tbody tr:hover {
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .product-image {
@@ -175,17 +175,17 @@
 .product-image-placeholder {
   width: 50px;
   height: 50px;
-  background: #f3f4f6;
+  background: var(--bg-hover);
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .product-name {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -234,9 +234,9 @@
 
 /* No End Date — neutral grey */
 .tag-no-date {
-  background: #f3f4f6;
-  color: #6b7280;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 /* Draw Date set — indigo */
@@ -271,7 +271,7 @@
 
 .original-price {
   text-decoration: line-through;
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 
@@ -328,7 +328,7 @@
   padding: 0.5rem;
   cursor: pointer;
   border-radius: 8px;
-  color: #6b7280;
+  color: var(--text-secondary);
   transition: all 0.2s;
   display: flex;
   align-items: center;
@@ -336,8 +336,8 @@
 }
 
 .btn-icon:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .btn-icon.btn-danger:hover {
@@ -361,7 +361,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 16px;
   width: 100%;
   max-width: 600px;
@@ -373,7 +373,7 @@
 
 .modal-header {
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -382,7 +382,7 @@
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .modal-close {
@@ -390,7 +390,7 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--text-secondary);
   width: 32px;
   height: 32px;
   display: flex;
@@ -401,8 +401,8 @@
 }
 
 .modal-close:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -419,7 +419,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
   font-size: 0.875rem;
 }
 
@@ -438,8 +438,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .form-row {
@@ -465,7 +465,7 @@
 }
 
 .checkbox-label:hover {
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -500,9 +500,9 @@
 }
 
 .btn-add-image {
-  background: #f3f4f6;
+  background: var(--bg-hover);
   border: 1px dashed #d1d5db;
-  color: #6b7280;
+  color: var(--text-secondary);
   padding: 0.5rem 1rem;
   border-radius: 8px;
   cursor: pointer;
@@ -512,8 +512,8 @@
 }
 
 .btn-add-image:hover {
-  background: #e5e7eb;
-  border-color: #9ca3af;
+  background: var(--border-color);
+  border-color: var(--text-muted);
 }
 
 /* Image Upload Styles */
@@ -530,7 +530,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border-radius: 12px;
   cursor: pointer;
@@ -540,18 +540,18 @@
 
 .file-input-label:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 20px rgba(234, 148, 138, 0.3);
 }
 
 .file-input-hint {
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .image-section-title {
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 0.75rem;
   margin-top: 1rem;
 }
@@ -568,7 +568,7 @@
   aspect-ratio: 1;
   border-radius: 12px;
   overflow: hidden;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
 }
 
 .image-preview-item img {
@@ -601,7 +601,7 @@
 
 .modal-footer {
   padding: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
@@ -610,7 +610,7 @@
 .loading-spinner {
   text-align: center;
   padding: 3rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -629,13 +629,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 20px rgba(234, 148, 138, 0.3);
 }
 
 .btn-primary:disabled {
@@ -645,12 +645,12 @@
 }
 
 .btn-secondary {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-  background: #e5e7eb;
+  background: var(--border-color);
 }
 
 /* Responsive */
@@ -693,7 +693,7 @@ tr.row-past-draw td:first-child {
 .winner-cell-avatar {
   width: 2.25rem;
   height: 2.25rem;
-  background: linear-gradient(135deg, #6366f1, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -723,7 +723,7 @@ tr.row-past-draw td:first-child {
   font-size: 0.7rem;
   font-weight: 700;
   font-family: 'JetBrains Mono', monospace;
-  color: #6366f1;
+  color: #EA948A;
   background: #eef2ff;
   padding: 0.1rem 0.4rem;
   border-radius: 0.35rem;
@@ -756,7 +756,7 @@ tr.row-past-draw td:first-child {
 }
 
 .tickets-pct {
-  color: #6366f1;
+  color: #EA948A;
   font-weight: 700;
 }
 
@@ -769,7 +769,7 @@ tr.row-past-draw td:first-child {
 
 .tickets-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #6366f1, #a855f7);
+  background: linear-gradient(90deg, #EA948A, #EA948A);
   border-radius: 99px;
   transition: width 0.4s ease;
 }

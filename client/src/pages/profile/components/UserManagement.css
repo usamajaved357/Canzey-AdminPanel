@@ -1,6 +1,6 @@
 /* User Management */
 .user-management-content {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   overflow: visible;
@@ -10,7 +10,7 @@
 
 .user-management-header {
   padding: 2rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   color: white;
 }
 
@@ -32,7 +32,7 @@
 .loading-users {
   padding: 3rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
@@ -46,12 +46,12 @@
 }
 
 .users-table th {
-  background: #f9fafb;
+  background: var(--bg-primary);
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-color);
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -59,12 +59,12 @@
 
 .users-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   font-size: 0.9rem;
 }
 
 .user-row:hover {
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .user-info-cell {
@@ -78,7 +78,7 @@
   height: 32px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
 }
 
 .user-avatar-small img {
@@ -90,7 +90,7 @@
 .avatar-placeholder-small {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #EA948A, #191919);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,11 +101,11 @@
 
 .user-name-cell {
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .email-cell {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .role-badge-small {
@@ -156,7 +156,7 @@
 }
 
 .joined-cell {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.875rem;
 }
 
@@ -200,8 +200,8 @@
 }
 
 .deactivate-btn {
-  background: #f3f4f6;
-  color: #6b7280;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
 }
 
 .deactivate-btn:hover {
@@ -216,7 +216,7 @@
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .no-users svg {
@@ -241,7 +241,7 @@
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--text-secondary);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -249,16 +249,16 @@
 }
 
 .actions-dropdown-trigger:hover {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .actions-dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   z-index: 100;
@@ -286,7 +286,7 @@
   text-align: left;
   cursor: pointer;
   font-size: 14px;
-  color: #374151;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -294,7 +294,7 @@
 }
 
 .dropdown-item:hover {
-  background: #f3f4f6;
+  background: var(--bg-hover);
 }
 
 .dropdown-item.success {
@@ -323,7 +323,7 @@
 
 .dropdown-divider {
   height: 1px;
-  background: #e5e7eb;
+  background: var(--border-color);
   margin: 4px 0;
 }
 
@@ -343,7 +343,7 @@
 }
 
 .confirmation-dialog {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   padding: 0;
   max-width: 400px;
@@ -368,7 +368,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .warning-icon {
@@ -379,7 +379,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .confirmation-body {
@@ -388,7 +388,7 @@
 
 .confirmation-body p {
   margin: 0;
-  color: #6b7280;
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
@@ -410,12 +410,12 @@
 }
 
 .btn-cancel-confirm {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .btn-cancel-confirm:hover {
-  background: #e5e7eb;
+  background: var(--border-color);
 }
 
 .btn-confirm {
@@ -433,9 +433,9 @@
 }
 
 .detail-btn {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #6b7280;
+  background: var(--bg-hover);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   padding: 8px;
   border-radius: 6px;
   cursor: pointer;
@@ -447,8 +447,8 @@
 }
 
 .detail-btn:hover {
-  background: #667eea;
-  border-color: #667eea;
+  background: #EA948A;
+  border-color: #EA948A;
   color: white;
 }
 
@@ -551,8 +551,8 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   z-index: 1000;
@@ -589,7 +589,7 @@
 }
 
 .status-dropdown-item:hover {
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .status-dropdown-item.active {

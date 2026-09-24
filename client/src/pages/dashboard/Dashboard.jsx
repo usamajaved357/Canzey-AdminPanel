@@ -44,7 +44,7 @@ const Dashboard = () => {
             title: 'Total Revenue',
             value: `$${stats.totalRevenue.toLocaleString()}`,
             icon: <DollarSign size={24} />,
-            color: 'bg-purple-100 text-purple-600',
+            color: 'bg-rose-100 text-rose-600',
             trend: '+12%',
             trendColor: 'text-green-500'
         },
@@ -120,7 +120,7 @@ const Dashboard = () => {
                     <div className="dashboard-section recent-orders">
                         <div className="section-header">
                             <div className="section-title-box">
-                                <Package size={20} className="text-purple-600" />
+                                <Package size={20} className="text-rose-600" />
                                 <h3>Recent Orders</h3>
                             </div>
                             <Link to="/orders" className="view-all-btn">View All</Link>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                     <div className="dashboard-section recent-activity">
                         <div className="section-header">
                             <div className="section-title-box">
-                                <Activity size={20} className="text-purple-600" />
+                                <Activity size={20} className="text-rose-600" />
                                 <h3>Recent Activity</h3>
                             </div>
                         </div>

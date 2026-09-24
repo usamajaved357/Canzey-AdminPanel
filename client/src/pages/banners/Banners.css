@@ -15,7 +15,7 @@
 .banners-header h1 {
   font-size: 28px;
   font-weight: 800;
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -24,7 +24,7 @@
 
 .banners-header p {
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 4px 0 0 0;
 }
 
@@ -33,7 +33,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border: none;
   border-radius: 12px;
@@ -41,32 +41,32 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(111, 45, 168, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(234, 148, 138, 0.2);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(111, 45, 168, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(234, 148, 138, 0.3);
 }
 
 .loading {
   text-align: center;
   padding: 60px 20px;
   font-size: 16px;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .empty-state {
   text-align: center;
   padding: 80px 40px;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 20px;
-  border: 2px dashed #e5e7eb;
+  border: 2px dashed var(--border-color);
   transition: all 0.3s;
 }
 
 .empty-state:hover {
-  border-color: #a855f7;
+  border-color: #EA948A;
 }
 
 .empty-state svg {
@@ -77,12 +77,12 @@
 .empty-state h2 {
   font-size: 22px;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 12px 0;
 }
 
 .empty-state p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0 0 32px 0;
 }
 
@@ -93,8 +93,8 @@
 }
 
 .banner-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 20px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -105,7 +105,7 @@
 .banner-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.1);
-  border-color: #a855f7;
+  border-color: #EA948A;
 }
 
 .banner-image-container {
@@ -114,7 +114,7 @@
   padding-top: 52.5%;
   /* Higher aspect ratio */
   overflow: hidden;
-  background: #f3f4f6;
+  background: var(--bg-hover);
 }
 
 .banner-image {
@@ -159,7 +159,7 @@
 .banner-content h3 {
   font-size: 18px;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0 0 12px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -174,8 +174,8 @@
 }
 
 .priority-badge {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: var(--bg-hover);
+  color: var(--text-secondary);
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 12px;
@@ -202,7 +202,7 @@
 
 .banner-link {
   font-size: 13px;
-  color: #a855f7;
+  color: #EA948A;
   margin: 0;
   font-weight: 500;
   white-space: nowrap;
@@ -216,27 +216,27 @@
   gap: 12px;
   padding: 16px 20px;
   border-top: 1px solid #f1f5f9;
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .btn-icon {
   flex: 1;
   height: 40px;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   transition: all 0.2s;
 }
 
 .btn-icon:hover {
-  background: #f9fafb;
-  border-color: #a855f7;
-  color: #6f2da8;
+  background: var(--bg-primary);
+  border-color: #EA948A;
+  color: #EA948A;
 }
 
 .btn-icon.btn-danger:hover {

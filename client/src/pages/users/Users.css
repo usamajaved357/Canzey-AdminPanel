@@ -11,12 +11,12 @@
 .users-header h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .users-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -36,19 +36,19 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: white;
+  background: var(--bg-elevated);
   transition: all 0.2s ease;
 }
 
 .search-box:focus-within {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .search-box svg {
-  color: #9ca3af;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -57,11 +57,11 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .search-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .filter-group {
@@ -69,14 +69,14 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 8px;
-  background: white;
+  background: var(--bg-elevated);
   transition: all 0.2s ease;
 }
 
 .filter-group svg {
-  color: #9ca3af;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -84,22 +84,22 @@
   border: none;
   outline: none;
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
   background: transparent;
   cursor: pointer;
   min-width: 150px;
 }
 
 .filter-select option {
-  color: #1f2937;
-  background: white;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
 }
 
 /* Table */
 .users-table-container {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin-bottom: 2rem;
@@ -110,7 +110,7 @@
 .no-users {
   padding: 3rem 2rem;
   text-align: center;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -121,38 +121,38 @@
 }
 
 .users-table thead {
-  background: #f9fafb;
-  border-bottom: 2px solid #e5e7eb;
+  background: var(--bg-primary);
+  border-bottom: 2px solid var(--border-color);
 }
 
 .users-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   font-size: 0.875rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .users-table tbody tr {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s ease;
 }
 
 .users-table tbody tr:hover {
-  background-color: #f9fafb;
+  background-color: var(--bg-primary);
 }
 
 .users-table td {
   padding: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
 .user-id {
   font-weight: 600;
-  color: #667eea;
+  color: #EA948A;
 }
 
 .user-name {
@@ -160,17 +160,17 @@
 }
 
 .user-email {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .user-phone {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Detail Button */
 .detail-btn {
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #EA948A 0%, #191919 100%);
   color: white;
   border: none;
   border-radius: 6px;
@@ -178,12 +178,12 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 2px 8px rgba(234, 148, 138, 0.3);
 }
 
 .detail-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(234, 148, 138, 0.4);
 }
 
 /* Detail Dialog */
@@ -202,7 +202,7 @@
 }
 
 .detail-dialog {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   max-width: 500px;
@@ -228,8 +228,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(135deg, #EA948A 0%, #191919 100%);
   color: white;
 }
 
@@ -276,19 +276,19 @@
 
 .detail-label {
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   min-width: 100px;
   font-size: 0.9rem;
 }
 
 .detail-value {
-  color: #6b7280;
+  color: var(--text-secondary);
   flex: 1;
 }
 
 .detail-dialog-footer {
   padding: 1rem 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
@@ -296,9 +296,9 @@
 
 .close-dialog-btn {
   padding: 0.5rem 1.5rem;
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -307,7 +307,7 @@
 }
 
 .close-dialog-btn:hover {
-  background: #e5e7eb;
+  background: var(--border-color);
 }
 
 /* Badges */
@@ -323,8 +323,8 @@
 }
 
 .type-admin {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(234, 148, 138, 0.1);
+  color: #EA948A;
 }
 
 .type-customer {
@@ -339,7 +339,7 @@
 
 .status-inactive {
   background: rgba(107, 114, 128, 0.1);
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .status-suspended {
@@ -356,8 +356,8 @@
 }
 
 .stat-card {
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -366,7 +366,7 @@
 .stat-card h3 {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 0.75rem;
@@ -375,7 +375,7 @@
 .stat-number {
   font-size: 2rem;
   font-weight: 700;
-  color: #667eea;
+  color: #EA948A;
   margin: 0;
 }
 

@@ -29,9 +29,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       <div className="sidebar-content">
         
         <div className="sidebar-header">
-          <h1 className="sidebar-logo">
-            Canzey Admin
-          </h1>
+          <img
+            className="sidebar-logo-img"
+            src="/brand/canzey-wordmark-reversed.png"
+            alt="Canzey"
+            width={148}
+            height={25}
+          />
           <button 
             className="sidebar-close-btn"
             onClick={() => setSidebarOpen(false)}

@@ -1,5 +1,29 @@
 import pool from '../database/connection.js';
 import { validateProductPurchase } from '../utils/prizeAvailability.js';
+import { splitOrderLine } from '../utils/donation.js';
+import { isDonateEnabled } from './settingsController.js';
+
+function hasShippingAddress(address) {
+  if (!address) return false;
+  if (typeof address === 'string') return address.trim().length > 0;
+  if (typeof address === 'object') return Object.keys(address).length > 0;
+  return false;
+}
+
+/**
+ * Normalise total_units / donated_items (SUM returns strings) and derive deliverable_items.
+ */
+function withDonationCounts(order) {
+  const totalUnits = Number(order.total_units) || 0;
+  const donated = Math.min(Number(order.donated_items) || 0, totalUnits);
+  return {
+    ...order,
+    total_units: totalUnits,
+    donated_items: donated,
+    deliverable_items: totalUnits - donated,
+    is_fully_donated: totalUnits > 0 && donated === totalUnits,
+  };
+}
 
 /**
  * Generate unique order number
@@ -111,8 +135,20 @@ export async function createOrder(req, res) {
     // Fetch product details and calculate total
     let totalAmount = 0;
     const orderItemsData = [];
+    let donateEnabled = null;
 
     for (const item of items) {
+      const line = splitOrderLine({
+        quantity: item.quantity,
+        donatedQuantity: item.donated_quantity,
+        donate: item.donate,
+      });
+
+      if (!line.ok) {
+        await connection.rollback();
+        return res.status(400).json({ success: false, message: line.message });
+      }
+
       const [products] = await connection.query(
         `SELECT id, name, price, sale_price, campaign_id, main_image_url, stock_quantity 
          FROM products WHERE id = ?`,
@@ -129,9 +165,33 @@ export async function createOrder(req, res) {
 
       const product = products[0];
 
+      if (line.donated > 0) {
+        if (donateEnabled === null) {
+          donateEnabled = await isDonateEnabled(connection);
+        }
+        if (!donateEnabled) {
+          await connection.rollback();
+          return res.status(400).json({
+            success: false,
+            message: 'Donating T-shirts is currently turned off. Please uncheck donation and try again.',
+            reasons: ['donation_disabled'],
+          });
+        }
+        if (!product.campaign_id) {
+          await connection.rollback();
+          return res.status(400).json({
+            success: false,
+            message: `"${product.name}" is not linked to a prize, so it can't be donated for tickets.`,
+            reasons: ['donation_not_allowed'],
+          });
+        }
+      }
+
       const purchaseCheck = await validateProductPurchase(connection, {
         productId: product.id,
-        quantity: item.quantity,
+        quantity: line.quantity,
+        stockQuantity: line.deliverable,
+        ticketCount: product.campaign_id ? line.tickets : line.quantity,
         customerId: customer_id,
       });
 
@@ -145,7 +205,7 @@ export async function createOrder(req, res) {
       }
 
       const price = product.sale_price || product.price;
-      const subtotal = price * item.quantity;
+      const subtotal = price * line.quantity;
       totalAmount += subtotal;
 
       orderItemsData.push({
@@ -153,13 +213,33 @@ export async function createOrder(req, res) {
         campaign_id: product.campaign_id,
         product_name: product.name,
         product_image: product.main_image_url,
-        quantity: item.quantity,
+        quantity: line.quantity,
+        donated_quantity: line.donated,
+        deliverable_quantity: line.deliverable,
+        ticket_count: line.tickets,
         price: price,
         subtotal: subtotal,
         color: item.color || null,
         size: item.size || null
       });
     }
+
+    const deliverableItems = orderItemsData.reduce((sum, i) => sum + i.deliverable_quantity, 0);
+    const donatedItems = orderItemsData.reduce((sum, i) => sum + i.donated_quantity, 0);
+
+    if (deliverableItems > 0 && !hasShippingAddress(shipping_address)) {
+      await connection.rollback();
+      return res.status(400).json({
+        success: false,
+        message: 'A shipping address is required for items that will be delivered.',
+        reasons: ['shipping_address_required'],
+      });
+    }
+
+    // Fully donated orders have nothing to deliver.
+    const storedShippingAddress = deliverableItems > 0 && shipping_address
+      ? JSON.stringify(shipping_address)
+      : null;
 
     // Add donation to grand total
     const grandTotal = totalAmount + parsedDonation;
@@ -179,7 +259,7 @@ export async function createOrder(req, res) {
         payment_method || null,
         payment_transaction_id || null,
         order_status,
-        shipping_address ? JSON.stringify(shipping_address) : null,
+        storedShippingAddress,
         notes || null
       ]
     );
@@ -193,8 +273,8 @@ export async function createOrder(req, res) {
       // Insert order item
       await connection.query(
         `INSERT INTO order_items 
-         (order_id, product_id, campaign_id, product_name, product_image, quantity, unit_price, total_price, color, size)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         (order_id, product_id, campaign_id, product_name, product_image, quantity, donated_quantity, unit_price, total_price, color, size)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           orderId,
           itemData.product_id,
@@ -202,6 +282,7 @@ export async function createOrder(req, res) {
           itemData.product_name,
           itemData.product_image,
           itemData.quantity,
+          itemData.donated_quantity,
           itemData.price,
           itemData.subtotal,
           itemData.color,
@@ -209,21 +290,25 @@ export async function createOrder(req, res) {
         ]
       );
 
-      // Update product stock
-      await connection.query(
-        `UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?`,
-        [itemData.quantity, itemData.product_id]
-      );
+      // Donated units are not taken from stock
+      if (itemData.deliverable_quantity > 0) {
+        await connection.query(
+          `UPDATE products SET stock_quantity = stock_quantity - ? WHERE id = ?`,
+          [itemData.deliverable_quantity, itemData.product_id]
+        );
+      }
 
       // Auto-create campaign tickets if product has campaign
       if (itemData.campaign_id) {
+        const ticketCount = itemData.ticket_count;
+
         // 1. Update the product_prizes progress count
         const [prizeUpdate] = await connection.query(
           `UPDATE product_prizes
            SET tickets_sold = tickets_sold + ?
            WHERE product_id = ? AND campaign_id = ? AND is_active = 1
            AND tickets_remaining >= ?`,
-          [itemData.quantity, itemData.product_id, itemData.campaign_id, itemData.quantity]
+          [ticketCount, itemData.product_id, itemData.campaign_id, ticketCount]
         );
 
         if (prizeUpdate.affectedRows === 0) {
@@ -243,8 +328,9 @@ export async function createOrder(req, res) {
         if (campaigns.length > 0) {
           const campaign = campaigns[0];
 
-          // Create one ticket per quantity
-          for (let i = 0; i < itemData.quantity; i++) {
+          // 1 ticket per delivered unit, 2 per donated unit
+          const normalTickets = itemData.deliverable_quantity;
+          for (let i = 0; i < ticketCount; i++) {
             const ticketNumber = generateTicketNumber(itemData.campaign_id);
 
             await connection.query(
@@ -268,7 +354,9 @@ export async function createOrder(req, res) {
               ticket_number: ticketNumber,
               campaign_id: itemData.campaign_id,
               campaign_title: campaign.title,
-              product_name: itemData.product_name
+              product_name: itemData.product_name,
+              source: 'purchase',
+              from_donated_item: i >= normalTickets
             });
           }
         }
@@ -340,6 +428,13 @@ export async function createOrder(req, res) {
         shipping_address: parseShippingAddress(orders[0].shipping_address),
         items: orderItems,
         campaign_entries: campaignEntries,
+        deliverable_items: deliverableItems,
+        donated_items: donatedItems,
+        donation_summary: {
+          deliverable_items: deliverableItems,
+          donated_items: donatedItems,
+          total_tickets: campaignEntries.length,
+        },
         donation: parsedDonation > 0 ? {
           amount: parsedDonation,
           campaign_id: donation_campaign_id,
@@ -376,7 +471,9 @@ export async function getCustomerOrders(req, res) {
     let query = `
       SELECT 
         o.*,
-        COUNT(oi.id) as items_count
+        COUNT(oi.id) as items_count,
+        COALESCE(SUM(oi.quantity), 0) as total_units,
+        COALESCE(SUM(oi.donated_quantity), 0) as donated_items
       FROM orders o
       LEFT JOIN order_items oi ON o.id = oi.order_id
       WHERE o.customer_id = ?
@@ -395,9 +492,9 @@ export async function getCustomerOrders(req, res) {
     const [orders] = await pool.execute(query, params);
 
     // Parse shipping_address JSON
-    const ordersWithParsedAddress = orders.map(order => ({
+    const ordersWithParsedAddress = orders.map(order => withDonationCounts({
       ...order,
-      shipping_address: order.shipping_address ? JSON.parse(order.shipping_address) : null
+      shipping_address: parseShippingAddress(order.shipping_address)
     }));
 
     res.json({
@@ -466,14 +563,26 @@ export async function getOrderById(req, res) {
       [orderId]
     );
 
+    const items = orderItems.map(item => {
+      const quantity = Number(item.quantity) || 0;
+      const donated = Math.min(Number(item.donated_quantity) || 0, quantity);
+      return {
+        ...item,
+        donated_quantity: donated,
+        deliverable_quantity: quantity - donated,
+      };
+    });
+
     res.json({
       success: true,
-      order: {
+      order: withDonationCounts({
         ...order,
         shipping_address: parseShippingAddress(order.shipping_address),
-        items: orderItems,
+        items,
+        total_units: items.reduce((sum, i) => sum + (Number(i.quantity) || 0), 0),
+        donated_items: items.reduce((sum, i) => sum + i.donated_quantity, 0),
         campaign_entries: campaignEntries
-      }
+      })
     });
 
   } catch (error) {
@@ -507,6 +616,7 @@ export async function getAllOrders(req, res) {
           COALESCE(c.phone_number, '') as phone_number,
           oi.product_name,
           oi.quantity as item_quantity,
+          COALESCE(oi.donated_quantity, 0) as item_donated_quantity,
           oi.unit_price as item_price,
           oi.total_price as item_total,
           oi.color as item_color,
@@ -524,7 +634,9 @@ export async function getAllOrders(req, res) {
           COALESCE(c.last_name, '') as last_name,
           COALESCE(c.email, '') as email,
           COALESCE(c.phone_number, '') as phone_number,
-          (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as items_count
+          (SELECT COUNT(*) FROM order_items WHERE order_id = o.id) as items_count,
+          (SELECT COALESCE(SUM(quantity), 0) FROM order_items WHERE order_id = o.id) as total_units,
+          (SELECT COALESCE(SUM(donated_quantity), 0) FROM order_items WHERE order_id = o.id) as donated_items
         FROM orders o
         LEFT JOIN customers c ON o.customer_id = c.id
         WHERE 1=1
@@ -565,10 +677,10 @@ export async function getAllOrders(req, res) {
     const [orders] = await pool.query(query, params);
 
     // Parse shipping_address JSON
-    const ordersWithParsedAddress = orders.map(order => ({
-      ...order,
-      shipping_address: parseShippingAddress(order.shipping_address)
-    }));
+    const ordersWithParsedAddress = orders.map(order => {
+      const parsed = { ...order, shipping_address: parseShippingAddress(order.shipping_address) };
+      return isExport ? parsed : withDonationCounts(parsed);
+    });
 
     res.json({
       success: true,

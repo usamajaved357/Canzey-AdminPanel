@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Filter, Eye, Package, Clock, CheckCircle, XCircle, Truck, DollarSign, ShoppingCart, Users, Calendar, Download } from 'lucide-react';
+import { Search, Filter, Eye, Package, Clock, CheckCircle, XCircle, Truck, DollarSign, ShoppingCart, Users, Calendar, Download, Heart } from 'lucide-react';
 import Layout from '../../components/layout/Layout';
 import Toast from '../../components/ui/Toast';
 import { API_BASE_URL } from '../../config/api';
@@ -131,7 +131,7 @@ const Orders = () => {
       case 'delivered': return 'bg-green-100 text-green-700 border-green-200';
       case 'pending': return 'bg-amber-100 text-amber-700 border-amber-200';
       case 'processing': return 'bg-blue-100 text-blue-700 border-blue-200';
-      case 'shipped': return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'shipped': return 'bg-rose-100 text-rose-700 border-rose-200';
       case 'cancelled': return 'bg-red-100 text-red-700 border-red-200';
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
     }
@@ -155,7 +155,7 @@ const Orders = () => {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div>
-              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-3xl font-extrabold bg-gradient-to-r from-rose-600 to-rose-600 bg-clip-text text-transparent mb-2">
                 Orders Management
               </h1>
               <p className="text-gray-500">Track and manage all customer orders</p>
@@ -164,7 +164,7 @@ const Orders = () => {
             <button
               onClick={handleExportCSV}
               disabled={exporting || orders.length === 0}
-              className="flex items-center gap-2 px-6 py-3 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-700 shadow-lg transition-all"
+              className="flex items-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-xl font-bold hover:bg-rose-700 shadow-lg transition-all"
             >
               {exporting ? 'Exporting...' : 'Export CSV'}
             </button>
@@ -215,7 +215,20 @@ const Orders = () => {
                     <tr><td colSpan="6" className="py-20 text-center text-gray-500">Loading...</td></tr>
                   ) : filteredOrders.map((order) => (
                     <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-6 py-4 font-mono font-bold text-violet-600">{order.order_number}</td>
+                      <td className="px-6 py-4">
+                        <div className="font-mono font-bold text-rose-600">{order.order_number}</div>
+                        {Number(order.donated_items) > 0 && (
+                          <span
+                            className="mt-1 inline-flex items-center gap-1 rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-700"
+                            title={`${order.deliverable_items ?? 0} to deliver, ${order.donated_items} donated`}
+                          >
+                            <Heart size={11} />
+                            {order.is_fully_donated
+                              ? 'Donated to charity — no shipping'
+                              : `${order.donated_items} donated · ${order.deliverable_items ?? 0} to ship`}
+                          </span>
+                        )}
+                      </td>
                       <td className="px-6 py-4">
                         <div className="font-bold text-gray-900">{order.first_name} {order.last_name}</div>
                         <div className="text-sm text-gray-500">{order.email}</div>

@@ -63,7 +63,7 @@ const TicketDetailsModal = ({ ticket, onClose, onMarkWinner }) => {
             {/* Campaign Section */}
             <div className="info-section card">
               <div className="section-header">
-                <Package size={20} className="text-violet-600" />
+                <Package size={20} className="text-rose-600" />
                 <h3>Campaign Info</h3>
               </div>
               <div className="info-content">
@@ -90,7 +90,7 @@ const TicketDetailsModal = ({ ticket, onClose, onMarkWinner }) => {
             {/* Customer Section */}
             <div className="info-section card">
               <div className="section-header">
-                <User size={20} className="text-violet-600" />
+                <User size={20} className="text-rose-600" />
                 <h3>Customer Info</h3>
               </div>
               <div className="info-content">
@@ -112,7 +112,7 @@ const TicketDetailsModal = ({ ticket, onClose, onMarkWinner }) => {
             {/* Order Section */}
             <div className="info-section card">
               <div className="section-header">
-                <Calendar size={20} className="text-violet-600" />
+                <Calendar size={20} className="text-rose-600" />
                 <h3>Transaction Info</h3>
               </div>
               <div className="info-content">

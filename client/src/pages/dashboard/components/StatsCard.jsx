@@ -14,9 +14,9 @@ const StatsCard = ({ title, value, icon: Icon, color = 'primary' }) => {
       hover: 'hover:bg-green-50'
     },
     purple: {
-      bg: 'bg-purple-100',
-      text: 'text-purple-600',
-      hover: 'hover:bg-purple-50'
+      bg: 'bg-rose-100',
+      text: 'text-rose-600',
+      hover: 'hover:bg-rose-50'
     },
     red: {
       bg: 'bg-red-100',

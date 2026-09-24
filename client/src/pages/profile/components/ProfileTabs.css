@@ -3,7 +3,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-color);
 }
 
 .profile-tab {
@@ -13,7 +13,7 @@
   padding: 1rem 1.5rem;
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -22,14 +22,14 @@
 }
 
 .profile-tab:hover {
-  color: #374151;
+  color: var(--text-primary);
   background: rgba(0, 0, 0, 0.02);
 }
 
 .profile-tab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
+  color: #EA948A;
+  border-bottom-color: #EA948A;
+  background: rgba(234, 148, 138, 0.05);
 }
 
 @media (max-width: 768px) {

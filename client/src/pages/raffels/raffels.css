@@ -1,24 +1,23 @@
 /* Raffles Page Styles */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 .raffles-page {
   min-height: 100vh;
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .raffles-container {
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
-  color: #1f2937;
+  font-family: 'Manrope', sans-serif;
+  color: var(--text-primary);
 }
 
 /* Header */
 .raffles-header {
   margin-bottom: 2rem;
   padding: 2rem;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -26,7 +25,7 @@
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -34,7 +33,7 @@
 
 .raffles-subtitle {
   font-size: 1.1rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 /* Stats Grid */
@@ -50,9 +49,9 @@
   align-items: center;
   gap: 1.5rem;
   padding: 1.5rem;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
@@ -74,7 +73,7 @@
 }
 
 .raffle-stat-icon.violet {
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
 }
 
 .raffle-stat-icon.blue {
@@ -92,13 +91,13 @@
 .raffle-stat-content h3 {
   font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .raffle-stat-content p {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -110,7 +109,7 @@
 .section-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
 }
 
@@ -122,24 +121,24 @@
 }
 
 .raffle-card {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   padding: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .raffle-card:hover {
-  border-color: #7c3aed;
+  border-color: #EA948A;
   transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(124, 58, 237, 0.15);
+  box-shadow: 0 10px 20px rgba(234, 148, 138, 0.15);
 }
 
 .raffle-card.selected {
-  border-color: #7c3aed;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(167, 85, 247, 0.05));
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+  border-color: #EA948A;
+  background: linear-gradient(135deg, rgba(234, 148, 138, 0.05), rgba(234, 148, 138, 0.05));
+  box-shadow: 0 4px 12px rgba(234, 148, 138, 0.2);
 }
 
 .raffle-card-header {
@@ -152,13 +151,13 @@
 .raffle-info h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
 .raffle-prize {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -178,7 +177,7 @@
 
 .raffle-status-badge.completed {
   background: rgba(107, 114, 128, 0.1);
-  color: #4b5563;
+  color: var(--text-secondary);
   border: 1px solid rgba(107, 114, 128, 0.3);
 }
 
@@ -194,12 +193,12 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .raffle-stat-item svg {
-  color: #7c3aed;
+  color: #EA948A;
 }
 
 .raffle-progress-section {
@@ -215,26 +214,26 @@
 
 .progress-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
 .progress-percentage {
   font-size: 0.875rem;
-  color: #7c3aed;
+  color: #EA948A;
   font-weight: 700;
 }
 
 .raffle-progress-bar {
   height: 8px;
-  background: #f3f4f6;
+  background: var(--bg-hover);
   border-radius: 1rem;
   overflow: hidden;
 }
 
 .raffle-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  background: linear-gradient(90deg, #EA948A, #EA948A);
   border-radius: 1rem;
   transition: width 0.3s ease;
 }
@@ -254,9 +253,9 @@
 
 /* Tickets Section */
 .tickets-section {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -267,14 +266,14 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .tickets-info {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -292,13 +291,13 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .tickets-search-input {
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 3rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   font-size: 0.95rem;
   transition: all 0.3s ease;
@@ -306,8 +305,8 @@
 
 .tickets-search-input:focus {
   outline: none;
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+  border-color: #EA948A;
+  box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .tickets-list {
@@ -318,14 +317,14 @@
 
 .ticket-item {
   padding: 1.25rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 0.75rem;
   transition: all 0.3s ease;
 }
 
 .ticket-item:hover {
-  border-color: #7c3aed;
-  background: #f9fafb;
+  border-color: #EA948A;
+  background: var(--bg-primary);
 }
 
 .ticket-item-header {
@@ -345,7 +344,7 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -357,13 +356,13 @@
 .ticket-user-details h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 0.25rem;
 }
 
 .ticket-user-details p {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .ticket-meta {
@@ -377,10 +376,10 @@
   align-items: center;
   gap: 0.375rem;
   padding: 0.375rem 0.75rem;
-  background: rgba(124, 58, 237, 0.1);
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: rgba(234, 148, 138, 0.1);
+  border: 1px solid rgba(234, 148, 138, 0.2);
   border-radius: 0.5rem;
-  color: #7c3aed;
+  color: #EA948A;
   font-weight: 600;
   font-size: 0.875rem;
 }
@@ -388,7 +387,7 @@
 .ticket-amount {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .ticket-numbers {
@@ -398,19 +397,19 @@
   flex-wrap: wrap;
   margin-bottom: 1rem;
   padding: 0.75rem;
-  background: #f9fafb;
+  background: var(--bg-primary);
   border-radius: 0.5rem;
 }
 
 .ticket-numbers-label {
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
 .ticket-number-badge {
   padding: 0.25rem 0.625rem;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border-radius: 0.375rem;
   font-size: 0.875rem;
@@ -428,7 +427,7 @@
   align-items: center;
   gap: 0.375rem;
   font-size: 0.875rem;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .ticket-detail-btn {
@@ -437,9 +436,9 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   background: transparent;
-  border: 1px solid #7c3aed;
+  border: 1px solid #EA948A;
   border-radius: 0.5rem;
-  color: #7c3aed;
+  color: #EA948A;
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -447,14 +446,14 @@
 }
 
 .ticket-detail-btn:hover {
-  background: #7c3aed;
+  background: #EA948A;
   color: white;
 }
 
 .tickets-empty {
   text-align: center;
   padding: 3rem;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .tickets-empty svg {
@@ -471,9 +470,9 @@
 .no-raffle-selected {
   text-align: center;
   padding: 4rem 2rem;
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
-  border: 2px dashed #e5e7eb;
+  border: 2px dashed var(--border-color);
 }
 
 .no-raffle-selected svg {
@@ -484,13 +483,13 @@
 .no-raffle-selected h3 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #6b7280;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
 
 .no-raffle-selected p {
   font-size: 1rem;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* Modal */
@@ -510,7 +509,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 1rem;
   width: 100%;
   max-width: 700px;
@@ -525,28 +524,28 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .modal-close-btn {
   padding: 0.5rem;
   background: transparent;
   border: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   cursor: pointer;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 }
 
 .modal-close-btn:hover {
-  background: #f3f4f6;
-  color: #1f2937;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .modal-body {
@@ -564,10 +563,10 @@
 .detail-section-title {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text-primary);
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #7c3aed;
+  border-bottom: 2px solid #EA948A;
 }
 
 .detail-grid {
@@ -581,9 +580,9 @@
   align-items: flex-start;
   gap: 0.75rem;
   padding: 1rem;
-  background: #f9fafb;
+  background: var(--bg-primary);
   border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .detail-item.full-width {
@@ -596,7 +595,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   border-radius: 0.5rem;
   color: white;
   flex-shrink: 0;
@@ -611,7 +610,7 @@
 
 .detail-label {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -619,7 +618,7 @@
 
 .detail-value {
   font-size: 0.95rem;
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -636,13 +635,13 @@
 
 .ticket-number-card {
   padding: 1rem;
-  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border-radius: 0.5rem;
   font-size: 1.25rem;
   font-weight: 700;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(124, 58, 237, 0.3);
+  box-shadow: 0 4px 6px rgba(234, 148, 138, 0.3);
 }
 
 .raffle-info-box {
@@ -656,13 +655,13 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(167, 85, 247, 0.05));
-  border: 1px solid rgba(124, 58, 237, 0.2);
+  background: linear-gradient(135deg, rgba(234, 148, 138, 0.05), rgba(234, 148, 138, 0.05));
+  border: 1px solid rgba(234, 148, 138, 0.2);
   border-radius: 0.5rem;
 }
 
 .raffle-info-item svg {
-  color: #7c3aed;
+  color: #EA948A;
 }
 
 .raffle-info-item > div {
@@ -673,14 +672,14 @@
 
 .raffle-info-label {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-weight: 600;
   text-transform: uppercase;
 }
 
 .raffle-info-value {
   font-size: 1rem;
-  color: #1f2937;
+  color: var(--text-primary);
   font-weight: 600;
 }
 

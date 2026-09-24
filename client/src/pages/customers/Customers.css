@@ -18,7 +18,7 @@
 .customers-header h1 {
   font-size: 28px;
   font-weight: 800;
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -26,7 +26,7 @@
 }
 
 .customers-header p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
   font-size: 1rem;
 }
@@ -36,30 +36,30 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   color: white;
   border: none;
   border-radius: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 6px -1px rgba(111, 45, 168, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(234, 148, 138, 0.2);
   white-space: nowrap;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(111, 45, 168, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(234, 148, 138, 0.3);
 }
 
 .customers-filters {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
-  background: white;
+  background: var(--bg-elevated);
   padding: 16px;
   border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -73,23 +73,23 @@
 .search-box svg {
   position: absolute;
   left: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .search-box input {
   width: 100%;
   padding: 12px 12px 12px 42px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  background: #f9fafb;
-  color: #1f2937;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-size: 14px;
   transition: all 0.2s;
 }
 
 .search-box input:focus {
-  background: white;
-  border-color: #a855f7;
+  background: var(--bg-elevated);
+  border-color: #EA948A;
 }
 
 .filter-group {
@@ -101,16 +101,16 @@
 .filter-group svg {
   position: absolute;
   left: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
   pointer-events: none;
 }
 
 .filter-group select {
   padding: 12px 32px 12px 42px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   border-radius: 12px;
-  background: #f9fafb;
-  color: #1f2937;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-size: 14px;
   cursor: pointer;
   appearance: none;
@@ -118,14 +118,14 @@
 }
 
 .filter-group select:focus {
-  background: white;
-  border-color: #a855f7;
+  background: var(--bg-elevated);
+  border-color: #EA948A;
 }
 
 .customers-table-container {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 16px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
   overflow-x: auto;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
@@ -139,19 +139,19 @@
 .customers-table th {
   text-align: left;
   padding: 16px 24px;
-  border-bottom: 1px solid #e5e7eb;
-  color: #6b7280;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: #f9fafb;
+  background: var(--bg-primary);
 }
 
 .customers-table td {
   padding: 16px 24px;
   border-bottom: 1px solid #f1f5f9;
-  color: #1f2937;
+  color: var(--text-primary);
   font-size: 14px;
   vertical-align: middle;
 }
@@ -167,13 +167,13 @@
   height: 40px;
   border-radius: 50%;
   overflow: hidden;
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
+  background: linear-gradient(135deg, #EA948A, #EA948A);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   border: 2px solid white;
-  box-shadow: 0 0 0 1px #e5e7eb;
+  box-shadow: 0 0 0 1px var(--border-color);
   position: relative;
 }
 
@@ -217,9 +217,9 @@
 .c-btn-details {
   padding: 8px 16px;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  color: #1f2937;
+  border: 1px solid var(--border-color);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
@@ -227,9 +227,9 @@
 }
 
 .c-btn-details:hover {
-  background: #f9fafb;
-  border-color: #a855f7;
-  color: #6f2da8;
+  background: var(--bg-primary);
+  border-color: #EA948A;
+  color: #EA948A;
 }
 
 /* Mobile Responsive */

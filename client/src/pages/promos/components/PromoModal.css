@@ -12,7 +12,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
     font-size: 0.875rem;
 }
 
@@ -21,7 +21,7 @@
 .form-group textarea {
     width: 100%;
     padding: 0.75rem;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     font-size: 0.875rem;
     transition: all 0.2s;
@@ -32,14 +32,14 @@
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #8b5cf6;
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    border-color: #EA948A;
+    box-shadow: 0 0 0 3px rgba(234, 148, 138, 0.1);
 }
 
 .form-group input:disabled {
-    background: #f3f4f6;
+    background: var(--bg-hover);
     cursor: not-allowed;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .form-group textarea {
@@ -51,7 +51,7 @@
     display: block;
     margin-top: 0.25rem;
     font-size: 0.75rem;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .form-row {
@@ -77,11 +77,11 @@
 
 .info-box code {
     display: block;
-    background: white;
+    background: var(--bg-elevated);
     padding: 0.5rem;
     border-radius: 0.25rem;
     font-size: 0.75rem;
-    color: #8b5cf6;
+    color: #EA948A;
     margin: 0.5rem 0;
     font-family: 'Courier New', monospace;
     overflow-x: auto;
@@ -90,7 +90,7 @@
 .info-box p {
     margin: 0.5rem 0 0.25rem 0;
     font-size: 0.75rem;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .modal-footer {
@@ -98,7 +98,7 @@
     justify-content: flex-end;
     gap: 0.75rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border-color);
 }
 
 .btn {
@@ -112,23 +112,23 @@
 }
 
 .btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--bg-hover);
+    color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-    background: #e5e7eb;
+    background: var(--border-color);
 }
 
 .btn-primary {
-    background: #8b5cf6;
+    background: #EA948A;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #7c3aed;
+    background: #EA948A;
     transform: translateY(-1px);
-    box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 4px 6px rgba(234, 148, 138, 0.3);
 }
 
 .btn-primary:disabled {

@@ -29,6 +29,8 @@ import dashboardRoutes from './routes/dashboard.js';
 import bannersRoutes from './routes/banners.js';
 import productPrizesRoutes from './routes/product_prizes.js';
 import adminShippingRoutes from './routes/admin_shipping.js';
+import settingsRoutes from './routes/settings.js';
+import adminSettingsRoutes from './routes/admin_settings.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,6 +46,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.use('/api/settings', settingsRoutes);
+app.use('/api/admin/settings', adminSettingsRoutes);
 app.use('/api/admin', adminAuthRoutes);
 app.use('/api/admin/campaigns', adminCampaignsRoutes);
 app.use('/api/admin/products', adminProductsRoutes);

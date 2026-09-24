@@ -1,6 +1,6 @@
 /* StatsCard Component Styles */
 .stats-card {
-  background-color: white;
+  background-color: var(--bg-elevated);
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
@@ -22,7 +22,7 @@
 }
 
 .stats-card-title {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 0.25rem;
@@ -31,7 +31,7 @@
 .stats-card-value {
   font-size: 2rem;
   font-weight: bold;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .stats-card-icon-wrapper {

@@ -2,14 +2,48 @@
 @import '../styles/animations.css';
 @import './styles/responsive.css';
 
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* Canzey brand fonts */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Global Styles */
+/* ============================================
+   Canzey brand tokens — slightly dark admin
+   Shell #FBF5F3 · Blush #F5D6D1 · Rose #EA948A · Ink #191919
+   ============================================ */
+:root {
+  --shell: #FBF5F3;
+  --blush: #F5D6D1;
+  --rose: #EA948A;
+  --ink: #191919;
+
+  --bg-primary: #141210;
+  --bg-secondary: #1c1816;
+  --bg-elevated: #26201e;
+  --bg-hover: #2f2826;
+
+  --text-primary: #FBF5F3;
+  --text-secondary: #a89f9b;
+  --text-muted: #7a716d;
+
+  --border-color: rgba(245, 214, 209, 0.12);
+  --border-strong: rgba(245, 214, 209, 0.22);
+
+  --accent-primary: var(--rose);
+  --accent-secondary: var(--blush);
+  --accent-on: var(--ink);
+
+  --rose-soft: rgba(234, 148, 138, 0.16);
+  --rose-glow: rgba(234, 148, 138, 0.28);
+  --blush-soft: rgba(245, 214, 209, 0.08);
+
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -23,95 +57,91 @@ html, body {
 
 #root {
   min-height: 100%;
-  background: #f9fafb;
-  color: #1f2937;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f9fafb;
-  color: #1f2937;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-  background: rgba(167, 85, 247, 0.1);
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  color: #a855f7;
+h1, h2, h3, .display-font {
+  font-family: 'Unbounded', 'Manrope', sans-serif;
 }
 
-/* Scrollbar Styles */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background: var(--rose-soft);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  color: var(--rose);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-secondary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(167, 85, 247, 0.3);
+  background: rgba(234, 148, 138, 0.35);
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(167, 85, 247, 0.5);
+  background: rgba(234, 148, 138, 0.55);
 }
 
-/* Selection Styles */
 ::selection {
-  background: rgba(111, 45, 168, 0.2);
-  color: #1f2937;
+  background: var(--rose-soft);
+  color: var(--shell);
 }
 
 ::-moz-selection {
-  background: rgba(111, 45, 168, 0.2);
-  color: #1f2937;
+  background: var(--rose-soft);
+  color: var(--shell);
 }
 
-/* Focus Styles */
 button:focus,
 input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(167, 85, 247, 0.2);
+  box-shadow: 0 0 0 3px var(--rose-glow);
 }
 
-/* Utility Classes */
 .gradient-text {
-  background: linear-gradient(135deg, #6F2DA8, #a855f7, #ec4899);
+  background: linear-gradient(135deg, var(--blush), var(--rose));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .glass-effect {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(38, 32, 30, 0.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
 }
 
 .futuristic-border {
-  border: 1px solid rgba(167, 85, 247, 0.2);
-  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
 }
 
 .text-glow {
-  text-shadow: 0 0 20px rgba(167, 85, 247, 0.5);
+  text-shadow: 0 0 20px var(--rose-glow);
 }
 
-/* Button Base Styles */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -119,73 +149,72 @@ textarea:focus {
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-pill);
   font-weight: 600;
   font-size: 0.9rem;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
   text-decoration: none;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6F2DA8, #a855f7);
-  color: white;
+  background: var(--rose);
+  color: var(--ink);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(111, 45, 168, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px var(--rose-glow);
+  filter: brightness(1.05);
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: var(--shell);
+  border: 1px solid var(--border-strong);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-2px);
+  background: var(--blush-soft);
+  border-color: var(--blush);
+  transform: translateY(-1px);
 }
 
-/* Card Base Styles */
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(167, 85, 247, 0.3);
-  box-shadow: 0 20px 40px rgba(167, 85, 247, 0.1);
+  transform: translateY(-3px);
+  border-color: var(--border-strong);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* Input Base Styles */
 .input {
   width: 100%;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  color: #ffffff;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--shell);
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .input:focus {
-  border-color: rgba(167, 85, 247, 0.3);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--rose);
+  background: var(--bg-elevated);
 }
 
 .input::placeholder {
-  color: #a0a0b8;
+  color: var(--text-muted);
 }
 
-/* Loading States */
 .loading {
   position: relative;
   pointer-events: none;
@@ -200,13 +229,12 @@ textarea:focus {
   width: 20px;
   height: 20px;
   margin: -10px 0 0 -10px;
-  border: 2px solid rgba(167, 85, 247, 0.1);
-  border-top: 2px solid #a855f7;
+  border: 2px solid var(--rose-soft);
+  border-top: 2px solid var(--rose);
   border-radius: 50%;
   animation: rotate 1s linear infinite;
 }
 
-/* Responsive Typography */
 .text-xs { font-size: 0.75rem; }
 .text-sm { font-size: 0.875rem; }
 .text-base { font-size: 1rem; }
@@ -217,7 +245,6 @@ textarea:focus {
 .text-4xl { font-size: 2.25rem; }
 .text-5xl { font-size: 3rem; }
 
-/* Responsive Spacing */
 .p-1 { padding: 0.25rem; }
 .p-2 { padding: 0.5rem; }
 .p-3 { padding: 0.75rem; }
@@ -234,24 +261,12 @@ textarea:focus {
 .m-6 { margin: 1.5rem; }
 .m-8 { margin: 2rem; }
 
-/* Dark Theme Overrides */
-.dark-theme {
-  --bg-primary: #0f0f1e;
-  --bg-secondary: #1a1a2e;
-  --text-primary: #ffffff;
-  --text-secondary: #a0a0b8;
-  --accent-primary: #6F2DA8;
-  --accent-secondary: #a855f7;
-  --border-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Print Styles */
 @media print {
   body {
     background: white !important;
     color: black !important;
   }
-  
+
   .no-print {
     display: none !important;
   }

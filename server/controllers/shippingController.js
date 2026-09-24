@@ -24,6 +24,33 @@ export const createShipment = async (req, res) => {
   const { orderId, shippingData, isTest } = req.body;
   
   try {
+    if (!orderId || !shippingData) {
+      return res.status(400).json({ success: false, message: 'orderId and shippingData are required' });
+    }
+
+    const [[counts]] = await db.query(
+      `SELECT COALESCE(SUM(quantity), 0) AS total_units,
+              COALESCE(SUM(donated_quantity), 0) AS donated_units
+       FROM order_items WHERE order_id = ?`,
+      [orderId]
+    );
+    const totalUnits = Number(counts?.total_units) || 0;
+    const deliverableUnits = Math.max(0, totalUnits - (Number(counts?.donated_units) || 0));
+
+    if (totalUnits > 0 && deliverableUnits === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'All items in this order were donated to charity — nothing to ship.',
+      });
+    }
+
+    if (deliverableUnits > 0) {
+      const requested = parseInt(shippingData.items_number, 10);
+      if (!requested || requested > deliverableUnits) {
+        shippingData.items_number = String(deliverableUnits);
+      }
+    }
+
     const testMode = Boolean(isTest || shippingData?.isTest);
     shippingData.env = resolveZmcEnvironment(testMode ? 'sandbox' : shippingData?.env);
     shippingData.referenceNo = testMode

@@ -14,7 +14,7 @@
 }
 
 .detail-modal {
-  background: white;
+  background: var(--bg-elevated);
   border-radius: 20px;
   width: 90%;
   max-width: 800px;
@@ -62,7 +62,7 @@
   color: #1e293b;
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #EA948A 0%, #191919 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -304,7 +304,7 @@
 }
 
 .btn-edit-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #EA948A 0%, #191919 100%);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -320,7 +320,7 @@
 
 .btn-edit-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(234, 148, 138, 0.4);
 }
 
 /* Product Section Styles */
@@ -359,7 +359,7 @@
 }
 
 .detail-product-card {
-  background: #ffffff;
+  background: var(--bg-elevated);
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 16px;

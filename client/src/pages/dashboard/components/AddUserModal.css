@@ -11,7 +11,7 @@
 }
 
 .modal-container {
-  background-color: white;
+  background-color: var(--bg-elevated);
   border-radius: 0.75rem;
   padding: 1.5rem 2rem;
   max-width: 28rem;
@@ -31,7 +31,7 @@
 .modal-title {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #1f2937;
+  color: var(--text-primary);
 }
 
 .modal-close-btn {
@@ -45,7 +45,7 @@
 }
 
 .modal-close-icon {
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .modal-form {
@@ -63,7 +63,7 @@
   display: block;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .modal-form-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .modal-footer {
@@ -113,8 +113,8 @@
 }
 
 .modal-btn-secondary {
-  background-color: #e5e7eb;
-  color: #1f2937;
+  background-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 .modal-btn-secondary:hover {

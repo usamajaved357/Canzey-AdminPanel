@@ -140,6 +140,7 @@ export async function firebaseCustomerSignUp(userData) {
  * Verifies Firebase token and returns customer data
  */
 export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
+  let connection;
   try {
     console.log('📝 [FIREBASE SIGNIN] Request received');
 
@@ -227,7 +228,7 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
 
     // Find customer in MySQL
     console.log('🔍 [FIREBASE SIGNIN] Looking up customer in MySQL...');
-    const connection = await pool.getConnection();
+    connection = await pool.getConnection();
     const [customers] = await connection.execute(
       'SELECT * FROM customers WHERE firebase_uid = ?',
       [firebaseUid]
@@ -404,8 +405,6 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
       );
     }
 
-    connection.release();
-
     // Generate our JWT token
     const token = jwt.sign(
       { userId: customer.id, email: customer.email, userType: 'customer' },
@@ -433,7 +432,20 @@ export async function firebaseCustomerSignIn(firebaseToken, fcmToken = null) {
     };
   } catch (error) {
     console.error('❌ [FIREBASE SIGNIN] Error:', error.message);
-    return { success: false, error: 'Server error during sign in' };
+    return {
+      success: false,
+      error: error.message?.includes('timeout')
+        ? 'Database unavailable. Please try again in a moment.'
+        : 'Server error during sign in',
+    };
+  } finally {
+    if (connection) {
+      try {
+        connection.release();
+      } catch (_) {
+        /* already released on some success paths */
+      }
+    }
   }
 }
 

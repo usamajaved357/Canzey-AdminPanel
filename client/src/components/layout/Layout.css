@@ -1,14 +1,15 @@
-/* Layout Component Styles */
+/* Layout — dark Canzey shell */
 .layout {
   min-height: 100vh;
-  background: #f9fafb;
+  background: var(--bg-primary);
   position: relative;
+  color: var(--text-primary);
 }
 
 .layout-mobile-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
   z-index: 45;
   opacity: 0;
@@ -26,6 +27,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-primary);
 }
 
 .layout-main-content.sidebar-expanded {
@@ -46,9 +48,7 @@
   padding-bottom: 2rem;
 }
 
-/* Mobile Responsive */
 @media (max-width: 1024px) {
-
   .layout-main-content.sidebar-expanded,
   .layout-main-content.sidebar-collapsed {
     margin-left: 0 !important;
