@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, AlertCircle } from 'lucide-react';
+import { Mail, Lock, AlertCircle, LogIn } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 import { API_ENDPOINTS } from '../../config/api';
 import './Auth.css';
