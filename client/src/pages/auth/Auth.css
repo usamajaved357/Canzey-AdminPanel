@@ -55,26 +55,26 @@
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(234, 148, 138, 0.22) 0%, transparent 50%),
-    radial-gradient(ellipse at 90% 100%, rgba(245, 214, 209, 0.1) 0%, transparent 45%),
-    #141210;
+    radial-gradient(ellipse at 20% 0%, rgba(245, 214, 209, 0.85) 0%, transparent 52%),
+    radial-gradient(ellipse at 90% 100%, rgba(234, 148, 138, 0.22) 0%, transparent 46%),
+    #FBF5F3;
   padding: 2rem;
   position: relative;
   overflow: hidden;
 }
 
 .auth-card {
-  background: #1c1816;
-  border: 1px solid rgba(245, 214, 209, 0.14);
+  background: #ffffff;
+  border: 1px solid rgba(25, 25, 25, 0.06);
   border-radius: 24px;
   padding: 3rem;
   width: 100%;
   max-width: 480px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 18px 50px rgba(25, 25, 25, 0.08);
   position: relative;
   z-index: 1;
   animation: slideUp 0.6s ease-out;
-  color: #FBF5F3;
+  color: #191919;
 }
 
 @keyframes slideUp {
@@ -103,11 +103,12 @@
 }
 
 .auth-wordmark {
-  display: block;
-  height: 36px;
-  width: auto;
-  min-width: 120px;
-  object-fit: contain;
+  margin: 0;
+  font-family: 'Unbounded', 'Manrope', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: #191919;
 }
 
 .logo-icon {
@@ -126,12 +127,12 @@
   font-family: 'Unbounded', 'Manrope', sans-serif;
   font-size: 2rem;
   font-weight: 700;
-  color: #FBF5F3;
+  color: #191919;
   margin: 0;
 }
 
 .auth-subtitle {
-  color: #a89f9b;
+  color: rgba(25, 25, 25, 0.55);
   font-size: 1rem;
   margin: 0;
 }
@@ -152,7 +153,7 @@
 .form-group label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #F5D6D1;
+  color: rgba(25, 25, 25, 0.7);
 }
 
 .input-wrapper {
@@ -166,7 +167,7 @@
   left: 0.875rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #9ca3af;
+  color: rgba(25, 25, 25, 0.4);
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -177,34 +178,34 @@
 .input-wrapper input {
   width: 100%;
   padding: 0.875rem 1rem 0.875rem 3.25rem !important;
-  border: 1px solid rgba(245, 214, 209, 0.16);
+  border: 1px solid rgba(25, 25, 25, 0.12);
   border-radius: 12px;
   font-size: 1rem;
-  color: #FBF5F3;
+  color: #191919;
   transition: all 0.2s ease;
-  background: #26201e;
+  background: #ffffff;
   box-sizing: border-box;
 }
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: #EA948A;
-  background: #2f2826;
-  box-shadow: 0 0 0 4px rgba(234, 148, 138, 0.16);
+  border-color: #191919;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(234, 148, 138, 0.28);
 }
 
 .input-wrapper input::placeholder {
-  color: #9ca3af;
+  color: rgba(25, 25, 25, 0.4);
 }
 
 .input-wrapper select {
   width: 100%;
   padding: 0.875rem 1rem 0.875rem 3.25rem !important;
-  border: 1px solid rgba(245, 214, 209, 0.16);
+  border: 1px solid rgba(25, 25, 25, 0.12);
   border-radius: 12px;
   font-size: 1rem;
-  color: #FBF5F3;
-  background-color: #26201e;
+  color: #191919;
+  background-color: #ffffff;
   transition: all 0.2s ease;
   cursor: pointer;
   box-sizing: border-box;
@@ -212,9 +213,9 @@
 
 .input-wrapper select:focus {
   outline: none;
-  border-color: #EA948A;
-  background-color: #2f2826;
-  box-shadow: 0 0 0 4px rgba(234, 148, 138, 0.16);
+  border-color: #191919;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(234, 148, 138, 0.28);
 }
 
 /* Form Options */
@@ -230,7 +231,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  color: #a89f9b;
+  color: rgba(25, 25, 25, 0.55);
   cursor: pointer;
   user-select: none;
 }
@@ -311,11 +312,11 @@
 .auth-footer {
   text-align: center;
   padding-top: 1rem;
-  border-top: 1px solid rgba(245, 214, 209, 0.12);
+  border-top: 1px solid rgba(25, 25, 25, 0.08);
 }
 
 .auth-footer p {
-  color: #a89f9b;
+  color: rgba(25, 25, 25, 0.55);
   font-size: 0.875rem;
   margin: 0;
 }
@@ -342,7 +343,7 @@
 .bg-circle {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(234, 148, 138, 0.18);
   backdrop-filter: blur(40px);
   animation: float 20s infinite ease-in-out;
 }

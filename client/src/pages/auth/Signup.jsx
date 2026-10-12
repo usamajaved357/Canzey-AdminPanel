@@ -149,13 +149,7 @@ const Signup = () => {
         {/* Logo/Header */}
         <div className="auth-header">
           <div className="auth-logo">
-            <img
-              className="auth-wordmark"
-              src="/brand/canzey-wordmark-reversed.png"
-              alt="Canzey"
-              width={200}
-              height={34}
-            />
+            <p className="auth-wordmark">Canzey</p>
             <h1>Create Account</h1>
           </div>
           <p className="auth-subtitle">Join Canzey Admin Dashboard</p>
