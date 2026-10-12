@@ -115,6 +115,7 @@ export async function validateProductPurchase(
        p.campaign_id,
        p.stock_quantity,
        pp.id AS prize_id,
+       pp.campaign_id AS pp_campaign_id,
        pp.is_active AS pp_is_active,
        pp.tickets_remaining,
        pp.draw_date,
@@ -128,7 +129,7 @@ export async function validateProductPurchase(
      FROM products p
      LEFT JOIN product_prizes pp
        ON pp.product_id = p.id AND pp.is_active = 1
-     LEFT JOIN campaigns c ON c.id = p.campaign_id
+     LEFT JOIN campaigns c ON c.id = pp.campaign_id
      LEFT JOIN campaign_tickets ct_win
        ON ct_win.product_id = p.id
       AND ct_win.campaign_id = p.campaign_id
@@ -142,6 +143,8 @@ export async function validateProductPurchase(
   }
 
   const row = rows[0];
+  const linkedCampaignId = row.prize_id ? row.pp_campaign_id : null;
+  row.campaign_id = linkedCampaignId;
 
   if (row.product_status !== 'active') {
     return { ok: false, message: 'Product is not available', reasons: ['product_inactive'] };
@@ -177,7 +180,7 @@ export async function validateProductPurchase(
       `SELECT COUNT(*) AS ticket_count
        FROM campaign_tickets
        WHERE campaign_id = ? AND customer_id = ?`,
-      [row.campaign_id, customerId]
+      [linkedCampaignId, customerId]
     );
     const currentTickets = ticketCounts[0]?.ticket_count || 0;
     if (currentTickets + ticketCount > row.max_tickets_per_user) {

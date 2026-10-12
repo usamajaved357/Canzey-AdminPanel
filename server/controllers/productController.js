@@ -34,7 +34,7 @@ export async function listProducts() {
       FROM products p
       LEFT JOIN product_prizes pp
         ON p.id = pp.product_id AND pp.is_active = 1
-      LEFT JOIN campaigns c ON c.id = p.campaign_id
+      LEFT JOIN campaigns c ON c.id = pp.campaign_id
       LEFT JOIN campaign_tickets ct_win
         ON ct_win.product_id  = pp.product_id
        AND ct_win.campaign_id = pp.campaign_id
@@ -168,9 +168,11 @@ export async function listProducts() {
 
     // Attach categories, images, colors, sizes
     const result = products.map((p) => {
+      const prizeLinked = p.pp_campaign_id != null && Number(p.pp_is_active) === 1;
+      const linkedCampaignId = prizeLinked ? p.pp_campaign_id : null;
       const availability = evaluatePrizeAvailability({
         product_status: p.status,
-        campaign_id: p.campaign_id,
+        campaign_id: linkedCampaignId,
         campaign_status: p.campaign_status,
         campaign_start_at: p.campaign_start_at,
         campaign_end_at: p.campaign_end_at,
@@ -184,6 +186,7 @@ export async function listProducts() {
 
       return {
         ...p,
+        campaign_id: linkedCampaignId,
         is_purchasable: availability.purchasable,
         is_visible: availability.visible,
         unavailability_reasons: availability.reasons,
@@ -341,6 +344,13 @@ export async function createProduct(productData) {
 
     const parsedCampaignId = safeInt(productData.campaign_id);
     const parsedTickets = safeInt(productData.tickets_required);
+    if (parsedCampaignId && !(parsedTickets > 0)) {
+      connection.release();
+      return {
+        success: false,
+        error: 'Set how many tickets this prize needs before linking the product.',
+      };
+    }
 
     await connection.beginTransaction();
 
@@ -551,6 +561,13 @@ export async function updateProduct(productId, productData) {
 
     const parsedCampaignId = safeInt(productData.campaign_id);
     const parsedTickets = safeInt(productData.tickets_required);
+    if (parsedCampaignId && !(parsedTickets > 0)) {
+      connection.release();
+      return {
+        success: false,
+        error: 'Set how many tickets this prize needs before linking the product.',
+      };
+    }
 
     await connection.beginTransaction();
 
@@ -626,9 +643,10 @@ export async function updateProduct(productId, productData) {
         );
       }
     } else {
-      console.log('⚠️ [UPDATE PRODUCT] NOT saving prize data. Reason:');
-      if (!parsedCampaignId) console.log('   - parsedCampaignId is', parsedCampaignId);
-      if (!parsedTickets) console.log('   - parsedTickets is', parsedTickets);
+      await connection.execute(
+        'DELETE FROM product_prizes WHERE product_id = ?',
+        [productId]
+      );
     }
 
     await connection.commit();

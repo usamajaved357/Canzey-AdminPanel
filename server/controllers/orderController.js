@@ -87,8 +87,6 @@ export async function createOrder(req, res) {
       payment_status = 'pending',
       order_status = 'pending',
       notes,
-      donation_amount,      // optional — must be > 1 if provided
-      donation_campaign_id  // required when donation_amount is provided
     } = req.body;
 
     // Validate required fields
@@ -98,25 +96,6 @@ export async function createOrder(req, res) {
         success: false,
         message: 'Customer ID and items are required'
       });
-    }
-
-    // Validate donation if provided
-    const parsedDonation = donation_amount ? parseFloat(donation_amount) : 0;
-    if (parsedDonation > 0) {
-      if (parsedDonation <= 1) {
-        await connection.rollback();
-        return res.status(400).json({
-          success: false,
-          message: 'Donation amount must be greater than 1'
-        });
-      }
-      if (!donation_campaign_id) {
-        await connection.rollback();
-        return res.status(400).json({
-          success: false,
-          message: 'donation_campaign_id is required when donating'
-        });
-      }
     }
 
     // Validate order_status if provided
@@ -150,8 +129,13 @@ export async function createOrder(req, res) {
       }
 
       const [products] = await connection.query(
-        `SELECT id, name, price, sale_price, campaign_id, main_image_url, stock_quantity 
-         FROM products WHERE id = ?`,
+        `SELECT p.id, p.name, p.price, p.sale_price, p.main_image_url, p.stock_quantity,
+                pp.campaign_id AS prize_campaign_id
+         FROM products p
+         LEFT JOIN product_prizes pp
+           ON pp.product_id = p.id AND pp.is_active = 1
+         WHERE p.id = ?
+         LIMIT 1`,
         [item.product_id]
       );
 
@@ -177,7 +161,7 @@ export async function createOrder(req, res) {
             reasons: ['donation_disabled'],
           });
         }
-        if (!product.campaign_id) {
+        if (!product.prize_campaign_id) {
           await connection.rollback();
           return res.status(400).json({
             success: false,
@@ -191,7 +175,7 @@ export async function createOrder(req, res) {
         productId: product.id,
         quantity: line.quantity,
         stockQuantity: line.deliverable,
-        ticketCount: product.campaign_id ? line.tickets : line.quantity,
+        ticketCount: product.prize_campaign_id ? line.tickets : 0,
         customerId: customer_id,
       });
 
@@ -210,7 +194,7 @@ export async function createOrder(req, res) {
 
       orderItemsData.push({
         product_id: product.id,
-        campaign_id: product.campaign_id,
+        campaign_id: product.prize_campaign_id || null,
         product_name: product.name,
         product_image: product.main_image_url,
         quantity: line.quantity,
@@ -241,8 +225,7 @@ export async function createOrder(req, res) {
       ? JSON.stringify(shipping_address)
       : null;
 
-    // Add donation to grand total
-    const grandTotal = totalAmount + parsedDonation;
+    const grandTotal = totalAmount;
 
     // Create order
     const [orderResult] = await connection.query(
@@ -254,7 +237,7 @@ export async function createOrder(req, res) {
         orderNumber,
         customer_id,
         grandTotal,
-        parsedDonation,
+        0,
         payment_status,
         payment_method || null,
         payment_transaction_id || null,
@@ -363,50 +346,6 @@ export async function createOrder(req, res) {
       }
     }
 
-    // ── Issue donation ticket (1 bonus ticket for the donated campaign) ──────
-    if (parsedDonation > 0 && donation_campaign_id) {
-      const [donationCampaigns] = await connection.query(
-        `SELECT id, title FROM campaigns WHERE id = ?`,
-        [donation_campaign_id]
-      );
-
-      if (donationCampaigns.length === 0) {
-        await connection.rollback();
-        return res.status(400).json({
-          success: false,
-          message: `Donation campaign (ID: ${donation_campaign_id}) not found`
-        });
-      }
-
-      const donationCampaign = donationCampaigns[0];
-      const donationTicketNumber = generateTicketNumber(donation_campaign_id);
-
-      await connection.query(
-        `INSERT INTO campaign_tickets
-         (campaign_id, customer_id, order_id, product_id, ticket_number,
-          quantity, total_price, credits_earned, source)
-         VALUES (?, ?, ?, NULL, ?, ?, ?, 0, 'donation')`,
-        [
-          donation_campaign_id,
-          customer_id,
-          orderId,
-          donationTicketNumber,
-          1,
-          parsedDonation
-        ]
-      );
-
-      campaignEntries.push({
-        ticket_number: donationTicketNumber,
-        campaign_id: donation_campaign_id,
-        campaign_title: donationCampaign.title,
-        product_name: null,
-        source: 'donation'
-      });
-
-      console.log(`🎁 Donation ticket issued: ${donationTicketNumber} → Campaign "${donationCampaign.title}" (${parsedDonation})`);
-    }
-
     await connection.commit();
 
     // Fetch complete order details
@@ -435,11 +374,6 @@ export async function createOrder(req, res) {
           donated_items: donatedItems,
           total_tickets: campaignEntries.length,
         },
-        donation: parsedDonation > 0 ? {
-          amount: parsedDonation,
-          campaign_id: donation_campaign_id,
-          ticket_issued: true
-        } : null
       }
     });
 
