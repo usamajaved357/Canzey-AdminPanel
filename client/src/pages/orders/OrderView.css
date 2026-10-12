@@ -25,7 +25,7 @@
 
 .back-btn:hover {
     background: #f1f5f9;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .header-main {
@@ -97,7 +97,7 @@
 .header-main h1 {
     font-size: 32px;
     font-weight: 900;
-    color: #FBF5F3;
+    color: #191919;
     margin: 0 0 4px 0;
 }
 
@@ -124,7 +124,7 @@
     align-items: center;
     gap: 12px;
     margin-bottom: 24px;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .card-title h2 {
@@ -156,7 +156,7 @@
 .info-block p {
     font-size: 16px;
     font-weight: 700;
-    color: #FBF5F3;
+    color: #191919;
     margin: 0;
 }
 
@@ -180,7 +180,7 @@
 
 .address-content .name {
     font-weight: 800;
-    color: #FBF5F3;
+    color: #191919;
     font-size: 18px;
     margin-bottom: 12px;
 }
@@ -224,7 +224,7 @@
 .item-info h3 {
     font-size: 16px;
     font-weight: 800;
-    color: #FBF5F3;
+    color: #191919;
     margin: 0 0 4px 0;
 }
 
@@ -271,7 +271,7 @@
 .item-price-qty .price {
     font-size: 18px;
     font-weight: 900;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .price-summary {
@@ -295,7 +295,7 @@
     border-top: 2px dashed #e2e8f0;
     font-size: 20px;
     font-weight: 900;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 /* Side Column */
@@ -331,7 +331,7 @@
 .stat-item p {
     font-size: 14px;
     font-weight: 700;
-    color: #FBF5F3;
+    color: #191919;
     margin: 0;
 }
 

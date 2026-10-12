@@ -1,8 +1,8 @@
 .dashboard-content {
   --dashboard-bg: transparent;
-  --card-bg: #26201e;
-  --glass-bg: rgba(38, 32, 30, 0.85);
-  --glass-border: rgba(245, 214, 209, 0.12);
+  --card-bg: #ffffff;
+  --glass-bg: #ffffff;
+  --glass-border: rgba(25, 25, 25, 0.08);
   --glass-blur: blur(12px);
   --primary-gradient: linear-gradient(135deg, #EA948A 0%, #d87f75 100%);
   --violet-gradient: linear-gradient(135deg, #EA948A 0%, #F5D6D1 100%);
@@ -14,8 +14,8 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.35), 0 4px 6px -4px rgb(0 0 0 / 0.3);
   --shadow-premium: 0 20px 25px -5px rgb(0 0 0 / 0.35), 0 8px 10px -6px rgb(0 0 0 / 0.25);
   --border-color: rgba(245, 214, 209, 0.12);
-  --text-main: #FBF5F3;
-  --text-muted: #a89f9b;
+  --text-main: #191919;
+  --text-muted: #5c5654;
 
   padding: 2rem;
   background:

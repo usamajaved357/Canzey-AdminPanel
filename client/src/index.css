@@ -10,7 +10,7 @@
 @tailwind utilities;
 
 /* ============================================
-   Canzey brand tokens — slightly dark admin
+   Canzey brand tokens — light admin
    Shell #FBF5F3 · Blush #F5D6D1 · Rose #EA948A · Ink #191919
    ============================================ */
 :root {
@@ -19,17 +19,17 @@
   --rose: #EA948A;
   --ink: #191919;
 
-  --bg-primary: #141210;
-  --bg-secondary: #1c1816;
-  --bg-elevated: #26201e;
-  --bg-hover: #2f2826;
+  --bg-primary: #FBF5F3;
+  --bg-secondary: #ffffff;
+  --bg-elevated: #ffffff;
+  --bg-hover: #F5D6D1;
 
-  --text-primary: #FBF5F3;
-  --text-secondary: #a89f9b;
-  --text-muted: #7a716d;
+  --text-primary: #191919;
+  --text-secondary: #5c5654;
+  --text-muted: #8a837f;
 
-  --border-color: rgba(245, 214, 209, 0.12);
-  --border-strong: rgba(245, 214, 209, 0.22);
+  --border-color: rgba(25, 25, 25, 0.08);
+  --border-strong: rgba(25, 25, 25, 0.14);
 
   --accent-primary: var(--rose);
   --accent-secondary: var(--blush);
@@ -104,12 +104,12 @@ code {
 
 ::selection {
   background: var(--rose-soft);
-  color: var(--shell);
+  color: var(--ink);
 }
 
 ::-moz-selection {
   background: var(--rose-soft);
-  color: var(--shell);
+  color: var(--ink);
 }
 
 button:focus,
@@ -128,7 +128,7 @@ textarea:focus {
 }
 
 .glass-effect {
-  background: rgba(38, 32, 30, 0.72);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-color);
 }
@@ -171,7 +171,7 @@ textarea:focus {
 
 .btn-secondary {
   background: transparent;
-  color: var(--shell);
+  color: var(--ink);
   border: 1px solid var(--border-strong);
 }
 
@@ -201,7 +201,7 @@ textarea:focus {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  color: var(--shell);
+  color: var(--ink);
   font-size: 1rem;
   transition: all 0.25s ease;
 }

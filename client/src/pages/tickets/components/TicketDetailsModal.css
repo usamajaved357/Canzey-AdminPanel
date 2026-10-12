@@ -62,7 +62,7 @@
     margin: 0;
     font-size: 22px;
     font-weight: 800;
-    color: #FBF5F3;
+    color: #191919;
     letter-spacing: -0.5px;
 }
 
@@ -234,7 +234,7 @@
 
 .info-row .value {
     font-size: 14px;
-    color: #FBF5F3;
+    color: #191919;
     font-weight: 700;
 }
 

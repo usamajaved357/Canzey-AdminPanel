@@ -36,7 +36,7 @@
     margin: 0 0 8px;
     font-size: 16px;
     font-weight: 800;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .no-shipment p {
@@ -105,7 +105,7 @@
 .ship-prefill-grid strong {
     display: block;
     font-size: 13px;
-    color: #FBF5F3;
+    color: #191919;
     margin-top: 2px;
 }
 
@@ -123,7 +123,7 @@
     border: 2px solid #f1f5f9;
     font-size: 14px;
     font-weight: 600;
-    color: #FBF5F3;
+    color: #191919;
     outline: none;
     resize: vertical;
     min-height: 84px;
@@ -230,7 +230,7 @@
 .tracking-main .value {
     font-size: 18px;
     font-weight: 900;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .status-text {
@@ -292,7 +292,7 @@
     margin: 0;
     font-size: 18px;
     font-weight: 800;
-    color: #FBF5F3;
+    color: #191919;
 }
 
 .close-form {
@@ -332,7 +332,7 @@
     border: 2px solid #f1f5f9;
     font-size: 14px;
     font-weight: 600;
-    color: #FBF5F3;
+    color: #191919;
     outline: none;
     transition: border-color 0.2s;
 }

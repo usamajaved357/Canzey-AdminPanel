@@ -11,7 +11,7 @@
   border-bottom: 1px solid var(--border-color);
   z-index: 90;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 8px rgba(25, 25, 25, 0.04);
 }
 
 .admin-header.sidebar-expanded {
@@ -56,7 +56,7 @@
   font-family: 'Unbounded', 'Manrope', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;
-  color: var(--shell);
+  color: var(--ink);
   margin: 0;
 }
 
@@ -85,7 +85,7 @@
   background: var(--bg-elevated);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  color: var(--shell);
+  color: var(--ink);
   font-size: 0.9rem;
   transition: all 0.2s ease;
 }
@@ -168,7 +168,7 @@
 .header-action-btn {
   background: var(--bg-elevated);
   border: 1px solid var(--border-color);
-  color: var(--shell);
+  color: var(--ink);
   padding: 0.75rem;
   border-radius: 12px;
   cursor: pointer;
@@ -226,7 +226,7 @@
 }
 
 .user-name {
-  color: var(--shell);
+  color: var(--ink);
   font-weight: 600;
   font-size: 0.9rem;
   line-height: 1.2;
@@ -394,7 +394,7 @@
 
 .profile-header h2 {
   margin: 0;
-  color: var(--shell);
+  color: var(--ink);
   font-size: 1.25rem;
   font-weight: 600;
   font-family: 'Unbounded', 'Manrope', sans-serif;
@@ -412,7 +412,7 @@
 
 .close-btn:hover {
   background: var(--bg-hover);
-  color: var(--shell);
+  color: var(--ink);
 }
 
 .profile-content {
@@ -474,7 +474,7 @@
 
 .info-group p {
   font-size: 1rem;
-  color: var(--shell);
+  color: var(--ink);
   margin: 0;
 }
 
@@ -528,7 +528,7 @@
   background: var(--bg-hover);
   border: 1px solid var(--border-color);
   border-radius: 999px;
-  color: var(--shell);
+  color: var(--ink);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;

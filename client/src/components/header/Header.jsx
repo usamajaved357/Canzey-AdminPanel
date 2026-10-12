@@ -35,12 +35,7 @@ const Header = ({ sidebarOpen, setSidebarOpen, searchTerm, setSearchTerm, user, 
               <Menu size={24} />
             </button>
             <div className="header-logo-mobile">
-              <img
-                src="/brand/canzey-wordmark-reversed.png"
-                alt="Canzey"
-                height={24}
-                style={{ height: 24, width: 'auto', minWidth: 120 }}
-              />
+              <h1>Canzey</h1>
             </div>
           </div>
 
