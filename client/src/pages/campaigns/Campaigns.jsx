@@ -228,13 +228,17 @@ const Campaigns = () => {
     setShowModal(true);
   };
 
-  const getStatusBadge = (status) => {
-    const statusClasses = {
-      active: 'status-active',
-      inactive: 'status-inactive',
-      closed: 'status-closed'
-    };
-    return <span className={`status-badge ${statusClasses[status]}`}>{status}</span>;
+  const prizeStatus = (campaign) => {
+    if (campaign.status === 'inactive') return { label: 'Inactive', className: 'status-inactive' };
+    if (campaign.status === 'closed') return { label: 'Closed', className: 'status-closed' };
+    if (Number(campaign.active_prizes_count) === 0) return { label: 'Sold out', className: 'status-closed' };
+    return { label: 'Active', className: 'status-active' };
+  };
+
+  const endDateLabel = (campaign) => {
+    const usesEndDate = campaign.use_end_date && campaign.end_at;
+    if (!usesEndDate) return 'No end date';
+    return new Date(campaign.end_at).toLocaleDateString();
   };
 
   const handleViewDetails = (campaign) => {
@@ -338,19 +342,11 @@ const Campaigns = () => {
                   </span>
                 </td>
                 <td>{campaign.start_at ? new Date(campaign.start_at).toLocaleDateString() : 'No limit'}</td>
+                <td>{endDateLabel(campaign)}</td>
                 <td>
-                  {campaign.end_at ? new Date(campaign.end_at).toLocaleDateString() : 'No limit'}
-                  {campaign.use_end_date ? (
-                    <div style={{ fontSize: '10px', color: '#10b981', fontWeight: 'bold' }}>• End date active</div>
-                  ) : (
-                    <div style={{ fontSize: '10px', color: '#666' }}>• Date ignored</div>
-                  )}
-                </td>
-                <td>
-                  {getStatusBadge(campaign.status)}
-                  {campaign.active_prizes_count === 0 && campaign.status === 'active' && (
-                    <div style={{ fontSize: '10px', color: '#ef4444', fontWeight: 'bold' }}>• Sold Out</div>
-                  )}
+                  <span className={`status-badge ${prizeStatus(campaign).className}`}>
+                    {prizeStatus(campaign).label}
+                  </span>
                 </td>
                 <td>
                   <div className="action-buttons">
@@ -552,11 +548,11 @@ const Campaigns = () => {
                         <span className="slider"></span>
                       </div>
                       <div className="switch-label-group">
-                        <span className="switch-label-main">End Date Active</span>
+                        <span className="switch-label-main">Close on this date</span>
                         <span className="switch-label-sub">
-                          {formData.use_end_date 
-                            ? "Prize will hide after end date" 
-                            : "End date is ignored (stays until sold out)"}
+                          {formData.use_end_date
+                            ? 'The prize stops when this date passes.'
+                            : 'Off. The prize stays open until the tickets run out.'}
                         </span>
                       </div>
                     </label>
